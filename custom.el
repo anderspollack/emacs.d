@@ -17,6 +17,7 @@
  '(package-selected-packages
    (quote
     (company-lsp company lsp-ui yasnippet lsp-mode xclip yaml-mode multi-term magit evil-leader evil-surround evil-visual-mark-mode emmet-mode web-mode projectile haskell-mode)))
+ '(ring-bell-function (quote ignore))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil)

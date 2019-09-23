@@ -1,3 +1,4 @@
+
 (setq custom-file "~/.emacs.d/custom.el")
  (load custom-file)
 
@@ -14,8 +15,8 @@
 (global-set-key (kbd "M-w") (lambda () (interactive) (delete-window)))
 (global-set-key [(meta W)] 'delete-frame)
 
-(if (not (window-system))
-    (xclip-mode t))
+;; (if (not (window-system))
+;;    (xclip-mode t))
 
 (if (not (window-system))
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
@@ -24,13 +25,16 @@
 
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
-	'(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+        '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
 (set-mouse-color "#FFFFFF")
 
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
+
+;; prevent checking signature to supress bug contacting elpa
+(setq package-check-signature nil)
 
 ;; PACKAGE INSTALLATION
 ;; package list/update/install - should only be run once or else it slows

@@ -39,8 +39,8 @@ To quickly insert a source block, type "<s" then tab. Type C-c C-c to execute a 
 ** Terminal clipboard access
  enable copying to and from clipboard in terminal emacs
  #+BEGIN_SRC emacs-lisp
-   (if (not (window-system))
-       (xclip-mode t))
+   ;; (if (not (window-system))
+   ;;    (xclip-mode t))
  #+END_SRC
 
 ** Terminal mouse scrolling
@@ -77,7 +77,11 @@ To quickly insert a source block, type "<s" then tab. Type C-c C-c to execute a 
 
 * The Rest
 still need to keep organizin'
+
 #+BEGIN_SRC emacs-lisp
+  ;; prevent checking signature to supress bug contacting elpa
+  (setq package-check-signature nil)
+
   ;; PACKAGE INSTALLATION
   ;; package list/update/install - should only be run once or else it slows
   ;; startup time significantly
