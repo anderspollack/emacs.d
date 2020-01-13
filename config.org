@@ -1,5 +1,5 @@
-this is an attempt to use literate programming style to organize and annotate my emacs config. 
-To quickly insert a source block, type "<s" then tab. Type C-c C-c to execute a block.
+* Overview 
+this is an attempt to use literate programming style to organize and annotate my emacs config. Configuration code is stored in org-mode source blocks. To quickly insert a source block, type "<s" then tab. Type C-c C-c to execute a block. To edit a source block, type C-c '. Type C-c ' again to finish editing.
 
 * Emacs housekeeping
 ** Custom file
@@ -35,6 +35,23 @@ To quickly insert a source block, type "<s" then tab. Type C-c C-c to execute a 
    (global-set-key [(meta W)] 'delete-frame)
  #+END_SRC
 
+**  Title Bar (homebrew-emacsmacport only)
+Transparent title bar is DISABLED by default.
+Enable it by setting:
+
+For dark themes: defaults write org.gnu.Emacs TransparentTitleBar DARK
+
+For light themes: defaults write org.gnu.Emacs TransparentTitleBar LIGHT
+
+To disable:
+
+defaults write org.gnu.Emacs TransparentTitleBar NO
+
+or
+
+defaults delete org.gnu.Emacs TransparentTitleBar
+
+All settings will been used in new frame or after restart Emacs
 * Terminal accessibility
 ** Terminal clipboard access
  enable copying to and from clipboard in terminal emacs
@@ -319,3 +336,8 @@ still need to keep organizin'
   ;; (add-hook 'prog-mode-hook #'lsp)
 
 #+END_SRC
+* Emacs-macport system keyboard collisons
+  due to how emacs-macport uses command as meta, there are some duplicate keybindings. C-M-d, C-M-q are used by MacOS, so you can't use them here.
+  - C-M-d: in MacOS, this uses the system dictionary. In emacs, it runs the command down-list.
+  - C-M-q: in MacOS, this locks the screen. In emacs, it reindents all the lines within one parenthetical grouping. It runs a different command based on the major mode. For example:
+    it is indent-pp-sexp in Lisp mode, c-indent-exp in C mode, etc
