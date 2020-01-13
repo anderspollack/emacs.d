@@ -22,7 +22,7 @@
    ;; (processing . t)
    ;; (ruby . t)
    ;; (shell . t)
-   (sh . t)
+   ;; (sh . t)
    ))
 
 (require 'org)

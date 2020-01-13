@@ -19,12 +19,12 @@ this is an attempt to use literate programming style to organize and annotate my
 ** Window navigation
  use shift + arrow keys, and C-M-[h,j,k,l] to move around in windows
  #+BEGIN_SRC emacs-lisp
-   (windmove-default-keybindings 'shift)
-   (global-set-key (kbd "C-M-h") 'windmove-left)
-   (global-set-key (kbd "C-j") nil)
-   (global-set-key (kbd "C-M-j") 'windmove-down)
-   (global-set-key (kbd "C-M-k") 'windmove-up)
-   (global-set-key (kbd "C-M-l") 'windmove-right)
+   ;; (windmove-default-keybindings 'shift)
+   ;; (global-set-key (kbd "C-M-h") 'windmove-left)
+   ;; (global-set-key (kbd "C-j") nil)
+   ;; (global-set-key (kbd "C-M-j") 'windmove-down)
+   ;; (global-set-key (kbd "C-M-k") 'windmove-up)
+   ;; (global-set-key (kbd "C-M-l") 'windmove-right)
  #+END_SRC
 
 ** Window & frame management
@@ -80,7 +80,7 @@ All settings will been used in new frame or after restart Emacs
 
 ** Mouse color
  #+BEGIN_SRC emacs-lisp
-   (set-mouse-color "#FFFFFF")
+   (set-mouse-color "#000000")
  #+END_SRC
 
 * Code formatting
@@ -297,7 +297,7 @@ still need to keep organizin'
 
   ;; Enable evil mode
   (require 'evil)
-  (evil-mode 1)
+  ;; (evil-mode 1)
 
   ;; evil-mode page up/down keybindings
   (global-set-key (kbd "M-j") nil)
@@ -313,7 +313,7 @@ still need to keep organizin'
   (loop for (mode . state) in '((inferior-emacs-lisp-mode . emacs)
                                 (comint-mode . emacs)
                                 (shell-mode . emacs)
-                                (term-mode . insert)
+                                (term-mode . emacs)
                                 (help-mode . emacs)
                                 (dired-mode . emacs))
         do (evil-set-initial-state mode state))

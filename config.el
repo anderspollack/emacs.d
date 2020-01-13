@@ -1,15 +1,14 @@
-
 (setq custom-file "~/.emacs.d/custom.el")
  (load custom-file)
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup")))
 
-(windmove-default-keybindings 'shift)
-(global-set-key (kbd "C-M-h") 'windmove-left)
-(global-set-key (kbd "C-j") nil)
-(global-set-key (kbd "C-M-j") 'windmove-down)
-(global-set-key (kbd "C-M-k") 'windmove-up)
-(global-set-key (kbd "C-M-l") 'windmove-right)
+;; (windmove-default-keybindings 'shift)
+;; (global-set-key (kbd "C-M-h") 'windmove-left)
+;; (global-set-key (kbd "C-j") nil)
+;; (global-set-key (kbd "C-M-j") 'windmove-down)
+;; (global-set-key (kbd "C-M-k") 'windmove-up)
+;; (global-set-key (kbd "C-M-l") 'windmove-right)
 
 (global-set-key (kbd "M-n") 'make-frame)
 (global-set-key (kbd "M-w") (lambda () (interactive) (delete-window)))
@@ -25,9 +24,9 @@
 
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
-        '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+	'(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
-(set-mouse-color "#FFFFFF")
+(set-mouse-color "#000000")
 
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
@@ -234,7 +233,7 @@
 
 ;; Enable evil mode
 (require 'evil)
-(evil-mode 1)
+;; (evil-mode 1)
 
 ;; evil-mode page up/down keybindings
 (global-set-key (kbd "M-j") nil)
@@ -250,7 +249,7 @@
 (loop for (mode . state) in '((inferior-emacs-lisp-mode . emacs)
                               (comint-mode . emacs)
                               (shell-mode . emacs)
-                              (term-mode . insert)
+                              (term-mode . emacs)
                               (help-mode . emacs)
                               (dired-mode . emacs))
       do (evil-set-initial-state mode state))
