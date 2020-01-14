@@ -144,6 +144,7 @@ still need to keep organizin'
   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.php?\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.tag?\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.liquid?\\'" . web-mode))
@@ -160,6 +161,7 @@ still need to keep organizin'
           ("json" . "\\.json\\'")
           ("jsx" . "/Users/Anders/Sites/portfolio/src/.*\\.js\\'")
           ("jsx" . "/Users/Anders/Sites/talk-about/src/.*\\.js\\'")
+          ("jsx" . "/Users/Anders/Sites/music-directory/client/src/.*\\.tsx\\'")
           ("css" . "/Users/Anders/Sites/super-deluxe-2018/.*\\.scss.liquid\\'")
           ("liquid" . "/Users/Anders/Sites/donpollack/donpollack/.*\\.liquid\\'")
           ))
@@ -205,8 +207,87 @@ still need to keep organizin'
   ;; (add-hook 'prog-mode-hook #'lsp)
 
 #+END_SRC
-* Emacs-macport system keyboard collisons
-  due to how emacs-macport uses command as meta, there are some duplicate keybindings. C-M-d, C-M-q are used by MacOS, so you can't use them here.
-  - C-M-d: in MacOS, this uses the system dictionary. In emacs, it runs the command down-list.
-  - C-M-q: in MacOS, this locks the screen. In emacs, it reindents all the lines within one parenthetical grouping. It runs a different command based on the major mode. For example:
-    it is indent-pp-sexp in Lisp mode, c-indent-exp in C mode, etc
+* Mac-specific things
+** Emacs-macport system keyboard collisons
+due to how emacs-macport uses command as meta, there are some duplicate keybindings. C-M-d, C-M-q are used by MacOS, so you can't use them here.
+- C-M-d: in MacOS, this uses the system dictionary. In emacs, it runs the command down-list.
+- C-M-q: in MacOS, this locks the screen. In emacs, it reindents all the lines within one parenthetical grouping. It runs a different command based on the major mode. For example:
+  it is indent-pp-sexp in Lisp mode, c-indent-exp in C mode, etc
+** Disable Command-Ctrl-D dictionary lookup shortcut
+In order to be able to use C-M-d (move down into a list/balanced expression) disable the default mac shortcut:
+#+BEGIN_SRC bash
+  defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 70 '<dict><key>enabled</key><false/></dict>'
+#+END_SRC
+* Notes
+** Bookmarks
+set a bookmark
+C-x r m
+
+List bookmarks
+C-x r l
+
+Jump to bookmark
+C-x r b
+** Registers
+Store region in register
+C-x r s
+
+Insert content of register
+C-x r i
+
+Store point in register
+C-x r SPC
+
+Jump to register
+C-x r j
+
+Store window configuration in register
+C-x r w
+** Mark
+Sets the mark, toggles the region
+C-SPC
+
+Jumps to the mark, and repeated calls go further back the mark ring
+C-u C-SPC
+
+Exchanges the point and mark, and reactivates the last region
+C-x C-x
+
+Mark next paragraph
+M-h
+
+Mark whole buffer
+C-x h
+
+Mark the next defun
+C-M-h
+
+Mark the next word
+M-@
+
+Mark the next sexp
+C-M-@, C-M-SPC (conflicts with MacOS emoji menu shortcut)
+** Undo Tree
+type C-x u to open undo-tree visualizer
+** Incremental Search
+Incremental search
+C-s
+
+Reverse incremental search
+C-r
+
+Rexegp incremental search
+C-M-s
+example: C-M-s ^Mark to highlight above non-headline sections
+
+Rexexp reverse incremental search
+C-M-r
+
+when incremental search is active:
+
+move to next/previous search history items
+M-n, M-p
+
+search history items with tab-completion
+C-M-i
+
