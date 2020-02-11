@@ -1,293 +1,426 @@
 * Overview 
-this is an attempt to use literate programming style to organize and annotate my emacs config. Configuration code is stored in org-mode source blocks. To quickly insert a source block, type "<s" then tab. Type C-c C-c to execute a block. To edit a source block, type C-c '. Type C-c ' again to finish editing.
+  this is an attempt to use literate programming style to organize and annotate my emacs config. Configuration code is stored in org-mode source blocks. To quickly insert a source block, type "<s" then tab. Type C-c C-c to execute a block. To edit a source block, type C-c '. Type C-c ' again to finish editing.
 
 * Emacs housekeeping
 ** Custom file
- sets customizer to save settings to custom.el
- #+BEGIN_SRC emacs-lisp
-   (setq custom-file "~/.emacs.d/custom.el")
-    (load custom-file)
- #+END_SRC
+   sets customizer to save settings to custom.el
+   #+BEGIN_SRC emacs-lisp
+     (setq custom-file "~/.emacs.d/custom.el")
+     (load custom-file)
+   #+END_SRC
  
 ** Backup files
- make all backup files live in .emacs.d/backup
- #+BEGIN_SRC emacs-lisp
-   (setq backup-directory-alist '(("." . "~/.emacs.d/backup")))
- #+END_SRC
+   make all backup files live in .emacs.d/backup
+   #+BEGIN_SRC emacs-lisp
+     (setq backup-directory-alist '(("." . "~/.emacs.d/backup")))
+   #+END_SRC
 
 * Windows & frames
 **  Title Bar (homebrew-emacsmacport only)
-Transparent title bar is DISABLED by default.
-Enable it by setting:
+   Transparent title bar is DISABLED by default.
+   Enable it by setting:
 
-For dark themes: defaults write org.gnu.Emacs TransparentTitleBar DARK
+   For dark themes: 
+   #+BEGIN_SRC bash
+     defaults write org.gnu.Emacs TransparentTitleBar DARK
+   #+END_SRC
 
-For light themes: defaults write org.gnu.Emacs TransparentTitleBar LIGHT
+   For light themes:
+   #+BEGIN_SRC bash
+     defaults write org.gnu.Emacs TransparentTitleBar LIGHT
+   #+END_SRC
 
-To disable:
+   To disable:
 
-defaults write org.gnu.Emacs TransparentTitleBar NO
+   defaults write org.gnu.Emacs TransparentTitleBar NO
 
-or
+   or
 
-defaults delete org.gnu.Emacs TransparentTitleBar
+   defaults delete org.gnu.Emacs TransparentTitleBar
 
-All settings will been used in new frame or after restart Emacs
+   All settings will been used in new frame or after restart Emacs
 * Terminal accessibility
 ** Terminal mouse scrolling
- enable mouse scrolling in terminal emacs
- #+BEGIN_SRC emacs-lisp
-   (if (not (window-system))
-       (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
-   (if (not (window-system))
-       (global-set-key (kbd "<mouse-4>") 'scroll-down-line))
- #+END_SRC
+   enable mouse scrolling in terminal emacs
+   #+BEGIN_SRC emacs-lisp
+     (if (not (window-system))
+         (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
+     (if (not (window-system))
+         (global-set-key (kbd "<mouse-4>") 'scroll-down-line))
+   #+END_SRC
 
 * Visual settings
 ** Title Bar
- make the title bar show the current file path
- #+BEGIN_SRC emacs-lisp
-   (setq frame-title-format
-	 (list (format "%s %%S: %%j " (system-name))
-	   '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
- #+END_SRC
+   make the title bar show the current file path
+   #+BEGIN_SRC emacs-lisp
+     (setq frame-title-format
+           (list (format "%s %%S: %%j " (system-name))
+                 '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+   #+END_SRC
 
 ** Mouse color
- #+BEGIN_SRC emacs-lisp
-   (set-mouse-color "#000000")
- #+END_SRC
+   #+BEGIN_SRC emacs-lisp
+     (set-mouse-color "#000000")
+   #+END_SRC
 
 * Code formatting
 ** Indentation
    4-space indent
-#+BEGIN_SRC emacs-lisp
-  (setq-default indent-tabs-mode nil)
-  (setq-default tab-width 4)
-  (setq indent-line-function 'insert-tab)
-#+END_SRC
+   #+BEGIN_SRC emacs-lisp
+     (setq-default indent-tabs-mode nil)
+     (setq-default tab-width 4)
+     (setq indent-line-function 'insert-tab)
+   #+END_SRC
 
 * The Rest
-still need to keep organizin'
+  still need to keep organizin'
 
-#+BEGIN_SRC emacs-lisp
-  ;; prevent checking signature to supress bug contacting elpa
-  (setq package-check-signature nil)
+  #+BEGIN_SRC emacs-lisp
+    ;; prevent checking signature to supress bug contacting elpa
+    (setq package-check-signature nil)
 
-  ;; PACKAGE INSTALLATION
-  ;; package list/update/install - should only be run once or else it slows
-  ;; startup time significantly
-  ;; (defun install-packages ()
-  ;;   "run M-x package-install-selected-packages"
-  ;;   (interactive)
-  ;;   (package-refresh-contents)
-  ;;   (package-install-selected-packages))
-  ;; (install-packages)
+    ;; PACKAGE INSTALLATION
+    ;; package list/update/install - should only be run once or else it slows
+    ;; startup time significantly
+    ;; (defun install-packages ()
+    ;;   "run M-x package-install-selected-packages"
+    ;;   (interactive)
+    ;;   (package-refresh-contents)
+    ;;   (package-install-selected-packages))
+    ;; (install-packages)
 
-  ;; suppress "ls does not support --dired"
-  (when (string= system-type "darwin")       
-    (setq dired-use-ls-dired nil))
+    ;; suppress "ls does not support --dired"
+    (when (string= system-type "darwin")       
+      (setq dired-use-ls-dired nil))
 
-  ;; hide dired details, enable 's' toggle to sort be recently edited by default
-  (add-hook 'dired-mode-hook
-      (lambda ()
-        (dired-hide-details-mode)
-        (dired-sort-toggle-or-edit)))
+    ;; hide dired details, enable 's' toggle to sort be recently edited by default
+    (add-hook 'dired-mode-hook
+              (lambda ()
+                (dired-hide-details-mode)
+                (dired-sort-toggle-or-edit)))
 
-  ;; make org mode indent and word wrap
-  (with-eval-after-load 'org       
-    (setq org-startup-indented t) ; Enable `org-indent-mode' by default
-    (add-hook 'org-mode-hook #'visual-line-mode))
+    ;; change default "Find File" directory
+    (setq default-directory "/Users/anders/")
 
-  ;; change default "Find File" directory
-  (setq default-directory "/Users/anders/")
+    ;; make mac title bar transparent
+    (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
-  ;; make mac title bar transparent
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+    ;; Make eshell tab completion behave like Bash
+    (add-hook
+     'eshell-mode-hook
+     (lambda ()
+       (setq pcomplete-cycle-completions nil)))
 
-  ;; Make eshell tab completion behave like Bash
-  (add-hook
-   'eshell-mode-hook
-   (lambda ()
-     (setq pcomplete-cycle-completions nil)))
+    ;; alias y/n to yes/no for prompts
+    (defalias 'yes-or-no-p 'y-or-n-p)
 
-  ;; alias y/n to yes/no for prompts
-  (defalias 'yes-or-no-p 'y-or-n-p)
+    ;; enable variable pitch for mixed font styles
+    (add-hook 'text-mode-hook
+              (lambda ()
+                (variable-pitch-mode 1)))
 
-  ;; enable variable pitch for mixed font styles
-  (add-hook 'text-mode-hook
-            (lambda ()
-              (variable-pitch-mode 1)))
+    ;; set M-i as keyboard shortcut for imenu, instead of tab-to-tab-stop
+    (global-set-key (kbd "M-i") 'imenu)
 
-  ;; font setup
-  (set-face-attribute 'default nil :family "Iosevka SS02" :height 130)
-  (set-face-attribute 'fixed-pitch nil :family "Iosevka SS02")
-  (set-face-attribute 'variable-pitch nil :family "Inter")
+    ;; remember these modes:
+    ;; artist-mode, snake. look into org-babel
 
-  ;; remember these modes:
-  ;; artist-mode, snake. look into org-babel
+    ;; 
+    ;; PACKAGE-SPECIFIC CUSTOMIZATIONS
+    ;;
 
-  ;; 
-  ;; PACKAGE-SPECIFIC CUSTOMIZATIONS
-  ;;
+    ;; setup tidal
+    ;; (setq load-path (cons "~/.emacs.d/tidal/" load-path))
+    ;; (require 'tidal)
+    ;; (setq tidal-interpreter "/usr/local/bin/ghci")
 
-  ;; setup tidal
-  ;; (setq load-path (cons "~/.emacs.d/tidal/" load-path))
-  ;; (require 'tidal)
-  ;; (setq tidal-interpreter "/usr/local/bin/ghci")
+    ;; web mode
+    (require 'web-mode)
+    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.php?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.tag?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.liquid?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.json?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.vue?\\'" . web-mode))
+    (setq web-mode-engines-alist
+          '(
+            ("riot" . "\\.tag\\'")
+            ("liquid" . "\\.liquid\\'")
+            ))
 
-  ;; projectile mode
-  (projectile-mode +1)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (setq web-mode-content-types-alist
+          '(
+            ("json" . "\\.json\\'")
+            ("jsx" . "/Users/Anders/Sites/portfolio/src/.*\\.js\\'")
+            ("jsx" . "/Users/Anders/Sites/talk-about/src/.*\\.js\\'")
+            ("jsx" . "/Users/Anders/Sites/music-directory/client/src/.*\\.tsx\\'")
+            ("css" . "/Users/Anders/Sites/super-deluxe-2018/.*\\.scss.liquid\\'")
+            ("liquid" . "/Users/Anders/Sites/donpollack/donpollack/.*\\.liquid\\'")
+            ))
 
-  ;; web mode
-  (require 'web-mode)
-  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.php?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.tag?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.liquid?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.json?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.vue?\\'" . web-mode))
-  (setq web-mode-engines-alist
-        '(
-          ("riot" . "\\.tag\\'")
-          ("liquid" . "\\.liquid\\'")
-          ))
+    ;; set indentation level to 2/4 for html/markup
+    (setq web-mode-markup-indent-offset 4)
+    (setq web-mode-css-indent-offset 4)
+    (setq web-mode-code-indent-offset 4)
+    (setq web-mode-style-padding 0)
+    (setq web-mode-script-padding 0)
 
-  (setq web-mode-content-types-alist
-        '(
-          ("json" . "\\.json\\'")
-          ("jsx" . "/Users/Anders/Sites/portfolio/src/.*\\.js\\'")
-          ("jsx" . "/Users/Anders/Sites/talk-about/src/.*\\.js\\'")
-          ("jsx" . "/Users/Anders/Sites/music-directory/client/src/.*\\.tsx\\'")
-          ("css" . "/Users/Anders/Sites/super-deluxe-2018/.*\\.scss.liquid\\'")
-          ("liquid" . "/Users/Anders/Sites/donpollack/donpollack/.*\\.liquid\\'")
-          ))
+    ;; disable electric pair mode in web mode for liquid files
+    (add-hook 'web-mode-hook
+              (lambda () (if (equal (file-name-extension(buffer-file-name))
+                                    "liquid")
+                             (electric-pair-local-mode -1))))
 
-  ;; set indentation level to 2/4 for html/markup
-  (setq web-mode-markup-indent-offset 4)
-  (setq web-mode-css-indent-offset 4)
-  (setq web-mode-code-indent-offset 4)
-  (setq web-mode-style-padding 0)
-  (setq web-mode-script-padding 0)
+    ;; emmet-mode
+    (require 'emmet-mode)
+    (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
+    (add-hook 'html-mode-hook 'emmet-mode)
+    (add-hook 'css-mode-hook  'emmet-mode)
 
-  ;; disable electric pair mode in web mode for liquid files
-  (add-hook 'web-mode-hook
-            (lambda () (if (equal (file-name-extension(buffer-file-name))
-                                  "liquid")
-                           (electric-pair-local-mode -1))))
+    ;; enable emmet mode whenever web-mode is active
+    (add-hook 'web-mode-hook 'emmet-mode)
 
-  ;; emmet-mode
-  (require 'emmet-mode)
-  (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
-  (add-hook 'html-mode-hook 'emmet-mode)
-  (add-hook 'css-mode-hook  'emmet-mode)
+    ;; enable emmet mode whenever web-mode is active
+    (add-hook 'web-mode-hook 'emmet-mode)
 
-  ;; enable emmet mode whenever web-mode is active
-  (add-hook 'web-mode-hook 'emmet-mode)
+    ;; yaml mode
+    (require 'yaml-mode)
+    (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 
-  ;; enable emmet mode whenever web-mode is active
-  (add-hook 'web-mode-hook 'emmet-mode)
+    ;; setup magit status
+    (global-set-key (kbd "C-x g") 'magit-status)
 
-  ;; yaml mode
-  (require 'yaml-mode)
-  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+    ;; yasnippet
+    ;; (require 'yasnippet)
+    ;; (yas-global-mode 1)
 
-  ;; setup magit status
-  (global-set-key (kbd "C-x g") 'magit-status)
+    ;; language server protocol
+    (require 'lsp-mode)
+    (add-hook 'web-mode-hook #'lsp)
 
-  ;; yasnippet
-  ;; (require 'yasnippet)
-  ;; (yas-global-mode 1)
+    ;; enable lsp-ui
+    (require 'lsp-ui)
+    (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
-  ;; language server protocol
-  ;; (require 'lsp-mode)
-  ;; (add-hook 'prog-mode-hook #'lsp)
+    ;; enable flycheck mode
+    (add-hook 'web-mode-hook 'flycheck-mode)
 
-#+END_SRC
+
+  #+END_SRC
 * Mac-specific things
 ** Emacs-macport system keyboard collisons
-due to how emacs-macport uses command as meta, there are some duplicate keybindings. C-M-d, C-M-q are used by MacOS, so you can't use them here.
-- C-M-d: in MacOS, this uses the system dictionary. In emacs, it runs the command down-list.
-- C-M-q: in MacOS, this locks the screen. In emacs, it reindents all the lines within one parenthetical grouping. It runs a different command based on the major mode. For example:
-  it is indent-pp-sexp in Lisp mode, c-indent-exp in C mode, etc
-** Disable Command-Ctrl-D dictionary lookup shortcut
-In order to be able to use C-M-d (move down into a list/balanced expression) disable the default mac shortcut:
-#+BEGIN_SRC bash
-  defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 70 '<dict><key>enabled</key><false/></dict>'
-#+END_SRC
+   due to how emacs-macport uses command as meta, there are some duplicate keybindings. C-M-d, C-M-q are used by MacOS, so you can't use them 
+   - C-M-d: in MacOS, this uses the system dictionary. In emacs, it runs the command down-list.
+   - C-M-q: in MacOS, this locks the screen. In emacs, it reindents all the lines within one parenthetical grouping. It runs a different command based on the major mode. For example: 
+     it is indent-pp-sexp in Lisp mode, c-indent-exp in C mode, etc
+
+* Disable Command-Ctrl-D dictionary lookup shortcut
+  In order to be able to use C-M-d (move down into a list/balanced expression) disable the default mac shortcut:
+  #+BEGIN_SRC bash
+    defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 70 '<dict><key>enabled</key><false/></dict>'
+  #+END_SRC
+
 * Notes
 ** Bookmarks
-set a bookmark
-C-x r m
+   set a bookmark
+   C-x r m
 
-List bookmarks
-C-x r l
+   List bookmarks
+   C-x r l
 
-Jump to bookmark
-C-x r b
+   Jump to bookmark
+   C-x r b
+
 ** Registers
-Store region in register
-C-x r s
+   Store region in register
+   C-x r s
 
-Insert content of register
-C-x r i
+   Insert content of register
+   C-x r i
 
-Store point in register
-C-x r SPC
+   Store point in register
+   C-x r SPC
 
-Jump to register
-C-x r j
+   Jump to register
+   C-x r j
 
-Store window configuration in register
-C-x r w
+   Store window configuration in register
+   C-x r w
+
 ** Mark
-Sets the mark, toggles the region
-C-SPC
+   Sets the mark, toggles the region
+   C-SPC
 
-Jumps to the mark, and repeated calls go further back the mark ring
-C-u C-SPC
+   Jumps to the mark, and repeated calls go further back the mark ring
+   C-u C-SPC
 
-Exchanges the point and mark, and reactivates the last region
-C-x C-x
+   Jump to latest item in the mark ring, rotates the mark ring
+   C-x C-SPC
 
-Mark next paragraph
-M-h
+   Exchanges the point and mark, and reactivates the last region
+   C-x C-x
 
-Mark whole buffer
-C-x h
+   Mark next paragraph
+   M-h
 
-Mark the next defun
-C-M-h
+   Mark whole buffer
+   C-x h
 
-Mark the next word
-M-@
+   Mark the next defun
+   C-M-h
 
-Mark the next sexp
-C-M-@, C-M-SPC (conflicts with MacOS emoji menu shortcut)
+   Mark the next word
+   M-@
+
+   Mark the next sexp
+   C-M-@, C-M-SPC (conflicts with MacOS emoji menu shortcut)
+
 ** Undo Tree
-type C-x u to open undo-tree visualizer
+   type C-x u to open undo-tree visualizer
+
 ** Incremental Search
-Incremental search
-C-s
+   Incremental search
+   C-s
 
-Reverse incremental search
-C-r
+   Reverse incremental search
+   C-r
 
-Rexegp incremental search
-C-M-s
-example: C-M-s ^Mark to highlight above non-headline sections
+   Regexp incremental search
+   C-M-s
+   example: C-M-s ^Mark to highlight above non-headline sections
 
-Rexexp reverse incremental search
-C-M-r
+   Regexp reverse incremental search
+   C-M-r
 
-when incremental search is active:
+   when incremental search is active:
 
-move to next/previous search history items
-M-n, M-p
+   move to next/previous search history items
+   M-n, M-p
 
-search history items with tab-completion
-C-M-i
+   search history items with tab-completion
+   C-M-i
 
+   Isearch forward for symbol at point
+   M-s .
+
+** Occur mode
+   occur mode, and activate occur on current search string in Isearch. Searches current buffer with a term/regexp
+   M-s o
+
+   Next/Previous occurrence in occur buffer
+   M-n / M-p
+
+   Go to beginning/end of buffer
+   <, >
+
+   Refresh - g; quit - q
+
+   Switch to occur edit mode
+   e
+
+   Exits occur edit mode, applying changes
+   C-c C-c
+
+   Jump to next/previous occurence in buffer
+   M-g M-n / M-g M-p
+
+** Imenu
+I mapped M-x imenu to 
+M-i
+this only is useful in org-mode? 
+
+** Ido mode
+after typing for example C-x b to switch to a buffer,
+Move to next/previous option
+C-s / C-r
+
+** Grep
+M-x grep - prompts for arguments to pass to grep
+M-x grep-find - prompts for arguments to pass to grep and find
+M-x lgrep - prompts for query and glob pattern to search for with grep
+M-x rgrep - prompts for query and glob pattern then recursively searches with grep and find
+M-x rzgrep - like M-x rgrep but searches compressed gzip files
+
+also M-x customize-group RET grep  -- customize the default grep command
+
+in a grep buffer, use these to jump to next/previous matches, like Occur mode
+M-g M-n / M-g M-p
+
+** Other Movement
+reposition the point in top-left, middle-left, or bottom-left
+M-r
+
+re-center the point in the top, middle, or bottom of the buffer
+C-l
+
+Go to line
+M-g M-g / M-g g
+go to specific line (goes to line 50 in this case):
+M-5 M-0 M-g M-g 
+
+set default column for C-n / C-p movements
+C-x C-n
+
+cancel g
+
+jump to column position
+M-g TAB
+
+jump to char position
+M-g c
+
+** Editing
+*** Killing
+delete forward char
+C-d
+
+Delete forward word
+M-d
+
+Delete backward word
+C-<backspace>
+
+kill rest of line
+C-k
+
+kill sentence
+M-k
+
+kill s-expression
+C-M-k
+
+kill current line
+C-S-<backspace>
+
+notes: multiple continuous kill commands (like with M-d) append to the last kill. any movement creates a new kill ring entry. 
+
+append to the current kill ring entry if next command is a kill
+C-M-w
+useful
+
+*** Yanking
+Yank last kill
+C-y
+
+After yanking, cycle through previous yanks
+M-y
+
+*** Transposing
+Transpose character
+C-t
+
+Transpose words
+M-t
+
+Transpose s-expressions
+C-M-t
+
+Transpose lines
+C-x C-t
+
+** LSP
+peek definition?
+M-i

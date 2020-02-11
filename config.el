@@ -1,5 +1,5 @@
 (setq custom-file "~/.emacs.d/custom.el")
- (load custom-file)
+(load custom-file)
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup")))
 
@@ -10,7 +10,7 @@
 
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
-	'(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+            '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
 (set-mouse-color "#000000")
 
@@ -37,14 +37,9 @@
 
 ;; hide dired details, enable 's' toggle to sort be recently edited by default
 (add-hook 'dired-mode-hook
-    (lambda ()
-      (dired-hide-details-mode)
-      (dired-sort-toggle-or-edit)))
-
-;; make org mode indent and word wrap
-(with-eval-after-load 'org       
-  (setq org-startup-indented t) ; Enable `org-indent-mode' by default
-  (add-hook 'org-mode-hook #'visual-line-mode))
+          (lambda ()
+            (dired-hide-details-mode)
+            (dired-sort-toggle-or-edit)))
 
 ;; change default "Find File" directory
 (setq default-directory "/Users/anders/")
@@ -66,10 +61,8 @@
           (lambda ()
             (variable-pitch-mode 1)))
 
-;; font setup
-(set-face-attribute 'default nil :family "Iosevka SS02" :height 130)
-(set-face-attribute 'fixed-pitch nil :family "Iosevka SS02")
-(set-face-attribute 'variable-pitch nil :family "Inter")
+;; set M-i as keyboard shortcut for imenu, instead of tab-to-tab-stop
+(global-set-key (kbd "M-i") 'imenu)
 
 ;; remember these modes:
 ;; artist-mode, snake. look into org-babel
@@ -82,10 +75,6 @@
 ;; (setq load-path (cons "~/.emacs.d/tidal/" load-path))
 ;; (require 'tidal)
 ;; (setq tidal-interpreter "/usr/local/bin/ghci")
-
-;; projectile mode
-(projectile-mode +1)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 ;; web mode
 (require 'web-mode)
@@ -151,5 +140,12 @@
 ;; (yas-global-mode 1)
 
 ;; language server protocol
-;; (require 'lsp-mode)
-;; (add-hook 'prog-mode-hook #'lsp)
+(require 'lsp-mode)
+(add-hook 'web-mode-hook #'lsp)
+
+;; enable lsp-ui
+(require 'lsp-ui)
+(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+
+;; enable flycheck mode
+(add-hook 'web-mode-hook 'flycheck-mode)
