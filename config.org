@@ -220,11 +220,26 @@
     ;; (require 'yasnippet)
     ;; (yas-global-mode 1)
 
-    ;; language server protocol
-    (require 'lsp-mode)
-    ;; (add-hook 'web-mode-hook #'lsp)
-    (add-hook 'web-mode-hook 'lsp-deferred)
   #+END_SRC
+
+* Package-specific customizations
+** lsp-mode
+   setup for language server protocol
+   #+BEGIN_SRC emacs-lisp
+     (require 'lsp-mode)
+     (add-hook 'web-mode-hook 'lsp-deferred)
+   #+END_SRC
+
+   install javascript/typscript language server
+   #+BEGIN_SRC bash
+     npm install -g typescript-language-server
+   #+END_SRC
+
+** company-mode
+   use company autocomplete in all buffers
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'after-init-hook 'global-company-mode)
+   #+END_SRC
 
 * Mac-specific things
 ** Emacs-macport system keyboard collisons
@@ -233,11 +248,11 @@
    - C-M-q: in MacOS, this locks the screen. In emacs, it reindents all the lines within one parenthetical grouping. It runs a different command based on the major mode. For example: 
      it is indent-pp-sexp in Lisp mode, c-indent-exp in C mode, etc
 
-* Disable Command-Ctrl-D dictionary lookup shortcut
-  In order to be able to use C-M-d (move down into a list/balanced expression) disable the default mac shortcut:
-  #+BEGIN_SRC bash
-    defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 70 '<dict><key>enabled</key><false/></dict>'
-  #+END_SRC
+** Disable Command-Ctrl-D dictionary lookup shortcut
+   In order to be able to use C-M-d (move down into a list/balanced expression) disable the default mac shortcut:
+   #+BEGIN_SRC bash
+     defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 70 '<dict><key>enabled</key><false/></dict>'
+   #+END_SRC
 
 * Notes
 ** Bookmarks
@@ -466,8 +481,3 @@ C-c C-k
 ** LSP
 peek definition:
 M-.
-
-setting up LSP for javascript:
-#+BEGIN_SRC bash
-  npm install -g typescript-language-server
-#+END_SRC

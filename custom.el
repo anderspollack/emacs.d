@@ -59,6 +59,8 @@
  '(org-block ((t (:family "JetBrains Mono"))))
  '(org-block-begin-line ((t (:foreground "#a0a1a7" :slant italic :family "JetBrains Mono"))))
  '(org-block-end-line ((t (:inherit org-block-begin-line))))
+ '(org-code ((t (:inherit shadow :family "JetBrains Mono"))))
+ '(org-meta-line ((t (:inherit font-lock-comment-face :family "JetBrains Mono"))))
  '(outline-1 ((t (:inherit variable-pitch :weight bold :height 1.3))))
  '(outline-2 ((t (:inherit outline-1 :weight normal :height 0.95))))
  '(outline-3 ((t (:inherit outline-1 :weight bold :height 0.9))))

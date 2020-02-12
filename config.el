@@ -145,7 +145,7 @@
 ;; (require 'yasnippet)
 ;; (yas-global-mode 1)
 
-;; language server protocol
 (require 'lsp-mode)
-;; (add-hook 'web-mode-hook #'lsp)
 (add-hook 'web-mode-hook 'lsp-deferred)
+
+(add-hook 'after-init-hook 'global-company-mode)
