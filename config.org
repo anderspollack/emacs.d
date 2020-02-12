@@ -466,3 +466,8 @@ C-c C-k
 ** LSP
 peek definition:
 M-.
+
+setting up LSP for javascript:
+#+BEGIN_SRC bash
+  npm install -g typescript-language-server
+#+END_SRC
