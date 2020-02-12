@@ -10,7 +10,7 @@
       org-src-fontify-natively t
       org-src-tab-acts-natively t)
 
-;; setup org-babel to execute code in these languages (C-c C-c in source code blocks):
+;; setup org-babel to execute code in these languages:
 (org-babel-do-load-languages
  'org-babel-load-languages
  '(
@@ -27,9 +27,14 @@
 
 (require 'org)
 
-;; load org config file
-(org-babel-load-file
- (expand-file-name "config.org"
-                   user-emacs-directory))
+;; set gc-cons-threshold to maximum while loading config for fast startup
+(let ((gc-cons-threshold most-positive-fixnum))
+  ;; load org config file
+  (org-babel-load-file
+   (expand-file-name "config.org"
+                     user-emacs-directory))
+  )
+
+;; this is where emacs enables commands that warn before executing
 (put 'set-goal-column 'disabled nil)
 (put 'narrow-to-region 'disabled nil)

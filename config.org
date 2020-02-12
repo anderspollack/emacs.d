@@ -15,6 +15,14 @@
      (setq backup-directory-alist '(("." . "~/.emacs.d/backup")))
    #+END_SRC
 
+* Garbage Collection
+  following this advice: http://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
+
+  init.el (which loads this file) is wrapped in a similar function that sets Emacs' GC to the maximum value while initializing the contents of this file.
+  #+BEGIN_SRC emacs-lisp
+    (setq gc-cons-threshold most-positive-fixnum)
+    (run-with-idle-timer 2 t (lambda () (garbage-collect)))
+  #+END_SRC
 * Windows & frames
 **  Title Bar (homebrew-emacsmacport only)
    Transparent title bar is DISABLED by default.
@@ -31,14 +39,22 @@
    #+END_SRC
 
    To disable:
-
-   defaults write org.gnu.Emacs TransparentTitleBar NO
+   #+BEGIN_SRC bash
+     defaults write org.gnu.Emacs TransparentTitleBar NO
+   #+END_SRC
 
    or
-
-   defaults delete org.gnu.Emacs TransparentTitleBar
+   #+BEGIN_SRC bash
+     defaults delete org.gnu.Emacs TransparentTitleBar
+   #+END_SRC
 
    All settings will been used in new frame or after restart Emacs
+* org-mode
+  enable visual-line-mode in org-mode buffers:
+  #+BEGIN_SRC emacs-lisp
+    (add-hook 'org-mode-hook 'visual-line-mode)
+  #+END_SRC
+
 * Terminal accessibility
 ** Terminal mouse scrolling
    enable mouse scrolling in terminal emacs
@@ -204,7 +220,7 @@ set C-y to paste in term-mode
     ;; language server protocol
     (require 'lsp-mode)
     ;; (add-hook 'web-mode-hook #'lsp)
-    (add-hook 'prog-mode-hook #'lsp)
+    (add-hook 'web-mode-hook 'lsp-deferred)
 
     ;; enable lsp-ui
     ;; (require 'lsp-ui)
@@ -451,9 +467,6 @@ C-c C-j
 
 go back to char mode to interact with terminal:
 C-c C-k
-
-Scroll screen backwards to see earlier pages. enter text to return to prompt:
-C-c C-v
 
 ** LSP
 peek definition?

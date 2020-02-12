@@ -23,6 +23,7 @@
  '(lsp-ui-flycheck-enable t)
  '(lsp-ui-peek-always-show t)
  '(lsp-ui-peek-enable t)
+ '(lsp-ui-sideline-enable nil)
  '(next-screen-context-lines 5)
  '(org-indent-indentation-per-level 1)
  '(org-indent-mode-turns-off-org-adapt-indentation nil)

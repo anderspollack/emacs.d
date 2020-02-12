@@ -3,10 +3,19 @@
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup")))
 
+(setq gc-cons-threshold most-positive-fixnum)
+(run-with-idle-timer 2 t (lambda () (garbage-collect)))
+
+(add-hook 'org-mode-hook 'visual-line-mode)
+
 (if (not (window-system))
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
 (if (not (window-system))
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line))
+
+(add-hook 'term-mode-hook
+  (lambda () 
+    (define-key term-raw-map (kbd "C-y") 'term-paste)))
 
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
@@ -139,7 +148,7 @@
 ;; language server protocol
 (require 'lsp-mode)
 ;; (add-hook 'web-mode-hook #'lsp)
-(add-hook 'prog-mode-hook #'lsp)
+(add-hook 'web-mode-hook 'lsp-deferred)
 
 ;; enable lsp-ui
 ;; (require 'lsp-ui)
