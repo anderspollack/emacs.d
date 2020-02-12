@@ -125,9 +125,6 @@
 ;; enable emmet mode whenever web-mode is active
 (add-hook 'web-mode-hook 'emmet-mode)
 
-;; enable emmet mode whenever web-mode is active
-(add-hook 'web-mode-hook 'emmet-mode)
-
 ;; yaml mode
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
@@ -140,12 +137,12 @@
 ;; (yas-global-mode 1)
 
 ;; language server protocol
-(require 'lsp-mode)
-(add-hook 'web-mode-hook #'lsp)
+;; (require 'lsp-mode)
+;; (add-hook 'web-mode-hook #'lsp)
 
 ;; enable lsp-ui
-(require 'lsp-ui)
-(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+;; (require 'lsp-ui)
+;; (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
 ;; enable flycheck mode
-(add-hook 'web-mode-hook 'flycheck-mode)
+;; (add-hook 'web-mode-hook 'flycheck-mode)

@@ -183,9 +183,6 @@
     ;; enable emmet mode whenever web-mode is active
     (add-hook 'web-mode-hook 'emmet-mode)
 
-    ;; enable emmet mode whenever web-mode is active
-    (add-hook 'web-mode-hook 'emmet-mode)
-
     ;; yaml mode
     (require 'yaml-mode)
     (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
@@ -198,15 +195,15 @@
     ;; (yas-global-mode 1)
 
     ;; language server protocol
-    (require 'lsp-mode)
-    (add-hook 'web-mode-hook #'lsp)
+    ;; (require 'lsp-mode)
+    ;; (add-hook 'web-mode-hook #'lsp)
 
     ;; enable lsp-ui
-    (require 'lsp-ui)
-    (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+    ;; (require 'lsp-ui)
+    ;; (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
     ;; enable flycheck mode
-    (add-hook 'web-mode-hook 'flycheck-mode)
+    ;; (add-hook 'web-mode-hook 'flycheck-mode)
 
 
   #+END_SRC
@@ -420,6 +417,22 @@ C-M-t
 
 Transpose lines
 C-x C-t
+
+*** Narrow
+this lets you view and edit only a small subset of the current buffer.
+select a region of text, then:
+C-x n n
+(narrow-to-region)
+
+to return to the full buffer:
+C-x n w
+(widen)
+
+narrow to current org-mode subtree:
+C-x n s
+
+narrow to current org-mode code block:
+C-x n b
 
 ** LSP
 peek definition?
