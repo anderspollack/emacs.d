@@ -48,6 +48,13 @@
      (if (not (window-system))
          (global-set-key (kbd "<mouse-4>") 'scroll-down-line))
    #+END_SRC
+** Terminal pasting
+set C-y to paste in term-mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'term-mode-hook
+    (lambda () 
+      (define-key term-raw-map (kbd "C-y") 'term-paste)))
+#+END_SRC
 
 * Visual settings
 ** Title Bar
@@ -195,8 +202,9 @@
     ;; (yas-global-mode 1)
 
     ;; language server protocol
-    ;; (require 'lsp-mode)
+    (require 'lsp-mode)
     ;; (add-hook 'web-mode-hook #'lsp)
+    (add-hook 'prog-mode-hook #'lsp)
 
     ;; enable lsp-ui
     ;; (require 'lsp-ui)
@@ -433,6 +441,19 @@ C-x n s
 
 narrow to current org-mode code block:
 C-x n b
+
+*** ansi-term
+pasting into prompt:
+C-c M-x term-paste
+
+line mode. Interact with terminal as a buffer
+C-c C-j
+
+go back to char mode to interact with terminal:
+C-c C-k
+
+Scroll screen backwards to see earlier pages. enter text to return to prompt:
+C-c C-v
 
 ** LSP
 peek definition?

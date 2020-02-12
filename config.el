@@ -137,8 +137,9 @@
 ;; (yas-global-mode 1)
 
 ;; language server protocol
-;; (require 'lsp-mode)
+(require 'lsp-mode)
 ;; (add-hook 'web-mode-hook #'lsp)
+(add-hook 'prog-mode-hook #'lsp)
 
 ;; enable lsp-ui
 ;; (require 'lsp-ui)

@@ -34,7 +34,7 @@
      ("melpa" . "http://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (which-key tern flycheck lsp-ui company-lsp company yasnippet lsp-mode xclip yaml-mode multi-term magit evil-leader evil-surround evil-visual-mark-mode emmet-mode web-mode haskell-mode)))
+    (which-key flycheck lsp-ui company-lsp company yasnippet lsp-mode xclip yaml-mode multi-term magit evil-leader evil-surround evil-visual-mark-mode emmet-mode web-mode haskell-mode)))
  '(ring-bell-function (quote ignore))
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)
@@ -42,6 +42,7 @@
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(visual-line-fringe-indicators (quote (nil nil)))
+ '(which-key-mode t)
  '(winner-mode t)
  '(xterm-mouse-mode t))
 (package-initialize)
