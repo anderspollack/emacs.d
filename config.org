@@ -23,6 +23,7 @@
     (setq gc-cons-threshold most-positive-fixnum)
     (run-with-idle-timer 2 t (lambda () (garbage-collect)))
   #+END_SRC
+
 * Windows & frames
 **  Title Bar (homebrew-emacsmacport only)
    Transparent title bar is DISABLED by default.
@@ -49,6 +50,7 @@
    #+END_SRC
 
    All settings will been used in new frame or after restart Emacs
+
 * org-mode
   enable visual-line-mode in org-mode buffers:
   #+BEGIN_SRC emacs-lisp
@@ -64,13 +66,14 @@
      (if (not (window-system))
          (global-set-key (kbd "<mouse-4>") 'scroll-down-line))
    #+END_SRC
+
 ** Terminal pasting
-set C-y to paste in term-mode
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'term-mode-hook
-    (lambda () 
-      (define-key term-raw-map (kbd "C-y") 'term-paste)))
-#+END_SRC
+   set C-y to paste in term-mode
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'term-mode-hook
+               (lambda () 
+                 (define-key term-raw-map (kbd "C-y") 'term-paste)))
+   #+END_SRC
 
 * Visual settings
 ** Title Bar
