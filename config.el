@@ -14,8 +14,8 @@
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line))
 
 (add-hook 'term-mode-hook
-  (lambda () 
-    (define-key term-raw-map (kbd "C-y") 'term-paste)))
+          (lambda () 
+            (define-key term-raw-map (kbd "C-y") 'term-paste)))
 
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
@@ -149,10 +149,3 @@
 (require 'lsp-mode)
 ;; (add-hook 'web-mode-hook #'lsp)
 (add-hook 'web-mode-hook 'lsp-deferred)
-
-;; enable lsp-ui
-;; (require 'lsp-ui)
-;; (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-
-;; enable flycheck mode
-;; (add-hook 'web-mode-hook 'flycheck-mode)

@@ -224,16 +224,8 @@
     (require 'lsp-mode)
     ;; (add-hook 'web-mode-hook #'lsp)
     (add-hook 'web-mode-hook 'lsp-deferred)
-
-    ;; enable lsp-ui
-    ;; (require 'lsp-ui)
-    ;; (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-
-    ;; enable flycheck mode
-    ;; (add-hook 'web-mode-hook 'flycheck-mode)
-
-
   #+END_SRC
+
 * Mac-specific things
 ** Emacs-macport system keyboard collisons
    due to how emacs-macport uses command as meta, there are some duplicate keybindings. C-M-d, C-M-q are used by MacOS, so you can't use them 
@@ -472,5 +464,5 @@ go back to char mode to interact with terminal:
 C-c C-k
 
 ** LSP
-peek definition?
-M-i
+peek definition:
+M-.
