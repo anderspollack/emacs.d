@@ -1,4 +1,4 @@
-* Overview 
+* Overview
   this is an attempt to use literate programming style to organize and annotate my emacs config. Configuration code is stored in org-mode source blocks. To quickly insert a source block, type "<s" then tab. Type C-c C-c to execute a block. To edit a source block, type C-c '. Type C-c ' again to finish editing.
 
 * Emacs housekeeping
@@ -8,7 +8,7 @@
      (setq custom-file "~/.emacs.d/custom.el")
      (load custom-file)
    #+END_SRC
- 
+
 ** Backup files
    make all backup files live in .emacs.d/backup
    #+BEGIN_SRC emacs-lisp
@@ -18,18 +18,27 @@
 * Garbage Collection
   following this advice: http://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
 
-  init.el (which loads this file) is wrapped in a similar function that sets Emacs' GC to the maximum value while initializing the contents of this file.
+  init.el (which loads this file) is wrapped in a similar function that sets Emacs' GC to the maximum value while initializing the contents of this file. The code below sets GC to only activate if the minibuffer is not open:
   #+BEGIN_SRC emacs-lisp
-    (setq gc-cons-threshold most-positive-fixnum)
-    (run-with-idle-timer 2 t (lambda () (garbage-collect)))
+    (defun my-minibuffer-setup-hook ()
+      (setq gc-cons-threshold most-positive-fixnum))
+
+    (defun my-minibuffer-exit-hook ()
+      (setq gc-cons-threshold 800000))
+
+    (add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
+    (add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
   #+END_SRC
 
 * Windows & frames
 **  Title Bar (homebrew-emacsmacport only)
    Transparent title bar is DISABLED by default.
-   Enable it by setting:
+   Enable it here:
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+   #+END_SRC
 
-   For dark themes: 
+   For dark themes:
    #+BEGIN_SRC bash
      defaults write org.gnu.Emacs TransparentTitleBar DARK
    #+END_SRC
@@ -71,7 +80,7 @@
    set C-y to paste in term-mode
    #+BEGIN_SRC emacs-lisp
      (add-hook 'term-mode-hook
-               (lambda () 
+               (lambda ()
                  (define-key term-raw-map (kbd "C-y") 'term-paste)))
    #+END_SRC
 
@@ -98,6 +107,21 @@
      (setq indent-line-function 'insert-tab)
    #+END_SRC
 
+* Dired
+  hide dired details by default. Show details with "(". Sort with "s"
+  #+BEGIN_SRC emacs-lisp
+    (add-hook 'dired-mode-hook
+              (lambda ()
+                (dired-hide-details-mode)
+                (dired-sort-toggle-or-edit)))
+  #+END_SRC
+
+  suppress "ls does not support --dired"
+  #+BEGIN_SRC emacs-lisp
+    (when (string= system-type "darwin")
+      (setq dired-use-ls-dired nil))
+  #+END_SRC
+
 * The Rest
   still need to keep organizin'
 
@@ -115,21 +139,8 @@
     ;;   (package-install-selected-packages))
     ;; (install-packages)
 
-    ;; suppress "ls does not support --dired"
-    (when (string= system-type "darwin")       
-      (setq dired-use-ls-dired nil))
-
-    ;; hide dired details, enable 's' toggle to sort be recently edited by default
-    (add-hook 'dired-mode-hook
-              (lambda ()
-                (dired-hide-details-mode)
-                (dired-sort-toggle-or-edit)))
-
     ;; change default "Find File" directory
     (setq default-directory "/Users/anders/")
-
-    ;; make mac title bar transparent
-    (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
     ;; Make eshell tab completion behave like Bash
     (add-hook
@@ -151,7 +162,7 @@
     ;; remember these modes:
     ;; artist-mode, snake. look into org-babel
 
-    ;; 
+    ;;
     ;; PACKAGE-SPECIFIC CUSTOMIZATIONS
     ;;
 
@@ -243,9 +254,9 @@
 
 * Mac-specific things
 ** Emacs-macport system keyboard collisons
-   due to how emacs-macport uses command as meta, there are some duplicate keybindings. C-M-d, C-M-q are used by MacOS, so you can't use them 
+   due to how emacs-macport uses command as meta, there are some duplicate keybindings. C-M-d, C-M-q are used by MacOS, so you can't use them
    - C-M-d: in MacOS, this uses the system dictionary. In emacs, it runs the command down-list.
-   - C-M-q: in MacOS, this locks the screen. In emacs, it reindents all the lines within one parenthetical grouping. It runs a different command based on the major mode. For example: 
+   - C-M-q: in MacOS, this locks the screen. In emacs, it reindents all the lines within one parenthetical grouping. It runs a different command based on the major mode. For example:
      it is indent-pp-sexp in Lisp mode, c-indent-exp in C mode, etc
 
 ** Disable Command-Ctrl-D dictionary lookup shortcut
@@ -359,125 +370,129 @@
    M-g M-n / M-g M-p
 
 ** Imenu
-I mapped M-x imenu to 
-M-i
-this only is useful in org-mode? 
+   I mapped M-x imenu to
+   M-i
+   this only is useful in org-mode?
 
 ** Ido mode
-after typing for example C-x b to switch to a buffer,
-Move to next/previous option
-C-s / C-r
+   after typing for example C-x b to switch to a buffer,
+   Move to next/previous option
+   C-s / C-r
 
 ** Grep
-M-x grep - prompts for arguments to pass to grep
-M-x grep-find - prompts for arguments to pass to grep and find
-M-x lgrep - prompts for query and glob pattern to search for with grep
-M-x rgrep - prompts for query and glob pattern then recursively searches with grep and find
-M-x rzgrep - like M-x rgrep but searches compressed gzip files
+   M-x grep - prompts for arguments to pass to grep
+   M-x grep-find - prompts for arguments to pass to grep and find
+   M-x lgrep - prompts for query and glob pattern to search for with grep
+   M-x rgrep - prompts for query and glob pattern then recursively searches with grep and find
+   M-x rzgrep - like M-x rgrep but searches compressed gzip files
 
-also M-x customize-group RET grep  -- customize the default grep command
+   also M-x customize-group RET grep  -- customize the default grep command
 
-in a grep buffer, use these to jump to next/previous matches, like Occur mode
-M-g M-n / M-g M-p
+   in a grep buffer, use these to jump to next/previous matches, like Occur mode
+   M-g M-n / M-g M-p
 
 ** Other Movement
-reposition the point in top-left, middle-left, or bottom-left
-M-r
+   reposition the point in top-left, middle-left, or bottom-left
+   M-r
 
-re-center the point in the top, middle, or bottom of the buffer
-C-l
+   re-center the point in the top, middle, or bottom of the buffer
+   C-l
 
-Go to line
-M-g M-g / M-g g
-go to specific line (goes to line 50 in this case):
-M-5 M-0 M-g M-g 
+   Go to line
+   M-g M-g / M-g g
+   go to specific line (goes to line 50 in this case):
+   M-5 M-0 M-g M-g
 
-set default column for C-n / C-p movements
-C-x C-n
+   set default column for C-n / C-p movements
+   C-x C-n
 
-cancel g
+   cancel g
 
-jump to column position
-M-g TAB
+   jump to column position
+   M-g TAB
 
-jump to char position
-M-g c
+   jump to char position
+   M-g c
 
 ** Editing
 *** Killing
-delete forward char
-C-d
+    delete forward char
+    C-d
 
-Delete forward word
-M-d
+    Delete forward word
+    M-d
 
-Delete backward word
-C-<backspace>
+    Delete backward word
+    C-<backspace>
 
-kill rest of line
-C-k
+    kill rest of line
+    C-k
 
-kill sentence
-M-k
+    kill sentence
+    M-k
 
-kill s-expression
-C-M-k
+    kill s-expression
+    C-M-k
 
-kill current line
-C-S-<backspace>
+    kill current line
+    C-S-<backspace>
 
-notes: multiple continuous kill commands (like with M-d) append to the last kill. any movement creates a new kill ring entry. 
+    notes: multiple continuous kill commands (like with M-d) append to the last kill. any movement creates a new kill ring entry.
 
-append to the current kill ring entry if next command is a kill
-C-M-w
-useful
+    append to the current kill ring entry if next command is a kill
+    C-M-w
+    useful
 
 *** Yanking
-Yank last kill
-C-y
+    Yank last kill
+    C-y
 
-After yanking, cycle through previous yanks
-M-y
+    After yanking, cycle through previous yanks
+    M-y
 
 *** Transposing
-Transpose character
-C-t
+    Transpose character
+    C-t
 
-Transpose words
-M-t
+    Transpose words
+    M-t
 
-Transpose s-expressions
-C-M-t
+    Transpose s-expressions
+    C-M-t
 
-Transpose lines
-C-x C-t
+    Transpose lines
+    C-x C-t
 
 *** Narrow
-this lets you view and edit only a small subset of the current buffer.
-select a region of text, then:
-C-x n n
-(narrow-to-region)
+    this lets you view and edit only a small subset of the current buffer.
+    select a region of text, then:
+    C-x n n
+    (narrow-to-region)
 
-to return to the full buffer:
-C-x n w
-(widen)
+    to return to the full buffer:
+    C-x n w
+    (widen)
 
-narrow to current org-mode subtree:
-C-x n s
+    narrow to current org-mode subtree:
+    C-x n s
 
-narrow to current org-mode code block:
-C-x n b
+    narrow to current org-mode code block:
+    C-x n b
 
 *** ansi-term
-pasting into prompt:
-C-c M-x term-paste
+    pasting into prompt:
+    C-c M-x term-paste
 
-line mode. Interact with terminal as a buffer
-C-c C-j
+    line mode. Interact with terminal as a buffer
+    C-c C-j
 
-go back to char mode to interact with terminal:
-C-c C-k
+    go back to char mode to interact with terminal:
+    C-c C-k
+
+*** Join lines
+    with cursor on the last line to be joined,
+    M-^
 
 ** LSP
-peek definition:
-M-.
+   peek definition:
+   M-.

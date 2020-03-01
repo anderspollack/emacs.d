@@ -3,8 +3,16 @@
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup")))
 
-(setq gc-cons-threshold most-positive-fixnum)
-(run-with-idle-timer 2 t (lambda () (garbage-collect)))
+(defun my-minibuffer-setup-hook ()
+  (setq gc-cons-threshold most-positive-fixnum))
+
+(defun my-minibuffer-exit-hook ()
+  (setq gc-cons-threshold 800000))
+
+(add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
+(add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
+
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
 (add-hook 'org-mode-hook 'visual-line-mode)
 
@@ -14,7 +22,7 @@
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line))
 
 (add-hook 'term-mode-hook
-          (lambda () 
+          (lambda ()
             (define-key term-raw-map (kbd "C-y") 'term-paste)))
 
 (setq frame-title-format
@@ -26,6 +34,14 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
+
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (dired-hide-details-mode)
+            (dired-sort-toggle-or-edit)))
+
+(when (string= system-type "darwin")
+  (setq dired-use-ls-dired nil))
 
 ;; prevent checking signature to supress bug contacting elpa
 (setq package-check-signature nil)
@@ -40,21 +56,8 @@
 ;;   (package-install-selected-packages))
 ;; (install-packages)
 
-;; suppress "ls does not support --dired"
-(when (string= system-type "darwin")       
-  (setq dired-use-ls-dired nil))
-
-;; hide dired details, enable 's' toggle to sort be recently edited by default
-(add-hook 'dired-mode-hook
-          (lambda ()
-            (dired-hide-details-mode)
-            (dired-sort-toggle-or-edit)))
-
 ;; change default "Find File" directory
 (setq default-directory "/Users/anders/")
-
-;; make mac title bar transparent
-(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
 ;; Make eshell tab completion behave like Bash
 (add-hook
@@ -76,7 +79,7 @@
 ;; remember these modes:
 ;; artist-mode, snake. look into org-babel
 
-;; 
+;;
 ;; PACKAGE-SPECIFIC CUSTOMIZATIONS
 ;;
 
