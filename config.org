@@ -2,6 +2,31 @@
   this is an attempt to use literate programming style to organize and annotate my emacs config. Configuration code is stored in org-mode source blocks. To quickly insert a source block, type "<s" then tab. Type C-c C-c to execute a block. To edit a source block, type C-c '. Type C-c ' again to finish editing.
 
 * Emacs housekeeping
+** Packages
+   just to check if use-package is installed, and use package.el to download if it isn't.
+   from here: http://cachestocaches.com/2015/8/getting-started-use-package/
+   loads diminish.el and bind-key.el
+   #+BEGIN_SRC emacs-lisp
+     (require 'package)
+     (setq package-enable-at-startup nil)
+     (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+     (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
+     (package-initialize)
+
+     (unless (package-installed-p 'use-package)
+       (package-refresh-contents)
+       (package-install 'use-package))
+
+     (unless (package-installed-p 'diminish)
+       (package-refresh-contents)
+       (package-install 'diminish))
+
+     (eval-when-compile
+       (require 'use-package))
+     (require 'diminish)
+     (require 'bind-key)
+   #+END_SRC
+
 ** Custom file
    sets customizer to save settings to custom.el
    #+BEGIN_SRC emacs-lisp
