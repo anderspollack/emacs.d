@@ -1,39 +1,7 @@
-(require 'package)
-(setq package-enable-at-startup nil)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-(package-initialize)
-
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(unless (package-installed-p 'diminish)
-  (package-refresh-contents)
-  (package-install 'diminish))
-
-(eval-when-compile
-  (require 'use-package))
-(require 'diminish)
-(require 'bind-key)
-
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup")))
-
-(defun my-minibuffer-setup-hook ()
-  (setq gc-cons-threshold most-positive-fixnum))
-
-(defun my-minibuffer-exit-hook ()
-  (setq gc-cons-threshold 800000))
-
-(add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
-(add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
-
-(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-
-(add-hook 'org-mode-hook 'visual-line-mode)
 
 (if (not (window-system))
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
@@ -62,18 +30,106 @@
 (when (string= system-type "darwin")
   (setq dired-use-ls-dired nil))
 
-;; prevent checking signature to supress bug contacting elpa
-(setq package-check-signature nil)
+(use-package magit
+  :ensure t
+  :config
+  (global-set-key (kbd "C-x g") 'magit-status))
 
-;; PACKAGE INSTALLATION
-;; package list/update/install - should only be run once or else it slows
-;; startup time significantly
-;; (defun install-packages ()
-;;   "run M-x package-install-selected-packages"
-;;   (interactive)
-;;   (package-refresh-contents)
-;;   (package-install-selected-packages))
-;; (install-packages)
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-search-module 'evil-search)
+  (setq evil-ex-complete-emacs-commands nil)
+  (setq evil-vsplit-window-right t)
+  (setq evil-split-window-below t)
+  ;; (setq evil-shift-round nil)
+  (setq evil-want-C-d-scroll t)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-u-delete t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-fine-undo t)
+  (setq evil-default-state 'normal)
+  :config
+  (evil-mode 1)
+  (evil-set-initial-state 'shell-mode 'emacs)
+  (evil-set-initial-state 'eshell-mode 'emacs)
+  (evil-set-initial-state 'term-mode 'emacs)
+
+  )
+
+(use-package evil-leader
+  :after evil
+  :ensure t
+  :config
+  (global-evil-leader-mode t)
+  (evil-leader/set-leader "<SPC>")
+  (evil-leader/set-key
+    "f" 'find-file
+    "b" 'switch-to-buffer
+    "d" 'ido-dired
+    "s" 'save-buffer
+    "1" 'delete-other-windows
+    "2" 'evil-window-split
+    "3" 'evil-window-vsplit
+    "0" (lambda ()
+          (interactive)
+          (delete-window))
+    "=" 'balance-windows
+    "o" 'other-window
+    "h" 'windmove-left
+    "j" 'windmove-down
+    "k" 'windmove-up
+    "l" 'windmove-right
+    "n" 'make-frame
+    "w" 'delete-frame
+    "r" 'font-lock-fontify-buffer
+    "t" (lambda ()
+          (interactive)
+          (eshell))
+    "g" 'magit-status
+    )
+  ;; set SPC-' to toggle editing of org-src blocks
+  (evil-leader/set-key "'" 'org-edit-src-exit)
+  (evil-leader/set-key-for-mode 'org-mode "'" 'org-edit-special)
+
+  ;; set SPC-SPC to move forward in info mode
+  (evil-leader/set-key-for-mode 'info-mode "SPC" 'Info-scroll-up)
+  )
+
+(use-package evil-surround
+  :after evil
+  :ensure t
+  :config
+  (global-evil-surround-mode t))
+
+(use-package evil-magit
+  :after evil
+  :ensure t
+  :config
+  (global-evil-surround-mode t))
+
+(use-package evil-org
+  :after evil
+  :ensure t
+  :after org
+  :config
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook
+            (lambda ()
+              (evil-org-set-key-theme)))
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
+
+(require 'lsp-mode)
+(add-hook 'web-mode-hook 'lsp-deferred)
+
+(add-hook 'after-init-hook 'global-company-mode)
 
 ;; change default "Find File" directory
 (setq default-directory "/Users/anders/")
@@ -166,8 +222,3 @@
 ;; yasnippet
 ;; (require 'yasnippet)
 ;; (yas-global-mode 1)
-
-(require 'lsp-mode)
-(add-hook 'web-mode-hook 'lsp-deferred)
-
-(add-hook 'after-init-hook 'global-company-mode)

@@ -2,168 +2,201 @@
   this is an attempt to use literate programming style to organize and annotate my emacs config. Configuration code is stored in org-mode source blocks. To quickly insert a source block, type "<s" then tab. Type C-c C-c to execute a block. To edit a source block, type C-c '. Type C-c ' again to finish editing.
 
 * Emacs housekeeping
-** Packages
-   just to check if use-package is installed, and use package.el to download if it isn't.
-   from here: http://cachestocaches.com/2015/8/getting-started-use-package/
-   loads diminish.el and bind-key.el
-   #+BEGIN_SRC emacs-lisp
-     (require 'package)
-     (setq package-enable-at-startup nil)
-     (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-     (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-     (package-initialize)
-
-     (unless (package-installed-p 'use-package)
-       (package-refresh-contents)
-       (package-install 'use-package))
-
-     (unless (package-installed-p 'diminish)
-       (package-refresh-contents)
-       (package-install 'diminish))
-
-     (eval-when-compile
-       (require 'use-package))
-     (require 'diminish)
-     (require 'bind-key)
-   #+END_SRC
-
 ** Custom file
    sets customizer to save settings to custom.el
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (setq custom-file "~/.emacs.d/custom.el")
      (load custom-file)
-   #+END_SRC
+   #+end_src
 
 ** Backup files
    make all backup files live in .emacs.d/backup
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (setq backup-directory-alist '(("." . "~/.emacs.d/backup")))
-   #+END_SRC
-
-* Garbage Collection
-  following this advice: http://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
-
-  init.el (which loads this file) is wrapped in a similar function that sets Emacs' GC to the maximum value while initializing the contents of this file. The code below sets GC to only activate if the minibuffer is not open:
-  #+BEGIN_SRC emacs-lisp
-    (defun my-minibuffer-setup-hook ()
-      (setq gc-cons-threshold most-positive-fixnum))
-
-    (defun my-minibuffer-exit-hook ()
-      (setq gc-cons-threshold 800000))
-
-    (add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
-    (add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
-  #+END_SRC
-
-* Windows & frames
-**  Title Bar (homebrew-emacsmacport only)
-   Transparent title bar is DISABLED by default.
-   Enable it here:
-   #+BEGIN_SRC emacs-lisp
-     (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-   #+END_SRC
-
-   For dark themes:
-   #+BEGIN_SRC bash
-     defaults write org.gnu.Emacs TransparentTitleBar DARK
-   #+END_SRC
-
-   For light themes:
-   #+BEGIN_SRC bash
-     defaults write org.gnu.Emacs TransparentTitleBar LIGHT
-   #+END_SRC
-
-   To disable:
-   #+BEGIN_SRC bash
-     defaults write org.gnu.Emacs TransparentTitleBar NO
-   #+END_SRC
-
-   or
-   #+BEGIN_SRC bash
-     defaults delete org.gnu.Emacs TransparentTitleBar
-   #+END_SRC
-
-   All settings will been used in new frame or after restart Emacs
-
-* org-mode
-  enable visual-line-mode in org-mode buffers:
-  #+BEGIN_SRC emacs-lisp
-    (add-hook 'org-mode-hook 'visual-line-mode)
-  #+END_SRC
+   #+end_src
 
 * Terminal accessibility
 ** Terminal mouse scrolling
    enable mouse scrolling in terminal emacs
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (if (not (window-system))
          (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
      (if (not (window-system))
          (global-set-key (kbd "<mouse-4>") 'scroll-down-line))
-   #+END_SRC
+   #+end_src
 
 ** Terminal pasting
    set C-y to paste in term-mode
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (add-hook 'term-mode-hook
                (lambda ()
                  (define-key term-raw-map (kbd "C-y") 'term-paste)))
-   #+END_SRC
+   #+end_src
 
 * Visual settings
 ** Title Bar
    make the title bar show the current file path
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (setq frame-title-format
            (list (format "%s %%S: %%j " (system-name))
                  '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
-   #+END_SRC
+   #+end_src
 
 ** Mouse color
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (set-mouse-color "#000000")
-   #+END_SRC
+   #+end_src
 
 * Code formatting
 ** Indentation
    4-space indent
-   #+BEGIN_SRC emacs-lisp
+   #+begin_src emacs-lisp
      (setq-default indent-tabs-mode nil)
      (setq-default tab-width 4)
      (setq indent-line-function 'insert-tab)
-   #+END_SRC
+   #+end_src
+   
+* Builtin Package customizations
+** dired
+   hide dired details by default. Show details with "(". Sort with "s"
+   #+begin_src emacs-lisp
+     (add-hook 'dired-mode-hook
+               (lambda ()
+                 (dired-hide-details-mode)
+                 (dired-sort-toggle-or-edit)))
+   #+end_src
 
-* Dired
-  hide dired details by default. Show details with "(". Sort with "s"
-  #+BEGIN_SRC emacs-lisp
-    (add-hook 'dired-mode-hook
-              (lambda ()
-                (dired-hide-details-mode)
-                (dired-sort-toggle-or-edit)))
-  #+END_SRC
+   suppress "ls does not support --dired"
+   #+begin_src emacs-lisp
+     (when (string= system-type "darwin")
+       (setq dired-use-ls-dired nil))
+   #+end_src
+   
+* External Package customizations
+** magit
+   #+begin_src emacs-lisp
+     (use-package magit
+       :ensure t
+       :config
+       (global-set-key (kbd "C-x g") 'magit-status))
+   #+end_src
+   
+** evil-mode
+   #+begin_src emacs-lisp
+     (use-package evil
+       :ensure t
+       :init
+       (setq evil-search-module 'evil-search)
+       (setq evil-ex-complete-emacs-commands nil)
+       (setq evil-vsplit-window-right t)
+       (setq evil-split-window-below t)
+       ;; (setq evil-shift-round nil)
+       (setq evil-want-C-d-scroll t)
+       (setq evil-want-C-u-scroll t)
+       (setq evil-want-C-u-delete t)
+       (setq evil-want-keybinding nil)
+       (setq evil-want-fine-undo t)
+       (setq evil-default-state 'normal)
+       :config
+       (evil-mode 1)
+       (evil-set-initial-state 'shell-mode 'emacs)
+       (evil-set-initial-state 'eshell-mode 'emacs)
+       (evil-set-initial-state 'term-mode 'emacs)
 
-  suppress "ls does not support --dired"
-  #+BEGIN_SRC emacs-lisp
-    (when (string= system-type "darwin")
-      (setq dired-use-ls-dired nil))
-  #+END_SRC
+       )
 
+     (use-package evil-leader
+       :after evil
+       :ensure t
+       :config
+       (global-evil-leader-mode t)
+       (evil-leader/set-leader "<SPC>")
+       (evil-leader/set-key
+         "f" 'find-file
+         "b" 'switch-to-buffer
+         "d" 'ido-dired
+         "s" 'save-buffer
+         "1" 'delete-other-windows
+         "2" 'evil-window-split
+         "3" 'evil-window-vsplit
+         "0" (lambda ()
+               (interactive)
+               (delete-window))
+         "=" 'balance-windows
+         "o" 'other-window
+         "h" 'windmove-left
+         "j" 'windmove-down
+         "k" 'windmove-up
+         "l" 'windmove-right
+         "n" 'make-frame
+         "w" 'delete-frame
+         "r" 'font-lock-fontify-buffer
+         "t" (lambda ()
+               (interactive)
+               (eshell))
+         "g" 'magit-status
+         )
+       ;; set SPC-' to toggle editing of org-src blocks
+       (evil-leader/set-key "'" 'org-edit-src-exit)
+       (evil-leader/set-key-for-mode 'org-mode "'" 'org-edit-special)
+
+       ;; set SPC-SPC to move forward in info mode
+       (evil-leader/set-key-for-mode 'info-mode "SPC" 'Info-scroll-up)
+       )
+
+     (use-package evil-surround
+       :after evil
+       :ensure t
+       :config
+       (global-evil-surround-mode t))
+
+     (use-package evil-magit
+       :after evil
+       :ensure t
+       :config
+       (global-evil-surround-mode t))
+
+     (use-package evil-org
+       :after evil
+       :ensure t
+       :after org
+       :config
+       (add-hook 'org-mode-hook 'evil-org-mode)
+       (add-hook 'evil-org-mode-hook
+                 (lambda ()
+                   (evil-org-set-key-theme)))
+       (require 'evil-org-agenda)
+       (evil-org-agenda-set-keys))
+
+     (use-package evil-collection
+       :after evil
+       :ensure t
+       :config
+       (evil-collection-init))
+   #+end_src
+
+** lsp-mode
+   setup for language server protocol
+   #+begin_src emacs-lisp
+     (require 'lsp-mode)
+     (add-hook 'web-mode-hook 'lsp-deferred)
+   #+end_src
+
+   install javascript/typscript language server
+   #+begin_src shell
+     npm install -g typescript-language-server
+   #+end_src
+
+** company-mode
+   use company autocomplete in all buffers
+   #+begin_src emacs-lisp
+     (add-hook 'after-init-hook 'global-company-mode)
+   #+end_src
+   
 * The Rest
   still need to keep organizin'
 
-  #+BEGIN_SRC emacs-lisp
-    ;; prevent checking signature to supress bug contacting elpa
-    (setq package-check-signature nil)
-
-    ;; PACKAGE INSTALLATION
-    ;; package list/update/install - should only be run once or else it slows
-    ;; startup time significantly
-    ;; (defun install-packages ()
-    ;;   "run M-x package-install-selected-packages"
-    ;;   (interactive)
-    ;;   (package-refresh-contents)
-    ;;   (package-install-selected-packages))
-    ;; (install-packages)
-
+  #+begin_src emacs-lisp
     ;; change default "Find File" directory
     (setq default-directory "/Users/anders/")
 
@@ -256,287 +289,8 @@
     ;; (require 'yasnippet)
     ;; (yas-global-mode 1)
 
-  #+END_SRC
-
-* Package-specific customizations
-** evil-mode
-   #+BEGIN_SRC emacs-lisp
-     (use-package evil
-       :ensure t ;; install the evil package if not installed
-       :init ;; tweak evil's configuration before loading it
-       (setq evil-search-module 'evil-search)
-       (setq evil-ex-complete-emacs-commands nil)
-       (setq evil-vsplit-window-right t)
-       (setq evil-split-window-below t)
-       ;; (setq evil-shift-round nil)
-       (setq evil-want-C-d-scroll t)  
-       (setq evil-want-C-u-scroll t)
-       (setq evil-want-C-u-delete t)
-       (setq evil-want-keybinding t)
-       (setq evil-want-fine-undo t)
-       :config ;; tweak evil after loading it
-       (evil-mode))
-   #+END_SRC
-
-** lsp-mode
-   setup for language server protocol
-   #+BEGIN_SRC emacs-lisp
-     (require 'lsp-mode)
-     (add-hook 'web-mode-hook 'lsp-deferred)
-   #+END_SRC
-
-   install javascript/typscript language server
-   #+BEGIN_SRC bash
-     npm install -g typescript-language-server
-   #+END_SRC
-
-** company-mode
-   use company autocomplete in all buffers
-   #+BEGIN_SRC emacs-lisp
-     (add-hook 'after-init-hook 'global-company-mode)
-   #+END_SRC
-
-* Mac-specific things
-** Emacs-macport system keyboard collisons
-   due to how emacs-macport uses command as meta, there are some duplicate keybindings. C-M-d, C-M-q are used by MacOS, so you can't use them
-   - C-M-d: in MacOS, this uses the system dictionary. In emacs, it runs the command down-list.
-   - C-M-q: in MacOS, this locks the screen. In emacs, it reindents all the lines within one parenthetical grouping. It runs a different command based on the major mode. For example:
-     it is indent-pp-sexp in Lisp mode, c-indent-exp in C mode, etc
-
-** Disable Command-Ctrl-D dictionary lookup shortcut
-   In order to be able to use C-M-d (move down into a list/balanced expression) disable the default mac shortcut:
-   #+BEGIN_SRC bash
-     defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 70 '<dict><key>enabled</key><false/></dict>'
-   #+END_SRC
+  #+end_src
 
 * Notes
-** Bookmarks
-   set a bookmark
-   C-x r m
-
-   List bookmarks
-   C-x r l
-
-   Jump to bookmark
-   C-x r b
-
-** Registers
-   Store region in register
-   C-x r s
-
-   Insert content of register
-   C-x r i
-
-   Store point in register
-   C-x r SPC
-
-   Jump to register
-   C-x r j
-
-   Store window configuration in register
-   C-x r w
-
-** Mark
-   Sets the mark, toggles the region
-   C-SPC
-
-   Jumps to the mark, and repeated calls go further back the mark ring
-   C-u C-SPC
-
-   Jump to latest item in the mark ring, rotates the mark ring
-   C-x C-SPC
-
-   Exchanges the point and mark, and reactivates the last region
-   C-x C-x
-
-   Mark next paragraph
-   M-h
-
-   Mark whole buffer
-   C-x h
-
-   Mark the next defun
-   C-M-h
-
-   Mark the next word
-   M-@
-
-   Mark the next sexp
-   C-M-@, C-M-SPC (conflicts with MacOS emoji menu shortcut)
-
-** Undo Tree
-   type C-x u to open undo-tree visualizer
-
-** Incremental Search
-   Incremental search
-   C-s
-
-   Reverse incremental search
-   C-r
-
-   Regexp incremental search
-   C-M-s
-   example: C-M-s ^Mark to highlight above non-headline sections
-
-   Regexp reverse incremental search
-   C-M-r
-
-   when incremental search is active:
-
-   move to next/previous search history items
-   M-n, M-p
-
-   search history items with tab-completion
-   C-M-i
-
-   Isearch forward for symbol at point
-   M-s .
-
-** Occur mode
-   occur mode, and activate occur on current search string in Isearch. Searches current buffer with a term/regexp
-   M-s o
-
-   Next/Previous occurrence in occur buffer
-   M-n / M-p
-
-   Go to beginning/end of buffer
-   <, >
-
-   Refresh - g; quit - q
-
-   Switch to occur edit mode
-   e
-
-   Exits occur edit mode, applying changes
-   C-c C-c
-
-   Jump to next/previous occurence in buffer
-   M-g M-n / M-g M-p
-
-** Imenu
-   I mapped M-x imenu to
-   M-i
-   this only is useful in org-mode?
-
-** Ido mode
-   after typing for example C-x b to switch to a buffer,
-   Move to next/previous option
-   C-s / C-r
-
-** Grep
-   M-x grep - prompts for arguments to pass to grep
-   M-x grep-find - prompts for arguments to pass to grep and find
-   M-x lgrep - prompts for query and glob pattern to search for with grep
-   M-x rgrep - prompts for query and glob pattern then recursively searches with grep and find
-   M-x rzgrep - like M-x rgrep but searches compressed gzip files
-
-   also M-x customize-group RET grep  -- customize the default grep command
-
-   in a grep buffer, use these to jump to next/previous matches, like Occur mode
-   M-g M-n / M-g M-p
-
-** Other Movement
-   reposition the point in top-left, middle-left, or bottom-left
-   M-r
-
-   re-center the point in the top, middle, or bottom of the buffer
-   C-l
-
-   Go to line
-   M-g M-g / M-g g
-   go to specific line (goes to line 50 in this case):
-   M-5 M-0 M-g M-g
-
-   set default column for C-n / C-p movements
-   C-x C-n
-
-   cancel g
-
-   jump to column position
-   M-g TAB
-
-   jump to char position
-   M-g c
-
-** Editing
-*** Killing
-    delete forward char
-    C-d
-
-    Delete forward word
-    M-d
-
-    Delete backward word
-    C-<backspace>
-
-    kill rest of line
-    C-k
-
-    kill sentence
-    M-k
-
-    kill s-expression
-    C-M-k
-
-    kill current line
-    C-S-<backspace>
-
-    notes: multiple continuous kill commands (like with M-d) append to the last kill. any movement creates a new kill ring entry.
-
-    append to the current kill ring entry if next command is a kill
-    C-M-w
-    useful
-
-*** Yanking
-    Yank last kill
-    C-y
-
-    After yanking, cycle through previous yanks
-    M-y
-
-*** Transposing
-    Transpose character
-    C-t
-
-    Transpose words
-    M-t
-
-    Transpose s-expressions
-    C-M-t
-
-    Transpose lines
-    C-x C-t
-
-*** Narrow
-    this lets you view and edit only a small subset of the current buffer.
-    select a region of text, then:
-    C-x n n
-    (narrow-to-region)
-
-    to return to the full buffer:
-    C-x n w
-    (widen)
-
-    narrow to current org-mode subtree:
-    C-x n s
-
-    narrow to current org-mode code block:
-    C-x n b
-
-*** ansi-term
-    pasting into prompt:
-    C-c M-x term-paste
-
-    line mode. Interact with terminal as a buffer
-    C-c C-j
-
-    go back to char mode to interact with terminal:
-    C-c C-k
-
-*** Join lines
-    with cursor on the last line to be joined,
-    M-^
-
-** LSP
-   peek definition:
-   M-.
+  see [[./notes.org]]
+  
