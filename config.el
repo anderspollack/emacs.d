@@ -22,6 +22,10 @@
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
 
+(add-hook 'text-mode-hook
+          (lambda ()
+            (variable-pitch-mode 1)))
+
 (add-hook 'dired-mode-hook
           (lambda ()
             (dired-hide-details-mode)
@@ -33,6 +37,7 @@
 (setq electric-pair-inhibit-predicate
       `(lambda (c)
          (if (char-equal c ?\") t (,electric-pair-inhibit-predicate c))))
+(setq electric-pair-mode t)
 
 ;; (add-hook
 ;;  'web-mode-hook
@@ -98,6 +103,7 @@
           (interactive)
           (eshell))
     "g" 'magit-status
+    "u" 'undo-tree-visualize
     )
   ;; set SPC-' to toggle editing of org-src blocks
   (evil-leader/set-key "'" 'org-edit-src-exit)
@@ -137,103 +143,110 @@
   :config
   (evil-collection-init))
 
-(require 'lsp-mode)
-(add-hook 'web-mode-hook 'lsp-deferred)
-
 (use-package company
   :ensure t
   :config
-  (setq company-global-modes (quote ((not org-mode) (not text-mode))))
+  ;; disable company completion in org and text modes
+  (setq company-global-modes (quote (not org-mode)))
+  ;; enable company completion globally otherwise
   (global-company-mode))
 
-;; change default "Find File" directory
+(use-package web-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.php?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tag?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.liquid?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.json?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.vue?\\'" . web-mode))
+  (setq web-mode-engines-alist
+        '(
+          ("riot" . "\\.tag\\'")
+          ("liquid" . "\\.liquid\\'")
+          ))
+
+  (setq web-mode-content-types-alist
+        '(
+          ("json" . "\\.json\\'")
+          ("jsx" . "/Users/Anders/Sites/portfolio/src/.*\\.js\\'")
+          ("jsx" . "/Users/Anders/Sites/talk-about/src/.*\\.js\\'")
+          ("jsx" . "/Users/Anders/Sites/music-directory/client/src/.*\\.tsx\\'")
+          ("css" . "/Users/Anders/Sites/super-deluxe-2018/.*\\.scss.liquid\\'")
+          ("liquid" . "/Users/Anders/Sites/donpollack/donpollack/.*\\.liquid\\'")
+          ))
+
+  ;; set indentation level to 2/4 for html/markup
+  (setq web-mode-markup-indent-offset 4)
+  (setq web-mode-css-indent-offset 4)
+  (setq web-mode-code-indent-offset 4)
+  (setq web-mode-style-padding 0)
+  (setq web-mode-script-padding 0)
+
+  ;; disable electric pair mode in web mode for liquid files
+  (add-hook 'web-mode-hook
+            (lambda () (if (equal (file-name-extension(buffer-file-name))
+                                  "liquid")
+                           (electric-pair-local-mode -1)))))
+
+(use-package emmet-mode
+  :ensure t
+  :config
+  ;; Auto-start on any markup modes
+  (add-hook 'sgml-mode-hook 'emmet-mode)
+  (add-hook 'html-mode-hook 'emmet-mode)
+  (add-hook 'css-mode-hook  'emmet-mode)
+  ;; enable emmet mode whenever web-mode is active
+  (add-hook 'web-mode-hook 'emmet-mode))
+
+(use-package lsp-mode
+  :ensure t
+  :init
+  ;; set prefix for all lsp commands as C-c l
+  (setq lsp-keymap-prefix "C-c l")
+  :hook
+  ;; deferred startup for lsp until a web-mode buffer is opened
+  (web-mode . lsp-deferred)
+  ;; enable which-key integration
+  (lsp-mode . lsp-enable-which-key-integration)
+  :commands
+  (lsp lsp-deferred))
+
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
+
+(use-package company-lsp
+  :ensure t
+  :commands company-lsp)
+
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
+
+(use-package yaml-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+
+;; (setq load-path (cons "~/.emacs.d/tidal/" load-path))
+;; (use-package haskell
+;;   :ensure t)
+;; (use-package tidal
+;;   :config
+;;   (setq tidal-interpreter "/usr/local/bin/ghci"))
+
 (setq default-directory "/Users/anders/")
 
-;; Make eshell tab completion behave like Bash
 (add-hook
  'eshell-mode-hook
  (lambda ()
    (setq pcomplete-cycle-completions nil)))
 
-;; alias y/n to yes/no for prompts
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; enable variable pitch for mixed font styles
-(add-hook 'text-mode-hook
-          (lambda ()
-            (variable-pitch-mode 1)))
-
-;; set M-i as keyboard shortcut for imenu, instead of tab-to-tab-stop
 (global-set-key (kbd "M-i") 'imenu)
-
-;; remember these modes:
-;; artist-mode, snake. look into org-babel
-
-;;
-;; PACKAGE-SPECIFIC CUSTOMIZATIONS
-;;
-
-;; setup tidal
-;; (setq load-path (cons "~/.emacs.d/tidal/" load-path))
-;; (require 'tidal)
-;; (setq tidal-interpreter "/usr/local/bin/ghci")
-
-;; web mode
-(require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tsx?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.php?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tag?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.liquid?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.json?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.vue?\\'" . web-mode))
-(setq web-mode-engines-alist
-      '(
-        ("riot" . "\\.tag\\'")
-        ("liquid" . "\\.liquid\\'")
-        ))
-
-(setq web-mode-content-types-alist
-      '(
-        ("json" . "\\.json\\'")
-        ("jsx" . "/Users/Anders/Sites/portfolio/src/.*\\.js\\'")
-        ("jsx" . "/Users/Anders/Sites/talk-about/src/.*\\.js\\'")
-        ("jsx" . "/Users/Anders/Sites/music-directory/client/src/.*\\.tsx\\'")
-        ("css" . "/Users/Anders/Sites/super-deluxe-2018/.*\\.scss.liquid\\'")
-        ("liquid" . "/Users/Anders/Sites/donpollack/donpollack/.*\\.liquid\\'")
-        ))
-
-;; set indentation level to 2/4 for html/markup
-(setq web-mode-markup-indent-offset 4)
-(setq web-mode-css-indent-offset 4)
-(setq web-mode-code-indent-offset 4)
-(setq web-mode-style-padding 0)
-(setq web-mode-script-padding 0)
-
-;; disable electric pair mode in web mode for liquid files
-(add-hook 'web-mode-hook
-          (lambda () (if (equal (file-name-extension(buffer-file-name))
-                                "liquid")
-                         (electric-pair-local-mode -1))))
-
-;; emmet-mode
-(require 'emmet-mode)
-(add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
-(add-hook 'html-mode-hook 'emmet-mode)
-(add-hook 'css-mode-hook  'emmet-mode)
-
-;; enable emmet mode whenever web-mode is active
-(add-hook 'web-mode-hook 'emmet-mode)
-
-;; yaml mode
-(require 'yaml-mode)
-(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
-
-;; setup magit status
-(global-set-key (kbd "C-x g") 'magit-status)
-
-;; yasnippet
-;; (require 'yasnippet)
-;; (yas-global-mode 1)
