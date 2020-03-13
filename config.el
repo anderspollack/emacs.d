@@ -30,6 +30,17 @@
 (when (string= system-type "darwin")
   (setq dired-use-ls-dired nil))
 
+(setq electric-pair-inhibit-predicate
+      `(lambda (c)
+         (if (char-equal c ?\") t (,electric-pair-inhibit-predicate c))))
+
+;; (add-hook
+;;  'web-mode-hook
+;;  (lambda ()
+;;    (setq-local electric-pair-inhibit-predicate
+;;                `(lambda (c)
+;;                   (if (char-equal c ?{) t (,electric-pair-inhibit-predicate c))))))
+
 (use-package magit
   :ensure t
   :config
@@ -51,10 +62,10 @@
   (setq evil-default-state 'normal)
   :config
   (evil-mode 1)
-  (evil-set-initial-state 'shell-mode 'emacs)
-  (evil-set-initial-state 'eshell-mode 'emacs)
-  (evil-set-initial-state 'term-mode 'emacs)
-
+  (evil-set-initial-state 'shell-mode 'insert)
+  (evil-set-initial-state 'eshell-mode 'insert)
+  (evil-set-initial-state 'term-mode 'insert)
+  (add-hook 'with-editor-mode-hook 'evil-insert-state)
   )
 
 (use-package evil-leader
@@ -129,7 +140,11 @@
 (require 'lsp-mode)
 (add-hook 'web-mode-hook 'lsp-deferred)
 
-(add-hook 'after-init-hook 'global-company-mode)
+(use-package company
+  :ensure t
+  :config
+  (setq company-global-modes (quote ((not org-mode) (not text-mode))))
+  (global-company-mode))
 
 ;; change default "Find File" directory
 (setq default-directory "/Users/anders/")

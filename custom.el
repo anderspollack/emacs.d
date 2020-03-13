@@ -12,6 +12,7 @@
  '(desktop-save-mode t)
  '(electric-pair-mode t)
  '(global-auto-revert-mode t)
+ '(global-company-mode t)
  '(global-subword-mode t)
  '(global-undo-tree-mode t)
  '(global-visual-line-mode nil)

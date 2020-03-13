@@ -47,7 +47,6 @@
      (set-mouse-color "#000000")
    #+end_src
 
-* Code formatting
 ** Indentation
    4-space indent
    #+begin_src emacs-lisp
@@ -72,6 +71,24 @@
        (setq dired-use-ls-dired nil))
    #+end_src
    
+** electric-pair-mode
+   disable electric pair mode for "<>"
+   #+begin_src emacs-lisp
+     (setq electric-pair-inhibit-predicate
+           `(lambda (c)
+              (if (char-equal c ?\") t (,electric-pair-inhibit-predicate c))))
+   #+end_src
+   
+   example: disable "{}" auto pairing in electric-pair-mode for web-mode
+   #+begin_src emacs-lisp
+     ;; (add-hook
+     ;;  'web-mode-hook
+     ;;  (lambda ()
+     ;;    (setq-local electric-pair-inhibit-predicate
+     ;;                `(lambda (c)
+     ;;                   (if (char-equal c ?{) t (,electric-pair-inhibit-predicate c))))))
+   #+end_src
+
 * External Package customizations
 ** magit
    #+begin_src emacs-lisp
@@ -99,10 +116,10 @@
        (setq evil-default-state 'normal)
        :config
        (evil-mode 1)
-       (evil-set-initial-state 'shell-mode 'emacs)
-       (evil-set-initial-state 'eshell-mode 'emacs)
-       (evil-set-initial-state 'term-mode 'emacs)
-
+       (evil-set-initial-state 'shell-mode 'insert)
+       (evil-set-initial-state 'eshell-mode 'insert)
+       (evil-set-initial-state 'term-mode 'insert)
+       (add-hook 'with-editor-mode-hook 'evil-insert-state)
        )
 
      (use-package evil-leader
@@ -190,7 +207,11 @@
 ** company-mode
    use company autocomplete in all buffers
    #+begin_src emacs-lisp
-     (add-hook 'after-init-hook 'global-company-mode)
+     (use-package company
+       :ensure t
+       :config
+       (setq company-global-modes (quote ((not org-mode) (not text-mode))))
+       (global-company-mode))
    #+end_src
    
 * The Rest
@@ -293,4 +314,4 @@
 
 * Notes
   see [[./notes.org]]
-  
+
