@@ -1,8 +1,3 @@
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
-
-(setq backup-directory-alist '(("." . "~/.emacs.d/backup")))
-
 (if (not (window-system))
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
 (if (not (window-system))
@@ -34,10 +29,10 @@
 (when (string= system-type "darwin")
   (setq dired-use-ls-dired nil))
 
+(setq electric-pair-mode t)
 (setq electric-pair-inhibit-predicate
       `(lambda (c)
          (if (char-equal c ?\") t (,electric-pair-inhibit-predicate c))))
-(setq electric-pair-mode t)
 
 ;; (add-hook
 ;;  'web-mode-hook
@@ -70,6 +65,7 @@
   (evil-set-initial-state 'shell-mode 'insert)
   (evil-set-initial-state 'eshell-mode 'insert)
   (evil-set-initial-state 'term-mode 'insert)
+  ;; set magit commit messages to open in insert state https://emacs.stackexchange.com/questions/14008/default-magit-commit-state-in-evil
   (add-hook 'with-editor-mode-hook 'evil-insert-state)
   )
 
@@ -144,12 +140,12 @@
   (evil-collection-init))
 
 (use-package company
-  :ensure t
+  :ensure t)
+
+(use-package company-elisp
+  :after company
   :config
-  ;; disable company completion in org and text modes
-  (setq company-global-modes (quote (not org-mode)))
-  ;; enable company completion globally otherwise
-  (global-company-mode))
+  (push 'company-elisp company-backends))
 
 (use-package web-mode
   :ensure t
@@ -233,12 +229,12 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 
-;; (setq load-path (cons "~/.emacs.d/tidal/" load-path))
-;; (use-package haskell
-;;   :ensure t)
-;; (use-package tidal
-;;   :config
-;;   (setq tidal-interpreter "/usr/local/bin/ghci"))
+(setq load-path (cons "~/.emacs.d/tidal/" load-path))
+(use-package haskell-mode
+  :ensure t)
+(use-package tidal
+  :config
+  (setq tidal-interpreter "/usr/local/bin/ghci"))
 
 (setq default-directory "/Users/anders/")
 
@@ -250,3 +246,8 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (global-set-key (kbd "M-i") 'imenu)
+
+(setq backup-directory-alist '(("." . "~/.emacs.d/backup")))
+
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)

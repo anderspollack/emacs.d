@@ -4,14 +4,16 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
+ '(company-global-modes (quote (not org-mode)))
+ '(company-require-match nil)
  '(custom-enabled-themes (quote (tsdh-light)))
  '(custom-safe-themes
    (quote
     ("26d49386a2036df7ccbe802a06a759031e4455f07bda559dcf221f53e8850e69" default)))
  '(delete-selection-mode t)
  '(desktop-save-mode t)
- '(electric-pair-mode t)
  '(global-auto-revert-mode t)
+ '(global-company-mode t)
  '(global-subword-mode t)
  '(global-undo-tree-mode t)
  '(global-visual-line-mode nil)
@@ -33,7 +35,7 @@
  '(next-screen-context-lines 5)
  '(package-selected-packages
    (quote
-    (evil-magit evil-collection org evil-org lua-mode which-key flycheck lsp-ui company-lsp company yasnippet lsp-mode xclip yaml-mode multi-term magit evil-leader evil-surround evil-visual-mark-mode emmet-mode web-mode haskell-mode)))
+    (company-elisp haskell evil-magit evil-collection org evil-org lua-mode which-key flycheck lsp-ui company-lsp company yasnippet lsp-mode xclip yaml-mode multi-term magit evil-leader evil-surround evil-visual-mark-mode emmet-mode web-mode haskell-mode)))
  '(ring-bell-function (quote ignore))
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)

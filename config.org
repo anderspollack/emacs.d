@@ -11,20 +11,6 @@
   #+end_src
   - JetBrains Mono https://www.jetbrains.com/lp/mono/
     
-* Emacs housekeeping
-** Custom file
-   sets customizer to save settings to custom.el
-   #+begin_src emacs-lisp
-     (setq custom-file "~/.emacs.d/custom.el")
-     (load custom-file)
-   #+end_src
-
-** Backup files
-   make all backup files live in .emacs.d/backup
-   #+begin_src emacs-lisp
-     (setq backup-directory-alist '(("." . "~/.emacs.d/backup")))
-   #+end_src
-
 * Terminal accessibility
 ** Terminal mouse scrolling
    enable mouse scrolling in terminal emacs
@@ -92,10 +78,10 @@
 ** electric-pair-mode
    enable electric-pair-mode, but disable for "<>" pairs only
    #+begin_src emacs-lisp
+     (setq electric-pair-mode t)
      (setq electric-pair-inhibit-predicate
            `(lambda (c)
               (if (char-equal c ?\") t (,electric-pair-inhibit-predicate c))))
-     (setq electric-pair-mode t)
    #+end_src
    
    example: disable "{}" pairs in web-mode
@@ -118,6 +104,9 @@
    #+end_src
    
 ** evil-mode
+   - setup evil-mode, 
+   - set magit commit messages to open in insert state https://emacs.stackexchange.com/questions/14008/default-magit-commit-state-in-evil
+   - setup evil-leader, evil-surround, evil-magit, evil-org, evil-collection
    #+begin_src emacs-lisp
      (use-package evil
        :ensure t
@@ -138,6 +127,7 @@
        (evil-set-initial-state 'shell-mode 'insert)
        (evil-set-initial-state 'eshell-mode 'insert)
        (evil-set-initial-state 'term-mode 'insert)
+       ;; set magit commit messages to open in insert state https://emacs.stackexchange.com/questions/14008/default-magit-commit-state-in-evil
        (add-hook 'with-editor-mode-hook 'evil-insert-state)
        )
 
@@ -216,12 +206,12 @@
    use company autocomplete in all buffers
    #+begin_src emacs-lisp
      (use-package company
-       :ensure t
+       :ensure t)
+
+     (use-package company-elisp
+       :after company
        :config
-       ;; disable company completion in org and text modes
-       (setq company-global-modes (quote (not org-mode)))
-       ;; enable company completion globally otherwise
-       (global-company-mode))
+       (push 'company-elisp company-backends))
    #+end_src
    
 ** web-mode
@@ -327,15 +317,17 @@
        (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
    #+end_src
 
-** haskell/tidal   
-   setup haskell and tidal (full install instructions here: https://tidalcycles.org/index.php/MacOS_installation)
+** haskell/tidal
+   full install instructions here: https://tidalcycles.org/index.php/MacOS_installation
+   
+   setup haskell/tidal
    #+begin_src emacs-lisp
-     ;; (setq load-path (cons "~/.emacs.d/tidal/" load-path))
-     ;; (use-package haskell
-     ;;   :ensure t)
-     ;; (use-package tidal
-     ;;   :config
-     ;;   (setq tidal-interpreter "/usr/local/bin/ghci"))
+     (setq load-path (cons "~/.emacs.d/tidal/" load-path))
+     (use-package haskell-mode
+       :ensure t)
+     (use-package tidal
+       :config
+       (setq tidal-interpreter "/usr/local/bin/ghci"))
    #+end_src
 
 * Miscellaneous Behavior
@@ -364,5 +356,18 @@
      (global-set-key (kbd "M-i") 'imenu)
    #+end_src
 
+** Backup files
+   make all backup files live in .emacs.d/backup
+   #+begin_src emacs-lisp
+     (setq backup-directory-alist '(("." . "~/.emacs.d/backup")))
+   #+end_src
+
+* Custom file
+   sets customizer to save settings to custom.el
+   #+begin_src emacs-lisp
+     (setq custom-file "~/.emacs.d/custom.el")
+     (load custom-file)
+   #+end_src
+   
 * Notes
   see [[./notes.org]]
