@@ -21,25 +21,6 @@
           (lambda ()
             (variable-pitch-mode 1)))
 
-(add-hook 'dired-mode-hook
-          (lambda ()
-            (dired-hide-details-mode)
-            (dired-sort-toggle-or-edit)))
-
-(when (string= system-type "darwin")
-  (setq dired-use-ls-dired nil))
-
-(setq electric-pair-inhibit-predicate
-      `(lambda (c)
-         (if (char-equal c ?\<) t (,electric-pair-inhibit-predicate c))))
-
-;; (add-hook
-;;  'web-mode-hook
-;;  (lambda ()
-;;    (setq-local electric-pair-inhibit-predicate
-;;                `(lambda (c)
-;;                   (if (char-equal c ?{) t (,electric-pair-inhibit-predicate c))))))
-
 (use-package magit
   :ensure t
   :config
@@ -141,11 +122,6 @@
 (use-package company
   :ensure t)
 
-;; (use-package company-elisp
-;;   :after company
-;;   :config
-;;   (push 'company-elisp company-backends))
-
 (use-package web-mode
   :ensure t
   :config
@@ -234,6 +210,20 @@
 (use-package tidal
   :config
   (setq tidal-interpreter "/usr/local/bin/ghci"))
+
+(use-package powerline
+  :ensure t
+  :config
+  (powerline-center-evil-theme)
+  (setq powerline-height 20))
+
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (dired-hide-details-mode)
+            (dired-sort-toggle-or-edit)))
+
+(when (string= system-type "darwin")
+  (setq dired-use-ls-dired nil))
 
 (setq default-directory "/Users/anders/")
 

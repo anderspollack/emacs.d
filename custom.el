@@ -12,6 +12,13 @@
     ("26d49386a2036df7ccbe802a06a759031e4455f07bda559dcf221f53e8850e69" default)))
  '(delete-selection-mode t)
  '(desktop-save-mode t)
+ '(electric-pair-inhibit-predicate
+   (lambda
+     (c)
+     (if
+         (char-equal c 60)
+         t
+       (electric-pair-default-inhibit c))))
  '(electric-pair-mode t)
  '(global-auto-revert-mode t)
  '(global-company-mode t)
@@ -37,6 +44,8 @@
  '(package-selected-packages
    (quote
     (company-elisp haskell evil-magit evil-collection org evil-org lua-mode which-key flycheck lsp-ui company-lsp company yasnippet lsp-mode xclip yaml-mode multi-term magit evil-leader evil-surround evil-visual-mark-mode emmet-mode web-mode haskell-mode)))
+ '(powerline-default-separator (quote alternate))
+ '(powerline-height 21)
  '(ring-bell-function (quote ignore))
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)
@@ -45,6 +54,7 @@
  '(tool-bar-mode nil)
  '(visual-line-fringe-indicators (quote (nil nil)))
  '(which-key-mode t)
+ '(window-divider-mode t)
  '(winner-mode t)
  '(xterm-mouse-mode t))
 (package-initialize)
@@ -57,6 +67,8 @@
  '(font-lock-comment-face ((t (:foreground "#a0a1a7" :slant italic))))
  '(lsp-ui-doc-background ((t (:background "gray95"))))
  '(lsp-ui-sideline-code-action ((t (:foreground "#a0a1a7" :slant italic))))
+ '(mode-line ((t (:background "gray80" :box (:line-width 1 :color "gray80")))))
+ '(mode-line-inactive ((t (:inherit mode-line :background "#f0f0f1" :foreground "#a0a1a7" :box (:line-width 1 :color "#f0f0f1")))))
  '(org-block ((t (:family "JetBrains Mono"))))
  '(org-block-begin-line ((t (:foreground "#a0a1a7" :slant italic :family "JetBrains Mono"))))
  '(org-block-end-line ((t (:inherit org-block-begin-line))))
@@ -73,5 +85,11 @@
  '(outline-6 ((t (:inherit outline-1 :weight bold :height 0.8))))
  '(outline-7 ((t (:inherit outline-1 :weight normal :height 0.8))))
  '(outline-8 ((t (:inherit outline-1 :weight bold :height 0.7))))
+ '(powerline-active1 ((t (:inherit mode-line))))
+ '(powerline-active2 ((t (:inherit mode-line))))
+ '(powerline-inactive1 ((t (:inherit mode-line-inactive))))
+ '(powerline-inactive2 ((t (:inherit mode-line-inactive))))
  '(variable-pitch ((t (:inherit default :foreground "gray30" :family "Libre Baskerville"))))
- '(web-mode-comment-face ((t (:inherit font-lock-comment-face)))))
+ '(web-mode-comment-face ((t (:inherit font-lock-comment-face))))
+ '(window-divider ((t (:foreground "gray80"))))
+ '(window-divider-last-pixel ((t (:foreground "gray80")))))

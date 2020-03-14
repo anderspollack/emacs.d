@@ -59,41 +59,7 @@
                  (variable-pitch-mode 1)))
    #+end_src
    
-* Builtin Package customizations
-** dired
-   hide dired details by default. Show details with "(". Sort with "s"
-   #+begin_src emacs-lisp
-     (add-hook 'dired-mode-hook
-               (lambda ()
-                 (dired-hide-details-mode)
-                 (dired-sort-toggle-or-edit)))
-   #+end_src
-
-   suppress "ls does not support --dired"
-   #+begin_src emacs-lisp
-     (when (string= system-type "darwin")
-       (setq dired-use-ls-dired nil))
-   #+end_src
-   
-** electric-pair-mode
-   disable electric-pair-mode for "<>" pairs only
-   #+begin_src emacs-lisp
-     (setq electric-pair-inhibit-predicate
-           `(lambda (c)
-              (if (char-equal c ?\<) t (,electric-pair-inhibit-predicate c))))
-   #+end_src
-   
-   example: disable "{}" pairs in web-mode
-   #+begin_src emacs-lisp
-     ;; (add-hook
-     ;;  'web-mode-hook
-     ;;  (lambda ()
-     ;;    (setq-local electric-pair-inhibit-predicate
-     ;;                `(lambda (c)
-     ;;                   (if (char-equal c ?{) t (,electric-pair-inhibit-predicate c))))))
-   #+end_src
-
-* External Package customizations
+* Package customizations
 ** magit
    #+begin_src emacs-lisp
      (use-package magit
@@ -324,7 +290,31 @@
        (setq tidal-interpreter "/usr/local/bin/ghci"))
    #+end_src
 
+** powerline
+   #+begin_src emacs-lisp
+     (use-package powerline
+       :ensure t
+       :config
+       (powerline-center-evil-theme)
+       (setq powerline-height 20))
+   #+end_src
+   
 * Miscellaneous Behavior
+** dired
+   hide dired details by default. Show details with "(". Sort with "s"
+   #+begin_src emacs-lisp
+     (add-hook 'dired-mode-hook
+               (lambda ()
+                 (dired-hide-details-mode)
+                 (dired-sort-toggle-or-edit)))
+   #+end_src
+
+   suppress "ls does not support --dired"
+   #+begin_src emacs-lisp
+     (when (string= system-type "darwin")
+       (setq dired-use-ls-dired nil))
+   #+end_src
+   
 ** default find-file directory
    #+begin_src emacs-lisp
      (setq default-directory "/Users/anders/")
