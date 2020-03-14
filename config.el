@@ -29,10 +29,9 @@
 (when (string= system-type "darwin")
   (setq dired-use-ls-dired nil))
 
-(setq electric-pair-mode t)
 (setq electric-pair-inhibit-predicate
       `(lambda (c)
-         (if (char-equal c ?\") t (,electric-pair-inhibit-predicate c))))
+         (if (char-equal c ?\<) t (,electric-pair-inhibit-predicate c))))
 
 ;; (add-hook
 ;;  'web-mode-hook
@@ -142,10 +141,10 @@
 (use-package company
   :ensure t)
 
-(use-package company-elisp
-  :after company
-  :config
-  (push 'company-elisp company-backends))
+;; (use-package company-elisp
+;;   :after company
+;;   :config
+;;   (push 'company-elisp company-backends))
 
 (use-package web-mode
   :ensure t

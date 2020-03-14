@@ -76,12 +76,11 @@
    #+end_src
    
 ** electric-pair-mode
-   enable electric-pair-mode, but disable for "<>" pairs only
+   disable electric-pair-mode for "<>" pairs only
    #+begin_src emacs-lisp
-     (setq electric-pair-mode t)
      (setq electric-pair-inhibit-predicate
            `(lambda (c)
-              (if (char-equal c ?\") t (,electric-pair-inhibit-predicate c))))
+              (if (char-equal c ?\<) t (,electric-pair-inhibit-predicate c))))
    #+end_src
    
    example: disable "{}" pairs in web-mode
@@ -207,11 +206,6 @@
    #+begin_src emacs-lisp
      (use-package company
        :ensure t)
-
-     (use-package company-elisp
-       :after company
-       :config
-       (push 'company-elisp company-backends))
    #+end_src
    
 ** web-mode

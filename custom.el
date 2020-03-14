@@ -12,6 +12,7 @@
     ("26d49386a2036df7ccbe802a06a759031e4455f07bda559dcf221f53e8850e69" default)))
  '(delete-selection-mode t)
  '(desktop-save-mode t)
+ '(electric-pair-mode t)
  '(global-auto-revert-mode t)
  '(global-company-mode t)
  '(global-subword-mode t)
