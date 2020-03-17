@@ -7,10 +7,21 @@
   - Libre Baskerville https://fonts.google.com/specimen/Libre+Baskerville?selection.family=Libre+Baskerville
   #+begin_src shell
     wget https://download.jetbrains.com/fonts/JetBrainsMono-1.0.3.zip
-    wget https://download.jetbrains.com/fonts/JetBrainsMono-1.0.3.zip
   #+end_src
   - JetBrains Mono https://www.jetbrains.com/lp/mono/
-    
+   
+* Garbage Collection
+  #+begin_src emacs-lisp
+    (defun my-minibuffer-setup-hook ()
+      (setq gc-cons-threshold most-positive-fixnum))
+
+    (defun my-minibuffer-exit-hook ()
+      (setq gc-cons-threshold 800000))
+
+    (add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
+    (add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
+  #+end_src
+
 * Terminal accessibility
 ** Terminal mouse scrolling
    enable mouse scrolling in terminal emacs
@@ -94,6 +105,9 @@
        (evil-set-initial-state 'term-mode 'insert)
        ;; set magit commit messages to open in insert state https://emacs.stackexchange.com/questions/14008/default-magit-commit-state-in-evil
        (add-hook 'with-editor-mode-hook 'evil-insert-state)
+       ;; set RETURN to open links in org-mode
+       (add-hook 'org-mode-hook (lambda ()
+                                  (define-key evil-normal-state-map (kbd "RET") 'org-open-at-point)))
        )
 
      (use-package evil-leader
@@ -266,7 +280,7 @@
      (use-package which-key
        :ensure t
        :config
-       (which-key-mode))
+       (setq which-key-mode t))
    #+end_src
 
 ** yaml-mode

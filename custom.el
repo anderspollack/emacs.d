@@ -4,7 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(company-global-modes (quote (not org-mode)))
+ '(company-global-modes (quote (not org-mode text-mode)))
  '(company-require-match nil)
  '(custom-enabled-themes (quote (tsdh-light)))
  '(custom-safe-themes
@@ -43,7 +43,7 @@
  '(next-screen-context-lines 5)
  '(package-selected-packages
    (quote
-    (company-elisp haskell evil-magit evil-collection org evil-org lua-mode which-key flycheck lsp-ui company-lsp company yasnippet lsp-mode xclip yaml-mode multi-term magit evil-leader evil-surround evil-visual-mark-mode emmet-mode web-mode haskell-mode)))
+    (company-elisp haskell evil-magit evil-collection org evil-org lua-mode which-key lsp-ui company-lsp company yasnippet lsp-mode xclip yaml-mode multi-term magit evil-leader evil-surround evil-visual-mark-mode emmet-mode web-mode haskell-mode)))
  '(powerline-default-separator (quote alternate))
  '(powerline-height 21)
  '(ring-bell-function (quote ignore))
@@ -53,7 +53,6 @@
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(visual-line-fringe-indicators (quote (nil nil)))
- '(which-key-mode t)
  '(window-divider-mode t)
  '(winner-mode t)
  '(xterm-mouse-mode t))

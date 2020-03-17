@@ -1,3 +1,12 @@
+(defun my-minibuffer-setup-hook ()
+  (setq gc-cons-threshold most-positive-fixnum))
+
+(defun my-minibuffer-exit-hook ()
+  (setq gc-cons-threshold 800000))
+
+(add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
+(add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
+
 (if (not (window-system))
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
 (if (not (window-system))
@@ -47,6 +56,9 @@
   (evil-set-initial-state 'term-mode 'insert)
   ;; set magit commit messages to open in insert state https://emacs.stackexchange.com/questions/14008/default-magit-commit-state-in-evil
   (add-hook 'with-editor-mode-hook 'evil-insert-state)
+  ;; set RETURN to open links in org-mode
+  (add-hook 'org-mode-hook (lambda ()
+                             (define-key evil-normal-state-map (kbd "RET") 'org-open-at-point)))
   )
 
 (use-package evil-leader
@@ -197,7 +209,7 @@
 (use-package which-key
   :ensure t
   :config
-  (which-key-mode))
+  (setq which-key-mode t))
 
 (use-package yaml-mode
   :ensure t
