@@ -84,6 +84,7 @@
     "j" 'windmove-down
     "k" 'windmove-up
     "l" 'windmove-right
+    "m" 'toggle-frame-fullscreen
     "n" 'make-frame
     "w" 'delete-frame
     "r" 'font-lock-fontify-buffer
