@@ -70,7 +70,7 @@
   (evil-leader/set-key
     "f" 'find-file
     "b" 'switch-to-buffer
-    "d" 'ido-dired
+    "d" 'dired
     "s" 'save-buffer
     "1" 'delete-other-windows
     "2" 'evil-window-split
@@ -93,6 +93,11 @@
           (eshell))
     "g" 'magit-status
     "u" 'undo-tree-visualize
+    ;; make SPC-SPC enlarge the current window in both dimensions
+    "SPC" (lambda ()
+            (interactive)
+            (enlarge-window-horizontally 36)
+            (enlarge-window 12))
     )
   ;; set SPC-' to toggle editing of org-src blocks
   (evil-leader/set-key "'" 'org-edit-src-exit)
