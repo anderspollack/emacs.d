@@ -226,6 +226,7 @@
 (use-package haskell-mode
   :ensure t)
 (use-package tidal
+  :ensure t
   :config
   (setq tidal-interpreter "/usr/local/bin/ghci"))
 
@@ -243,7 +244,7 @@
 (when (string= system-type "darwin")
   (setq dired-use-ls-dired nil))
 
-(setq default-directory "/Users/anders/")
+(setq default-directory "~/")
 
 (add-hook
  'eshell-mode-hook

@@ -306,6 +306,7 @@
      (use-package haskell-mode
        :ensure t)
      (use-package tidal
+       :ensure t
        :config
        (setq tidal-interpreter "/usr/local/bin/ghci"))
    #+end_src
@@ -337,7 +338,7 @@
    
 ** default find-file directory
    #+begin_src emacs-lisp
-     (setq default-directory "/Users/anders/")
+     (setq default-directory "~/")
    #+end_src
 
 ** eshell tab completion

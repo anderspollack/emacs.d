@@ -64,6 +64,7 @@
  '(lsp-ui-doc-background ((t (:background "gray95"))))
  '(lsp-ui-sideline-code-action ((t (:foreground "#a0a1a7" :slant italic))))
  '(mode-line ((t (:background "gray80" :box (:line-width 1 :color "gray80")))))
+ '(mode-line-highlight ((t (:background "grey90" :box nil))))
  '(mode-line-inactive ((t (:inherit mode-line :background "#f0f0f1" :foreground "#a0a1a7" :box (:line-width 1 :color "#f0f0f1")))))
  '(org-block ((t (:family "JetBrains Mono"))))
  '(org-block-begin-line ((t (:foreground "#a0a1a7" :slant italic :family "JetBrains Mono"))))
