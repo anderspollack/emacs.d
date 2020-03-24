@@ -1,0 +1,475 @@
+* Notes
+** Mac-specific things
+*** Emacs-macport system keyboard collisons
+    due to how emacs-macport uses command as meta, there are some duplicate keybindings. C-M-d, C-M-q are used by MacOS, so you can't use them
+    - C-M-d: in MacOS, this uses the system dictionary. In emacs, it runs the command down-list.
+    - C-M-q: in MacOS, this locks the screen. In emacs, it reindents all the lines within one parenthetical grouping. It runs a different command based on the major mode. For example:
+      it is indent-pp-sexp in Lisp mode, c-indent-exp in C mode, etc
+
+*** Disable Command-Ctrl-D dictionary lookup shortcut
+    In order to be able to use C-M-d (move down into a list/balanced expression) disable the default mac shortcut:
+    #+BEGIN_SRC shell
+      defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 70 '<dict><key>enabled</key><false/></dict>'
+    #+END_SRC
+   
+    to re-enable, do the following and restart:
+    #+BEGIN_SRC shell
+      defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 70 '<dict><key>enabled</key><true/></dict>'
+    #+END_SRC
+   
+*** Title Bar (homebrew-emacsmacport only)
+    Transparent title bar is DISABLED by default.
+    For dark themes:
+    #+BEGIN_SRC shell
+      defaults write org.gnu.Emacs TransparentTitleBar DARK
+    #+END_SRC
+
+    For light themes:
+    #+BEGIN_SRC shell
+      defaults write org.gnu.Emacs TransparentTitleBar LIGHT
+    #+END_SRC
+
+    To disable:
+    #+BEGIN_SRC shell
+      defaults write org.gnu.Emacs TransparentTitleBar NO
+    #+END_SRC
+
+    or
+    #+BEGIN_SRC shell
+      defaults delete org.gnu.Emacs TransparentTitleBar
+    #+END_SRC
+
+    All settings will been used in new frame or after restart Emacs
+
+** Bookmarks
+   set a bookmark
+   C-x r m
+
+   List bookmarks
+   C-x r l
+
+   Jump to bookmark
+   C-x r b
+
+** Registers
+   Store region in register
+   C-x r s
+
+   Insert content of register
+   C-x r i
+
+   Store point in register
+   C-x r SPC
+
+   Jump to register
+   C-x r j
+
+   Store window configuration in register
+   C-x r w
+
+** Mark
+   Sets the mark, toggles the region
+   C-SPC
+
+   Jumps to the mark, and repeated calls go further back the mark ring
+   C-u C-SPC
+
+   Jump to latest item in the mark ring, rotates the mark ring
+   C-x C-SPC
+
+   Exchanges the point and mark, and reactivates the last region
+   C-x C-x
+
+   Mark next paragraph
+   M-h
+
+   Mark whole buffer
+   C-x h
+
+   Mark the next defun
+   C-M-h
+
+   Mark the next word
+   M-@
+
+   Mark the next sexp
+   C-M-@, C-M-SPC (conflicts with MacOS emoji menu shortcut)
+
+** Undo Tree
+   type C-x u to open undo-tree visualizer
+
+** Incremental Search
+   Incremental search
+   C-s
+
+   Reverse incremental search
+   C-r
+
+   Regexp incremental search
+   C-M-s
+   example: C-M-s ^Mark to highlight above non-headline sections
+
+   Regexp reverse incremental search
+   C-M-r
+
+   when incremental search is active:
+
+   move to next/previous search history items
+   M-n, M-p
+
+   search history items with tab-completion
+   C-M-i
+
+   Isearch forward for symbol at point
+   M-s .
+
+** Occur mode
+   occur mode, and activate occur on current search string in Isearch. Searches current buffer with a term/regexp
+   M-s o
+
+   Next/Previous occurrence in occur buffer
+   M-n / M-p
+
+   Go to beginning/end of buffer
+   <, >
+
+   Refresh - g; quit - q
+
+   Switch to occur edit mode
+   e
+
+   Exits occur edit mode, applying changes
+   C-c C-c
+
+   Jump to next/previous occurence in buffer
+   M-g M-n / M-g M-p
+
+** Imenu
+   I mapped M-x imenu to
+   M-i
+   this only is useful in org-mode?
+
+** Ido mode
+   after typing for example C-x b to switch to a buffer,
+   Move to next/previous option
+   C-s / C-r
+
+** Grep
+   M-x grep - prompts for arguments to pass to grep
+   M-x grep-find - prompts for arguments to pass to grep and find
+   M-x lgrep - prompts for query and glob pattern to search for with grep
+   M-x rgrep - prompts for query and glob pattern then recursively searches with grep and find
+   M-x rzgrep - like M-x rgrep but searches compressed gzip files
+
+   also M-x customize-group RET grep  -- customize the default grep command
+
+   in a grep buffer, use these to jump to next/previous matches, like Occur mode
+   M-g M-n / M-g M-p
+
+** Other Movement
+   reposition the point in top-left, middle-left, or bottom-left
+   M-r
+
+   re-center the point in the top, middle, or bottom of the buffer
+   C-l
+
+   Go to line
+   M-g M-g / M-g g
+   go to specific line (goes to line 50 in this case):
+   M-5 M-0 M-g M-g
+
+   set default column for C-n / C-p movements
+   C-x C-n
+
+   cancel g
+
+   jump to column position
+   M-g TAB
+
+   jump to char position
+   M-g c
+
+** Editing
+*** Killing
+    delete forward char
+    C-d
+
+    Delete forward word
+    M-d
+
+    Delete backward word
+    C-<backspace>
+
+    kill rest of line
+    C-k
+
+    kill sentence
+    M-k
+
+    kill s-expression
+    C-M-k
+
+    kill current line
+    C-S-<backspace>
+
+    notes: multiple continuous kill commands (like with M-d) append to the last kill. any movement creates a new kill ring entry.
+
+    append to the current kill ring entry if next command is a kill
+    C-M-w
+    useful
+
+*** Yanking
+    Yank last kill
+    C-y
+
+    After yanking, cycle through previous yanks
+    M-y
+
+*** Transposing
+    Transpose character
+    C-t
+
+    Transpose words
+    M-t
+
+    Transpose s-expressions
+    C-M-t
+
+    Transpose lines
+    C-x C-t
+
+*** Narrow
+    this lets you view and edit only a small subset of the current buffer.
+    select a region of text, then:
+    C-x n n
+    (narrow-to-region)
+
+    to return to the full buffer:
+    C-x n w
+    (widen)
+
+    narrow to current org-mode subtree:
+    C-x n s
+
+    narrow to current org-mode code block:
+    C-x n b
+
+*** ansi-term
+    pasting into prompt:
+    C-c M-x term-paste
+
+    line mode. Interact with terminal as a buffer
+    C-c C-j
+
+    go back to char mode to interact with terminal:
+    C-c C-k
+
+*** Join lines
+    with cursor on the last line to be joined,
+    M-^
+
+** LSP
+   peek definition:
+   M-.
+
+** evil-org-mode
+   https://github.com/Somelauw/evil-org-mode
+*** Basic
+    These keys are always enabled
+   
+    |-------+-------------------------------+--------------------------------------------|
+    | key   | function                      | explanation                                |
+    |-------+-------------------------------+--------------------------------------------|
+    | =TAB= | org-cycle                     | change folding level of current heading    |
+    | =0=   | evil-org-beginning-of-line    | like 0 but can be special*                 |
+    | =$=   | evil-org-end-of-line          | like $ but can be special*                 |
+    | =I=   | evil-org-insert-line          | like I but can be special*                 |
+    | =A=   | evil-org-append-line          | like A but can be special*                 |
+    | =o=   | evil-org-open-below           | like o but continue tables and items*      |
+    | =O=   | evil-org-open-above           | like O but continue tables and items*      |
+    | =d=   | evil-org-delete               | like d but keep tags aligned and fix lists |
+    | =x=   | evil-org-delete-char          | like x but keep tables and tags aligned    |
+    | =X=   | evil-org-delete-previous-char | like X but keep tables and tags aligned    |
+    | =(=   | org-forward-sentence          | next cell in table                         |
+    | =)=   | org-backward-sentence         | previous cell in table                     |
+    | ={=   | org-backward-paragraph        | beginning of table                         |
+    | =}=   | org-forward-paragraph         | end of table                               |
+    |-------+-------------------------------+--------------------------------------------|
+
+    * Set =org-special-ctrl-a/e= to =t= to make =org-beginning-of-line= and =org-end-of-line= ignore leading stars or tags on headings. Repeat to toggle. By default it's set to ~nil~.
+    * =evil-org-insert-line= and =evil-org-append-line= also respect the setting of =org-special-ctrl-a/e=.
+    * The cases in which =o= and =O= should behave special can be controlled using =evil-org-special-o/O=. By default it's set to ~'(table-row item)~.
+
+**** Operators
+     Context dependent dwim operators for:
+     - promoting/demoting on headings and items
+     - moving table columns
+     - changing indent in other contexts (when editing source code)
+
+     |-----+------------+-------------------------------------|
+     | key | function   | explanation                         |
+     |-----+------------+-------------------------------------|
+     | =<= | evil-org-< | Promote all headings in marked area |
+     | =>= | evil-org-> | Demote all headings in marked area  |
+     |-----+------------+-------------------------------------|
+    
+     Variable =evil-org-retain-visual-state-on-shift= controls whether the selection should be restored after promoting / indenting, which is helpful if you want to promote / indent multiple times. By default this variable is set to =nil=.
+
+     Examples:
+     - =>>= to promote a heading
+     - =>ar= to promote a tree
+     - =<(= to swap a table column with the one on the left
+     - =vie2>= to move a table column two places to the right
+
+     If you want =<= and =>= to promote / demote headings and items on a single press, add the following to your org setup:
+
+     #+begin_src emacs-lisp
+       (evil-define-key 'normal evil-org-mode-map
+         (kbd ">") 'org-meta-right
+         (kbd "<") 'org-meta-left)
+     #+end_src
+     Or enable the additional key binding theme and use =M-h= and =M-l.=
+    
+*** Return
+    Experimental function bound to =RET=.
+    Disabled by default. If enabled, it's active in insert and emacs state.
+
+    Depending on context, it performs one of the following actions:
+    - When on an empty item or table row, abort or split the item list or table.
+    - When on a non-empty item or table row, continue the item list or table.
+    - Otherwise, insert a newline and indent.
+
+    This makes =RET= more consistent with =evil-org-open-above/below= (which are bound to =o= and =O= by default).
+   
+    |-------+-----------------|
+    | key   | function        |
+    |-------+-----------------|
+    | =RET= | evil-org-return |
+    |-------+-----------------|
+   
+    Based on the following earlier work:
+    - https://github.com/calvinwyoung/org-autolist
+    - http://kitchingroup.cheme.cmu.edu/blog/2017/04/09/A-better-return-in-org-mode/
+
+    * The cases in which =RET= should behave special can be controlled using =evil-org-special-o/O=. By default it's set to ~'(table-row item)~.
+
+*** Navigation
+    If you don't want to use =h/j/k/l,= you can customize =evil-org-movement-bindings=.
+
+    |------+----------------------+-------------------|
+    | key  | function             | explanation       |
+    |------+----------------------+-------------------|
+    | =gh= | org-element-up       | parent of element |
+    | =gj= | org-forward-element  | next element      |
+    | =gk= | org-backward-element | previous element  |
+    | =gl= | org-down-element     | first subelement  |
+    | =gH= | evil-org-top         | top-level heading |
+    |------+----------------------+-------------------|
+
+*** Text objects
+   
+    |-------------+-----------------------------------+----------------------------------|
+    | key         | function                          | examples                         |
+    |-------------+-----------------------------------+----------------------------------|
+    | =ae= / =ie= | evil-org-an/inner-object          | link, markup, table cell         |
+    | =aE= / =iE= | evil-org-an/inner-element         | paragraph, code block, table row |
+    | =ar= / =ir= | evil-org-an/inner-greater-element | item list, table                 |
+    | =aR= / =iR= | evil-org-an/inner-subtree         | subtree starting with a header   |
+    |-------------+-----------------------------------+----------------------------------|
+  
+    - =ae/ie= select the smallest object or element at point. Can be repeated to select adjacent objects / elements.
+    - =aE/iE= select the smallest element at point. Elements build up the structure of the document, so there is always an element at any point. Can be repeated to select adjacent elements.
+    - =ar/ir= select smallest element that is a container of other elements. Can be repeated to select greater elements
+
+    Examples:
+    - =vae= to select a paragraph
+    - =daR= to delete a subtree
+    - =yiR= to yank the contents of a subtree
+
+*** Calendar
+    Disabled by default.
+    When enabled, these bindings are available in org-calendar in both Evil and Emacs mode.
+
+    |-------------------+--------------------------+-----------------------|
+    | evil-org key      | emacs key                | explanation           |
+    |-------------------+--------------------------+-----------------------|
+    | =M-h= / =M-l=     | =S-left= / =S-right=     | next / previous day   |
+    | =M-j= / =M-k=     | =S-down= / =S-up=        | next / previous week  |
+    | =M-S-h= / =M-S-l= | =M-S-left= / =M-S-right= | next / previous month |
+    | =M-S-j= / =M-S-k= | =M-S-down= / =M-S-up=    | next / previous year  |
+    | =C-f= / =C-b=     | =M-v= / =C-v=            | scroll down /up       |
+    |-------------------+--------------------------+-----------------------|
+
+*** Additional
+    If you don't want to use hjkl, you can customize =evil-org-movement-bindings=.
+    If you want to use these bindings even in insert mode, you can customize =evil-org-use-additional-insert=.
+
+    |-------+--------------------+-------------------+-------------------|
+    | key   | function           | On headings       | On tables         |
+    |-------+--------------------+-------------------+-------------------|
+    | =M-h= | org-metaleft       | promote heading   | move column left  |
+    | =M-l= | org-metaright      | demote heading    | move column right |
+    | =M-k= | org-metaup         | move subtree up   | move column up    |
+    | =M-j= | org-metadown       | move subtree down | move column down  |
+    | =M-H= | org-shiftmetaleft  | promote subtree   | delete column     |
+    | =M-L= | org-shiftmetaright | demote subtree    | insert column     |
+    | =M-K= | org-shiftmetaup    | move heading up   | delete row        |
+    | =M-J= | org-shiftmetadown  | move heading down | insert row        |
+    |-------+--------------------+-------------------+-------------------|
+
+*** Shift
+    Disabled by default.
+    If you don't want to use hjkl, you can customize =evil-org-movement-bindings=.
+
+    |-----+----------------+--------------------|
+    | key | function       | explanation        |
+    |-----+----------------+--------------------|
+    | =H= | org-shiftleft  | previous todo item |
+    | =L= | org-shiftright | next todo item     |
+    | =J= | org-shiftdown  | decrease priority  |
+    | =K= | org-shiftup    | increase priority  |
+    |-----+----------------+--------------------|
+
+    When point is not at a heading or item, these keys fall back on their binding in non-org modes. For example, you can still use =J= to join lines when not at a heading. This behaviour can be configured using =evil-org-want-hybrid-shift=. By default this option is set to ~t~.
+
+*** Todo
+    Disabled by default.
+
+    |-------+----------------------------|
+    | key   | function                   |
+    |-------+----------------------------|
+    | =t=   | org-todo                   |
+    | =T=   | org-insert-todo-heading    |
+    | =M-t= | org-insert-todo-subheading |
+    |-------+----------------------------|
+  
+*** Heading
+    Disabled by default.
+
+    |-------+-----------------------|
+    | key   | function              |
+    |-------+-----------------------|
+    | =O=   | org-insert-heading    |
+    | =M-o= | org-insert-subheading |
+    |-------+-----------------------|
+
+*** Commands without default binding
+    These functions don't have any bindings by default and aren't well-maintained. You can bind them under =C-c= or another leader key.
+
+    |-------------------------+----------------------------------------|
+    | function                | explanation                            |
+    |-------------------------+----------------------------------------|
+    | evil-org-open-links     | opens links in selection               |
+    | evil-org-open-incognito | open link at point in incognito window |
+    |-------------------------+----------------------------------------|
+
+    =evil-org-open-links= opens all links in a selection. Use =RET= to open a single link.
+    =evil-org-open-incognito= tries to open a link in a private window.
+   
+** tidal
+   after opening Supercollider, running SuperDirt.start, open a .tidal file and:
+   C-c C-s
+   starts the tidal process
+   
+   C-C and RETURN
+   evaluates current line
