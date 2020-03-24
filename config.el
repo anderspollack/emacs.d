@@ -56,6 +56,8 @@
   (evil-set-initial-state 'term-mode 'insert)
   ;; set magit commit messages to open in insert state https://emacs.stackexchange.com/questions/14008/default-magit-commit-state-in-evil
   (add-hook 'with-editor-mode-hook 'evil-insert-state)
+  ;; set C-y to paste text in insert mode
+  (define-key evil-insert-state-map (kbd "C-y") 'evil-paste-after)
   ;; set RETURN to open links in org-mode
   (add-hook 'org-mode-hook (lambda ()
                              (define-key evil-normal-state-map (kbd "RET") 'org-open-at-point)))
@@ -211,6 +213,11 @@
 (use-package company-lsp
   :ensure t
   :commands company-lsp)
+
+(use-package prettier-js
+  :ensure t
+  :config
+  (add-hook 'web-mode-hook 'prettier-js-mode))
 
 (use-package which-key
   :ensure t

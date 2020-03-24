@@ -269,6 +269,11 @@
     M-^
 
 ** LSP
+   install javascript/typscript language server:
+   #+begin_src shell
+     npm i -g typescript-language-server; npm i -g typescript
+   #+end_src
+   
    peek definition:
    M-.
 
