@@ -228,7 +228,8 @@
 (use-package tidal
   :ensure t
   :config
-  (setq tidal-interpreter "/usr/local/bin/ghci"))
+  ;; (setq tidal-interpreter "/usr/local/bin/ghci")
+  )
 
 (use-package powerline
   :ensure t

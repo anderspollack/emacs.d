@@ -4,12 +4,12 @@
 ** Fonts
    download preferred fonts:
    
-  - Libre Baskerville https://fonts.google.com/specimen/Libre+Baskerville?selection.family=Libre+Baskerville
-  #+begin_src shell
-    wget https://download.jetbrains.com/fonts/JetBrainsMono-1.0.3.zip
-  #+end_src
-  - JetBrains Mono https://www.jetbrains.com/lp/mono/
-   
+   - Libre Baskerville https://fonts.google.com/specimen/Libre+Baskerville?selection.family=Libre+Baskerville
+   #+begin_src shell
+     wget https://download.jetbrains.com/fonts/JetBrainsMono-1.0.3.zip
+   #+end_src
+   - JetBrains Mono https://www.jetbrains.com/lp/mono/
+
 * Garbage Collection
   #+begin_src emacs-lisp
     (defun my-minibuffer-setup-hook ()
@@ -308,7 +308,8 @@
      (use-package tidal
        :ensure t
        :config
-       (setq tidal-interpreter "/usr/local/bin/ghci"))
+       ;; (setq tidal-interpreter "/usr/local/bin/ghci")
+       )
    #+end_src
 
 ** powerline
@@ -368,11 +369,11 @@
    #+end_src
 
 * Custom file
-   sets customizer to save settings to custom.el
-   #+begin_src emacs-lisp
-     (setq custom-file "~/.emacs.d/custom.el")
-     (load custom-file)
-   #+end_src
+  sets customizer to save settings to custom.el
+  #+begin_src emacs-lisp
+    (setq custom-file "~/.emacs.d/custom.el")
+    (load custom-file)
+  #+end_src
    
 * Notes
   see [[./notes.org]]
