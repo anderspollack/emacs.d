@@ -4,7 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(company-global-modes (quote (not org-mode text-mode)))
+ '(company-global-modes (quote (not org-mode text-mode markdown-mode)))
  '(company-require-match nil)
  '(custom-enabled-themes (quote (tsdh-light)))
  '(custom-safe-themes

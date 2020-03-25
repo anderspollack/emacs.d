@@ -274,6 +274,11 @@
      npm i -g typescript-language-server; npm i -g typescript
    #+end_src
    
+   install vue language server:
+   #+begin_src shell
+     npm i -g vue-language-server
+   #+end_src
+   
    peek definition:
    M-.
 
