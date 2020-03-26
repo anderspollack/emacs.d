@@ -56,8 +56,11 @@
   (evil-set-initial-state 'term-mode 'insert)
   ;; set magit commit messages to open in insert state https://emacs.stackexchange.com/questions/14008/default-magit-commit-state-in-evil
   (add-hook 'with-editor-mode-hook 'evil-insert-state)
-  ;; set C-y to paste text in insert mode
-  (define-key evil-insert-state-map (kbd "C-y") 'evil-paste-after)
+  ;; set C-y to paste text in insert mode -- uses evil-paste-before + right-char instead of yank to make pasting in the terminal work
+  (define-key evil-insert-state-map (kbd "C-y") (lambda ()
+                                                  (interactive)
+                                                  (evil-paste-before 1)
+                                                  (right-char 1)))
   ;; set RETURN to open links in org-mode
   (add-hook 'org-mode-hook (lambda ()
                              (define-key evil-normal-state-map (kbd "RET") 'org-open-at-point)))
@@ -89,7 +92,7 @@
     "m" 'toggle-frame-fullscreen
     "n" 'make-frame
     "w" 'delete-frame
-    "r" 'font-lock-fontify-buffer
+    "r" 'web-mode-reload
     "t" (lambda ()
           (interactive)
           (eshell))
@@ -171,9 +174,9 @@
           ))
 
   ;; set indentation level to 2/4 for html/markup
-  (setq web-mode-markup-indent-offset 4)
-  (setq web-mode-css-indent-offset 4)
-  (setq web-mode-code-indent-offset 4)
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
   (setq web-mode-style-padding 0)
   (setq web-mode-script-padding 0)
 
