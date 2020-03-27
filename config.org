@@ -141,7 +141,12 @@
          "m" 'toggle-frame-fullscreen
          "n" 'make-frame
          "w" 'delete-frame
-         "r" 'web-mode-reload
+         "r" (lambda ()
+               "if the current buffer is web-mode, run web-mode-reload, otherwise run font-lock-fontify-buffer"
+               (interactive)
+               (if (string= (symbol-value 'major-mode) "web-mode")
+                   (web-mode-reload)
+                 (font-lock-fontify-buffer)))
          "t" (lambda ()
                (interactive)
                (eshell))
