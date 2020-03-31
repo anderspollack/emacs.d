@@ -1,15 +1,6 @@
 * Overview
   this is an attempt to use literate programming style to organize and annotate my emacs config. Configuration code is stored in org-mode source blocks. To quickly insert a source block, type "<s" then tab. Type C-c C-c to execute a block. To edit a source block, type C-c '. Type C-c ' again to finish editing.
   
-** Fonts
-   download preferred fonts:
-   
-   - Libre Baskerville https://fonts.google.com/specimen/Libre+Baskerville?selection.family=Libre+Baskerville
-   #+begin_src shell
-     wget https://download.jetbrains.com/fonts/JetBrainsMono-1.0.3.zip
-   #+end_src
-   - JetBrains Mono https://www.jetbrains.com/lp/mono/
-
 * Garbage Collection
   #+begin_src emacs-lisp
     (defun my-minibuffer-setup-hook ()
@@ -157,6 +148,7 @@
                  (interactive)
                  (enlarge-window-horizontally 36)
                  (enlarge-window 12))
+         "%" 'query-replace
          )
        ;; set SPC-' to toggle editing of org-src blocks
        (evil-leader/set-key "'" 'org-edit-src-exit)

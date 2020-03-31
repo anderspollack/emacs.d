@@ -1,4 +1,17 @@
 * Notes
+** Fonts
+   download preferred fonts:
+   
+*** Libre Baskerville 
+    This is used for all non-fixed-width text. Download and install from Google Fonts
+    https://fonts.google.com/specimen/Libre+Baskerville?selection.family=Libre+Baskerville
+   
+*** SF Mono
+    SF Mono is included in Terminal.app, but you have to install it manually for Emacs to see it. Run the following to open the folder they are kept, then open all and click "Install"
+   #+begin_src shell
+     open /Applications/Utilities/Terminal.app/Contents/Resources/Fonts
+   #+end_src
+
 ** Mac-specific things
 *** Emacs-macport system keyboard collisons
     due to how emacs-macport uses command as meta, there are some duplicate keybindings. C-M-d, C-M-q are used by MacOS, so you can't use them
