@@ -6,6 +6,7 @@
  '(column-number-mode t)
  '(company-global-modes (quote (not org-mode text-mode markdown-mode)))
  '(company-require-match nil)
+ '(css-indent-offset 2)
  '(custom-enabled-themes (quote (tsdh-light)))
  '(custom-safe-themes
    (quote
@@ -39,7 +40,7 @@
  '(next-screen-context-lines 5)
  '(package-selected-packages
    (quote
-    (company-elisp haskell evil-magit evil-collection org evil-org lua-mode which-key lsp-ui company-lsp company yasnippet lsp-mode xclip yaml-mode multi-term magit evil-leader evil-surround evil-visual-mark-mode emmet-mode web-mode haskell-mode)))
+    (flycheck company-elisp haskell evil-magit evil-collection org evil-org lua-mode which-key lsp-ui company-lsp company yasnippet lsp-mode xclip yaml-mode multi-term magit evil-leader evil-surround evil-visual-mark-mode emmet-mode web-mode haskell-mode)))
  '(powerline-default-separator (quote alternate))
  '(powerline-height 21)
  '(ring-bell-function (quote ignore))
