@@ -108,6 +108,7 @@
             (interactive)
             (enlarge-window-horizontally 36)
             (enlarge-window 12))
+    "%" 'query-replace
     )
   ;; set SPC-' to toggle editing of org-src blocks
   (evil-leader/set-key "'" 'org-edit-src-exit)
