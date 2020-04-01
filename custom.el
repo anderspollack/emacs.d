@@ -28,7 +28,7 @@
  '(lsp-ui-doc-alignment (quote window))
  '(lsp-ui-doc-border "#a0a1a7")
  '(lsp-ui-doc-delay 0.5)
- '(lsp-ui-doc-enable t)
+ '(lsp-ui-doc-enable nil)
  '(lsp-ui-doc-max-width 80)
  '(lsp-ui-doc-position (quote bottom))
  '(lsp-ui-doc-use-childframe t)
