@@ -14,9 +14,9 @@
    
 *** SF Mono
     SF Mono is included in Terminal.app, but you have to install it manually for Emacs to see it. Run the following to open the folder they are kept, then open all and click "Install"
-   #+begin_src shell
-     open /Applications/Utilities/Terminal.app/Contents/Resources/Fonts
-   #+end_src
+    #+begin_src shell
+      open /Applications/Utilities/Terminal.app/Contents/Resources/Fonts
+    #+end_src
 
 ** Mac-specific things
 *** Emacs-macport system keyboard collisons

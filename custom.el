@@ -87,6 +87,8 @@
  '(org-block-end-line ((t (:inherit org-block-begin-line))))
  '(org-code ((t (:inherit (shadow fixed-pitch)))))
  '(org-formula ((t (:foreground "Firebrick" :inherit fixed-pitch))))
+ '(org-hide ((t (:inherit fixed-pitch :foreground "#fafafa"))))
+ '(org-indent ((t (:inherit nil))))
  '(org-meta-line ((t (:inherit font-lock-comment-face :inherit fixed-pitch))))
  '(org-table ((t (:foreground "Blue1" :inherit fixed-pitch))))
  '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
