@@ -27,36 +27,36 @@
 
 *** Disable Command-Ctrl-D dictionary lookup shortcut
     In order to be able to use C-M-d (move down into a list/balanced expression) disable the default mac shortcut:
-    #+BEGIN_SRC shell
+    #+begin_src shell
       defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 70 '<dict><key>enabled</key><false/></dict>'
-    #+END_SRC
+    #+end_src
    
     to re-enable, do the following and restart:
-    #+BEGIN_SRC shell
+    #+begin_src shell
       defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 70 '<dict><key>enabled</key><true/></dict>'
-    #+END_SRC
+    #+end_src
    
 *** Title Bar (homebrew-emacsmacport only)
     Transparent title bar is DISABLED by default.
     For dark themes:
-    #+BEGIN_SRC shell
+    #+begin_src shell
       defaults write org.gnu.Emacs TransparentTitleBar DARK
-    #+END_SRC
+    #+end_src
 
     For light themes:
-    #+BEGIN_SRC shell
+    #+begin_src shell
       defaults write org.gnu.Emacs TransparentTitleBar LIGHT
-    #+END_SRC
+    #+end_src
 
     To disable:
-    #+BEGIN_SRC shell
+    #+begin_src shell
       defaults write org.gnu.Emacs TransparentTitleBar NO
-    #+END_SRC
+    #+end_src
 
     or
-    #+BEGIN_SRC shell
+    #+begin_src shell
       defaults delete org.gnu.Emacs TransparentTitleBar
-    #+END_SRC
+    #+end_src
 
     All settings will been used in new frame or after restart Emacs
 
