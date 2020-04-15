@@ -144,11 +144,9 @@
          "g" 'magit-status
          "u" 'undo-tree-visualize
          ;; make SPC-SPC enlarge the current window in both dimensions
-         "SPC" (lambda ()
-                 (interactive)
-                 (enlarge-window-horizontally 36)
-                 (enlarge-window 12))
+         "SPC" 'maximize-window
          "%" 'query-replace
+         "x" 'execute-extended-command
          )
        ;; set SPC-' to toggle editing of org-src blocks
        (evil-leader/set-key "'" 'org-edit-src-exit)
@@ -249,6 +247,7 @@
        (add-hook 'sgml-mode-hook 'emmet-mode)
        (add-hook 'html-mode-hook 'emmet-mode)
        (add-hook 'css-mode-hook  'emmet-mode)
+       (add-hook 'markdown-mode-hook  'emmet-mode)
        ;; enable emmet mode whenever web-mode is active
        (add-hook 'web-mode-hook 'emmet-mode))
    #+end_src

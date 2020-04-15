@@ -197,6 +197,7 @@
   (add-hook 'sgml-mode-hook 'emmet-mode)
   (add-hook 'html-mode-hook 'emmet-mode)
   (add-hook 'css-mode-hook  'emmet-mode)
+  (add-hook 'markdown-mode-hook  'emmet-mode)
   ;; enable emmet mode whenever web-mode is active
   (add-hook 'web-mode-hook 'emmet-mode))
 
