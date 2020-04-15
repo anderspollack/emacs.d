@@ -48,8 +48,9 @@
   (setq org-startup-align-all-tables t)
   ;; ensure org starts up indented 
   (setq org-startup-indented t)
-  ;; enable visual-line-mode in org-mode buffers
-  (add-hook 'org-mode-hook 'visual-line-mode))
+  ;; enable visual-line mode in all text-mode buffers (including org)
+  (add-hook 'text-mode-hook 'visual-line-mode)
+  )
 
 ;; set gc-cons-threshold (garbage collection) to maximum while loading config for fast startup
 (let ((gc-cons-threshold most-positive-fixnum))
