@@ -1,4 +1,10 @@
 * Notes
+** Org + iCloud
+   create a symlink to iCloud Drive Beorg folder in home directory
+   #+begin_src shell
+     ln -s ~/Library/Mobile\ Documents/iCloud~com~appsonthemove~beorg/Documents/org org
+   #+end_src
+
 ** Fonts
    download preferred fonts:
    
@@ -290,6 +296,11 @@
    install vue language server:
    #+begin_src shell
      npm i -g vue-language-server
+   #+end_src
+   
+   install vue language server:
+   #+begin_src shell
+     npm i -g vscode-json-language-server
    #+end_src
    
    peek definition:
