@@ -104,11 +104,9 @@
     "g" 'magit-status
     "u" 'undo-tree-visualize
     ;; make SPC-SPC enlarge the current window in both dimensions
-    "SPC" (lambda ()
-            (interactive)
-            (enlarge-window-horizontally 36)
-            (enlarge-window 12))
+    "SPC" 'maximize-window
     "%" 'query-replace
+    "x" 'execute-extended-command
     )
   ;; set SPC-' to toggle editing of org-src blocks
   (evil-leader/set-key "'" 'org-edit-src-exit)
