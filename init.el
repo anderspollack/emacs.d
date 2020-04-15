@@ -42,7 +42,7 @@
   ;; make indentation look normal with mixed font styles
   (setq org-indent-indentation-per-level 1)
   (setq org-indent-mode-turns-off-org-adapt-indentation nil)
-  ;; hide starts
+  ;; hide stars
   (setq org-indent-mode-turns-on-hiding-stars t)
   ;; align tables
   (setq org-startup-align-all-tables t)
