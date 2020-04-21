@@ -1,3 +1,5 @@
+(server-start)
+
 (defun my-minibuffer-setup-hook ()
   (setq gc-cons-threshold most-positive-fixnum))
 

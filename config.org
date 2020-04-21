@@ -1,5 +1,11 @@
 * Overview
   this is an attempt to use literate programming style to organize and annotate my emacs config. Configuration code is stored in org-mode source blocks. To quickly insert a source block, type "<s" then tab. Type C-c C-c to execute a block. To edit a source block, type C-c '. Type C-c ' again to finish editing.
+ 
+* Server
+  enable emacs server
+  #+begin_src emacs-lisp
+    (server-start)
+  #+end_src
   
 * Garbage Collection
   #+begin_src emacs-lisp

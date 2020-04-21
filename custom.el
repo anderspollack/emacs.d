@@ -43,6 +43,7 @@
     (flycheck company-elisp haskell evil-magit evil-collection org evil-org lua-mode which-key lsp-ui company-lsp company yasnippet lsp-mode xclip yaml-mode multi-term magit evil-leader evil-surround evil-visual-mark-mode emmet-mode web-mode haskell-mode)))
  '(powerline-default-separator (quote alternate))
  '(powerline-height 21)
+ '(prettier-js-command "prettier --ignore-path ~/.prettierignore")
  '(ring-bell-function (quote ignore))
  '(scroll-bar-mode nil)
  '(sentence-end-double-space nil)
