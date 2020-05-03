@@ -63,5 +63,3 @@
 ;; this is where emacs enables commands that warn before executing?
 (put 'set-goal-column 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
-
-;; just a test comment
