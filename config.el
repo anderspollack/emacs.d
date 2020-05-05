@@ -63,6 +63,7 @@
                                                   (interactive)
                                                   (evil-paste-before 1)
                                                   (right-char 1)))
+  (define-key evil-insert-state-map (kbd "C-d") 'delete-char)
   ;; set RETURN to open links in org-mode
   (add-hook 'org-mode-hook (lambda ()
                              (define-key evil-normal-state-map (kbd "RET") 'org-open-at-point)))
@@ -108,6 +109,7 @@
     ;; make SPC-SPC enlarge the current window in both dimensions
     "SPC" 'maximize-window
     "%" 'query-replace
+    "!" 'shell-command
     "x" 'execute-extended-command
     )
   ;; set SPC-' to toggle editing of org-src blocks
