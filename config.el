@@ -25,12 +25,26 @@
 (set-mouse-color "#000000")
 
 (setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
+(setq-default tab-width 2)
 (setq indent-line-function 'insert-tab)
 
 (add-hook 'text-mode-hook
           (lambda ()
             (variable-pitch-mode 1)))
+
+(global-set-key (kbd "M-J")
+                (lambda ()
+                  (interactive)
+                  (evil-window-increase-height 1)
+                  (evil-window-increase-width 1)
+                  ))
+
+(global-set-key (kbd "M-K")
+                (lambda ()
+                  (interactive)
+                  (evil-window-decrease-height 1)
+                  (evil-window-decrease-width 1)
+                  ))
 
 (use-package magit
   :ensure t
@@ -53,6 +67,7 @@
   (setq evil-default-state 'normal)
   :config
   (evil-mode 1)
+  (evil-set-initial-state 'info-mode 'emacs)
   (evil-set-initial-state 'shell-mode 'insert)
   (evil-set-initial-state 'eshell-mode 'insert)
   (evil-set-initial-state 'term-mode 'insert)
@@ -111,6 +126,8 @@
     "%" 'query-replace
     "!" 'shell-command
     "x" 'execute-extended-command
+    "<left>" 'winner-undo
+    "<right>" 'winner-redo
     )
   ;; set SPC-' to toggle editing of org-src blocks
   (evil-leader/set-key "'" 'org-edit-src-exit)
