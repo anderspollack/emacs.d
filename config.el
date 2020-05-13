@@ -44,20 +44,6 @@
           (lambda ()
             (variable-pitch-mode 1)))
 
-(global-set-key (kbd "M-J")
-                (lambda ()
-                  (interactive)
-                  (evil-window-increase-height 1)
-                  (evil-window-increase-width 1)
-                  ))
-
-(global-set-key (kbd "M-K")
-                (lambda ()
-                  (interactive)
-                  (evil-window-decrease-height 1)
-                  (evil-window-decrease-width 1)
-                  ))
-
 (use-package magit
   :ensure t
   :config
@@ -90,7 +76,15 @@
                                                   (interactive)
                                                   (evil-paste-before 1)
                                                   (right-char 1)))
+  ;; set C-d to delete text in insert mode, like emacs + readline
   (define-key evil-insert-state-map (kbd "C-d") 'delete-char)
+  ;; remap all evil movement functions to use visual lines instead of actual lines
+  (define-key evil-normal-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+  (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
+  (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
+  ;; Make horizontal movement cross lines                                    
+  (setq-default evil-cross-lines t) 
   ;; set RETURN to open links in org-mode
   (add-hook 'org-mode-hook (lambda ()
                              (define-key evil-normal-state-map (kbd "RET") 'org-open-at-point)))
@@ -283,6 +277,20 @@
   :ensure t
   :config
   (powerline-center-evil-theme))
+
+(global-set-key (kbd "M-J")
+                (lambda ()
+                  (interactive)
+                  (evil-window-increase-height 1)
+                  (evil-window-increase-width 1)
+                  ))
+
+(global-set-key (kbd "M-K")
+                (lambda ()
+                  (interactive)
+                  (evil-window-decrease-height 1)
+                  (evil-window-decrease-width 1)
+                  ))
 
 (add-hook 'dired-mode-hook
           (lambda ()
