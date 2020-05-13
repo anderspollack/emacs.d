@@ -38,6 +38,22 @@
    #+end_src
 
 * Visual settings
+** Default frame
+   set initial frame placement, and default frame padding / dimensions
+   #+begin_src emacs-lisp
+     (setq initial-frame-alist
+           (append (list '(top . 50)
+                         '(left . 50))))
+
+     (setq default-frame-alist
+           (append (list '(width  . 140)
+                         '(height . 56)
+                         '(vertical-scroll-bars . nil)
+                         '(internal-border-width . 21))))
+     (set-frame-parameter
+      (selected-frame) 'internal-border-width 17)
+   #+end_src 
+
 ** Title Bar
    make the title bar show the current file path
    #+begin_src emacs-lisp

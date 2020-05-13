@@ -18,6 +18,18 @@
           (lambda ()
             (define-key term-raw-map (kbd "C-y") 'term-paste)))
 
+(setq initial-frame-alist
+      (append (list '(top . 50)
+                    '(left . 50))))
+
+(setq default-frame-alist
+      (append (list '(width  . 140)
+                    '(height . 56)
+                    '(vertical-scroll-bars . nil)
+                    '(internal-border-width . 21))))
+(set-frame-parameter
+ (selected-frame) 'internal-border-width 17)
+
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
             '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
