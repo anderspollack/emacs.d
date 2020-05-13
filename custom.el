@@ -21,7 +21,7 @@
          t
        (electric-pair-default-inhibit c))))
  '(electric-pair-mode t)
- '(fringe-mode (quote (0 . 24)) nil (fringe))
+ '(fringe-mode (quote (0 . 21)) nil (fringe))
  '(global-auto-revert-mode t)
  '(global-company-mode t)
  '(global-undo-tree-mode t)
