@@ -282,8 +282,7 @@
 (use-package powerline
   :ensure t
   :config
-  (powerline-center-evil-theme)
-  (setq powerline-height 20))
+  (powerline-center-evil-theme))
 
 (add-hook 'dired-mode-hook
           (lambda ()

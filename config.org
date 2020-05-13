@@ -365,10 +365,9 @@
      (use-package powerline
        :ensure t
        :config
-       (powerline-center-evil-theme)
-       (setq powerline-height 20))
+       (powerline-center-evil-theme))
    #+end_src
-  
+
 * Miscellaneous Behavior
 ** dired
    hide dired details by default. Show details with "(". Sort with "s"
