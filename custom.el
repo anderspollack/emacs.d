@@ -21,7 +21,7 @@
          t
        (electric-pair-default-inhibit c))))
  '(electric-pair-mode t)
- '(fringe-mode (quote (0 . 21)) nil (fringe))
+ '(fringe-mode (quote (0 . 1)) nil (fringe))
  '(global-auto-revert-mode t)
  '(global-company-mode t)
  '(global-undo-tree-mode t)
@@ -38,6 +38,118 @@
  '(lsp-ui-peek-always-show t)
  '(lsp-ui-peek-enable t)
  '(lsp-ui-sideline-enable nil)
+ '(mode-line-format
+   (quote
+    ("%e"
+     (:eval
+      (let*
+          ((active
+            (powerline-selected-window-active))
+           (mode-line-buffer-id
+            (if active
+                (quote mode-line-buffer-id)
+              (quote mode-line-buffer-id-inactive)))
+           (mode-line
+            (if active
+                (quote mode-line)
+              (quote mode-line-inactive)))
+           (face0
+            (if active
+                (quote powerline-active0)
+              (quote powerline-inactive0)))
+           (face1
+            (if active
+                (quote powerline-active1)
+              (quote powerline-inactive1)))
+           (face2
+            (if active
+                (quote powerline-active2)
+              (quote powerline-inactive2)))
+           (separator-left
+            (intern
+             (format "powerline-%s-%s"
+                     (powerline-current-separator)
+                     (car powerline-default-separator-dir))))
+           (separator-right
+            (intern
+             (format "powerline-%s-%s"
+                     (powerline-current-separator)
+                     (cdr powerline-default-separator-dir))))
+           (lhs
+            (list
+             (powerline-raw "%*" face0
+                            (quote l))
+             (when powerline-display-buffer-size
+               (powerline-buffer-size face0
+                                      (quote l)))
+             (powerline-buffer-id
+              (\`
+               (mode-line-buffer-id
+                (\, face0)))
+              (quote l))
+             (powerline-raw " " face0)
+             (funcall separator-left face0 face1)
+             (powerline-narrow face1
+                               (quote l))
+             (powerline-vc face1)))
+           (rhs
+            (list
+             (powerline-raw global-mode-string face1
+                            (quote r))
+             (powerline-raw "%4l" face1
+                            (quote r))
+             (powerline-raw ":" face1)
+             (powerline-raw "%3c" face1
+                            (quote r))
+             (funcall separator-right face1 face0)
+             (powerline-raw " " face0)
+             (powerline-raw "%6p" face0
+                            (quote r))
+             (when powerline-display-hud
+               (powerline-hud face2 face1))))
+           (center
+            (append
+             (list
+              (powerline-raw " " face1)
+              (funcall separator-left face1 face2)
+              (when
+                  (and
+                   (boundp
+                    (quote erc-track-minor-mode))
+                   erc-track-minor-mode)
+                (powerline-raw erc-modified-channels-object face2
+                               (quote l)))
+              (powerline-major-mode face2
+                                    (quote l))
+              (powerline-process face2)
+              (powerline-raw " " face2))
+             (if
+                 (split-string
+                  (format-mode-line minor-mode-alist))
+                 (append
+                  (if evil-mode
+                      (list
+                       (funcall separator-right face2 face1)
+                       (powerline-raw evil-mode-line-tag face1
+                                      (quote l))
+                       (powerline-raw " " face1)
+                       (funcall separator-left face1 face2)))
+                  (list
+                   (powerline-raw " " face2)
+                   (funcall separator-right face2 face1)))
+               (list
+                (powerline-raw evil-mode-line-tag face2)
+                (funcall separator-right face2 face1))))))
+        (concat
+         (powerline-render lhs)
+         (powerline-fill-center face1
+                                (/
+                                 (powerline-width center)
+                                 2.0))
+         (powerline-render center)
+         (powerline-fill face1
+                         (powerline-width rhs))
+         (powerline-render rhs)))))))
  '(next-screen-context-lines 5)
  '(package-selected-packages
    (quote
@@ -50,7 +162,6 @@
  '(shift-select-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil)
- '(visual-line-fringe-indicators (quote (nil nil)))
  '(web-mode-code-indent-offset 2)
  '(web-mode-css-indent-offset 2)
  '(web-mode-enable-auto-pairing nil)
@@ -77,7 +188,8 @@
  '(custom-variable-tag ((t (:foreground "royalblue" :weight bold))))
  '(fixed-pitch ((t (:family "SF Mono"))))
  '(fixed-pitch-serif ((t (:family "SF Mono"))))
- '(fringe ((t (:background "grey98"))))
+ '(fringe ((t (:background "grey92"))))
+ '(header-line ((t (:inherit mode-line :inverse-video t :box (:line-width 6 :color "#383a42")))))
  '(lsp-ui-doc-background ((t (:background "gray95"))))
  '(lsp-ui-sideline-code-action ((t (:foreground "#a0a1a7" :slant italic))))
  '(markdown-header-face-1 ((t (:inherit outline-1))))
@@ -87,9 +199,9 @@
  '(markdown-header-face-5 ((t (:inherit outline-5))))
  '(markdown-header-face-6 ((t (:inherit outline-6))))
  '(minibuffer-prompt ((t (:foreground "#0184bc" :box (:line-width -1 :color "gray98") :weight bold))))
- '(mode-line ((t (:background "gray92" :box (:line-width 6 :color "gray92")))))
- '(mode-line-highlight ((t (:background "grey94" :foreground "black" :box nil))))
- '(mode-line-inactive ((t (:inherit mode-line :background "gray98" :foreground "#a0a1a7" :box (:line-width 6 :color "gray98")))))
+ '(mode-line ((t (:background "gray90" :box (:line-width 6 :color "gray90")))))
+ '(mode-line-highlight ((t (:background "grey92" :foreground "black" :box nil))))
+ '(mode-line-inactive ((t (:inherit mode-line :background "gray94" :foreground "#a0a1a7" :box (:line-width 6 :color "gray94")))))
  '(org-block ((t (:inherit fixed-pitch))))
  '(org-block-begin-line ((t (:foreground "#a0a1a7" :slant italic :inherit fixed-pitch))))
  '(org-block-end-line ((t (:inherit org-block-begin-line))))
@@ -112,9 +224,10 @@
  '(powerline-active2 ((t (:inherit mode-line))))
  '(powerline-inactive1 ((t (:inherit mode-line-inactive))))
  '(powerline-inactive2 ((t (:inherit mode-line-inactive))))
+ '(secondary-selection ((t (:background "LightGoldenrod1"))))
  '(transient-separator ((t (:background "grey98"))))
  '(variable-pitch ((t (:inherit default :foreground "gray30" :family "Libre Baskerville"))))
  '(web-mode-comment-face ((t (:inherit font-lock-comment-face))))
  '(window-divider ((t (:foreground "gray98"))))
- '(window-divider-first-pixel ((t (:foreground "gray92"))))
+ '(window-divider-first-pixel ((t (:foreground "gray98"))))
  '(window-divider-last-pixel ((t (:foreground "gray98")))))
