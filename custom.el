@@ -153,7 +153,7 @@
  '(next-screen-context-lines 5)
  '(package-selected-packages
    (quote
-    (flycheck company-elisp haskell evil-magit evil-collection org evil-org lua-mode which-key lsp-ui company-lsp company yasnippet lsp-mode xclip yaml-mode multi-term magit evil-leader evil-surround evil-visual-mark-mode emmet-mode web-mode haskell-mode)))
+    (flycheck company-elisp haskell evil-magit evil-collection org evil-org lua-mode which-key lsp-ui company-lsp company yasnippet lsp-mode xclip yaml-mode magit evil-leader evil-surround evil-visual-mark-mode emmet-mode web-mode haskell-mode)))
  '(powerline-default-separator nil)
  '(prettier-js-command "prettier --ignore-path ~/.prettierignore")
  '(ring-bell-function (quote ignore))

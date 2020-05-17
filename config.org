@@ -91,135 +91,135 @@
        :config
        (global-set-key (kbd "C-x g") 'magit-status))
    #+end_src
-   
+
 ** evil-mode
    - setup evil-mode, 
    - set magit commit messages to open in insert state https://emacs.stackexchange.com/questions/14008/default-magit-commit-state-in-evil
    - setup evil-leader, evil-surround, evil-magit, evil-org, evil-collection
    #+begin_src emacs-lisp
-     (use-package evil
-       :ensure t
-       :init
-       (setq evil-search-module 'evil-search)
-       (setq evil-ex-complete-emacs-commands nil)
-       (setq evil-vsplit-window-right t)
-       (setq evil-split-window-below t)
-       ;; (setq evil-shift-round nil)
-       (setq evil-want-C-d-scroll t)
-       (setq evil-want-C-u-scroll t)
-       (setq evil-want-C-u-delete t)
-       (setq evil-want-keybinding nil)
-       (setq evil-want-fine-undo t)
-       (setq evil-default-state 'normal)
-       :config
-       (evil-mode 1)
-       (evil-set-initial-state 'info-mode 'emacs)
-       (evil-set-initial-state 'shell-mode 'insert)
-       (evil-set-initial-state 'eshell-mode 'insert)
-       (evil-set-initial-state 'term-mode 'insert)
-       ;; set magit commit messages to open in insert state https://emacs.stackexchange.com/questions/14008/default-magit-commit-state-in-evil
-       (add-hook 'with-editor-mode-hook 'evil-insert-state)
-       ;; set C-y to paste text in insert mode -- uses evil-paste-before + right-char instead of yank to make pasting in the terminal work
-       (define-key evil-insert-state-map (kbd "C-y") (lambda ()
-                                                       (interactive)
-                                                       (evil-paste-before 1)
-                                                       (right-char 1)))
-       ;; set C-d to delete text in insert mode, like emacs + readline
-       (define-key evil-insert-state-map (kbd "C-d") 'delete-char)
-       ;; remap all evil movement functions to use visual lines instead of actual lines
-       (define-key evil-normal-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
-       (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
-       (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
-       (define-key evil-normal-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
-       ;; Make horizontal movement cross lines
-       (setq-default evil-cross-lines t)
-       ;; set RETURN to open links in org-mode
-       (add-hook 'org-mode-hook (lambda ()
-                                  (define-key evil-normal-state-map (kbd "RET") 'org-open-at-point)))
-       )
+         (use-package evil
+           :ensure t
+           :init
+           (setq evil-search-module 'evil-search)
+           (setq evil-ex-complete-emacs-commands nil)
+           (setq evil-vsplit-window-right t)
+           (setq evil-split-window-below t)
+           ;; (setq evil-shift-round nil)
+           (setq evil-want-C-d-scroll t)
+           (setq evil-want-C-u-scroll t)
+           (setq evil-want-C-u-delete t)
+           (setq evil-want-keybinding nil)
+           (setq evil-want-fine-undo t)
+           (setq evil-disable-insert-state-bindings t)
+           (setq evil-want-C-u-delete t)
+           (setq evil-want-C-u-scroll t)
+           :config
+           (evil-mode 1)
+           (evil-set-initial-state 'shell-mode 'insert)
+           (evil-set-initial-state 'eshell-mode 'insert)
+           (evil-set-initial-state 'term-mode 'insert)
+           ;; set magit commit messages to open in insert state https://emacs.stackexchange.com/questions/14008/default-magit-commit-state-in-evil
+           (add-hook 'with-editor-mode-hook 'evil-insert-state)
+           ;; set C-y to paste text in insert mode -- uses evil-paste-before + right-char instead of yank to make pasting in the terminal work
+           ;; (define-key evil-insert-state-map (kbd "C-y") (lambda ()
+           ;;                                                 (interactive)
+           ;;                                                 (evil-paste-before 1)
+           ;;                                                 (right-char 1)))
+           ;; set C-d to delete text in insert mode, like emacs + readline
+           ;; (define-key evil-insert-state-map (kbd "C-d") 'delete-char)
+           ;; remap all evil movement functions to use visual lines instead of actual lines
+           (define-key evil-normal-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+           (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
+           (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+           (define-key evil-normal-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
+           ;; Make horizontal movement cross lines
+           (setq-default evil-cross-lines t)
+           ;; set RETURN to open links in org-mode
+           (add-hook 'org-mode-hook (lambda ()
+                                      (define-key evil-normal-state-map (kbd "RET") 'org-open-at-point)))
+           )
 
-     (use-package evil-leader
-       :after evil
-       :ensure t
-       :config
-       (global-evil-leader-mode t)
-       (evil-leader/set-leader "<SPC>")
-       (evil-leader/set-key
-         "f" 'find-file
-         "b" 'switch-to-buffer
-         "d" 'dired
-         "s" 'save-buffer
-         "1" 'delete-other-windows
-         "2" 'evil-window-split
-         "3" 'evil-window-vsplit
-         "0" (lambda ()
-               (interactive)
-               (delete-window))
-         "=" 'balance-windows
-         "o" 'other-window
-         "h" 'windmove-left
-         "j" 'windmove-down
-         "k" 'windmove-up
-         "l" 'windmove-right
-         "m" 'toggle-frame-fullscreen
-         "n" 'make-frame
-         "w" 'delete-frame
-         "r" (lambda ()
-               "if the current buffer is web-mode, run web-mode-reload, otherwise run font-lock-fontify-buffer"
-               (interactive)
-               (if (string= (symbol-value 'major-mode) "web-mode")
-                   (web-mode-reload)
-                 (font-lock-fontify-buffer)))
-         "t" (lambda ()
-               (interactive)
-               (eshell))
-         "g" 'magit-status
-         "u" 'undo-tree-visualize
-         ;; make SPC-SPC enlarge the current window in both dimensions
-         "SPC" 'maximize-window
-         "%" 'query-replace
-         "!" 'shell-command
-         "x" 'execute-extended-command
-         "<left>" 'winner-undo
-         "<right>" 'winner-redo
-         )
-       ;; set SPC-' to toggle editing of org-src blocks
-       (evil-leader/set-key "'" 'org-edit-src-exit)
-       (evil-leader/set-key-for-mode 'org-mode "'" 'org-edit-special)
+         (use-package evil-leader
+           :after evil
+           :ensure t
+           :config
+           (global-evil-leader-mode t)
+           (evil-leader/set-leader "<SPC>")
+           (evil-leader/set-key
+             "f" 'find-file
+             "b" 'switch-to-buffer
+             "d" 'dired
+             "s" 'save-buffer
+             "1" 'delete-other-windows
+             "2" 'evil-window-split
+             "3" 'evil-window-vsplit
+             "0" (lambda ()
+                   (interactive)
+                   (delete-window))
+             "=" 'balance-windows
+             "o" 'other-window
+             "h" 'windmove-left
+             "j" 'windmove-down
+             "k" 'windmove-up
+             "l" 'windmove-right
+             "m" 'toggle-frame-fullscreen
+             "n" 'make-frame
+             "w" 'delete-frame
+             "r" (lambda ()
+                   "if the current buffer is web-mode, run web-mode-reload, otherwise run font-lock-fontify-buffer"
+                   (interactive)
+                   (if (string= (symbol-value 'major-mode) "web-mode")
+                       (web-mode-reload)
+                     (font-lock-fontify-buffer)))
+             "e" 'eshell
+             "t" 'ansi-term
+             "g" 'magit-status
+             "u" 'undo-tree-visualize
+             ;; make SPC-SPC enlarge the current window in both dimensions
+             "SPC" 'maximize-window
+             "%" 'query-replace
+             "!" 'shell-command
+             "x" 'execute-extended-command
+             "<left>" 'winner-undo
+             "<right>" 'winner-redo
+             )
+           ;; set SPC-' to toggle editing of org-src blocks
+           (evil-leader/set-key "'" 'org-edit-src-exit)
+           (evil-leader/set-key-for-mode 'org-mode "'" 'org-edit-special)
 
-       ;; set SPC-SPC to move forward in info mode
-       (evil-leader/set-key-for-mode 'info-mode "SPC" 'Info-scroll-up)
-       )
+           ;; set SPC-SPC to move forward in info mode
+           (evil-leader/set-key-for-mode 'info-mode "SPC" 'Info-scroll-up)
+           )
 
-     (use-package evil-surround
-       :after evil
-       :ensure t
-       :config
-       (global-evil-surround-mode t))
+         (use-package evil-surround
+           :after evil
+           :ensure t
+           :config
+           (global-evil-surround-mode t))
 
-     (use-package evil-magit
-       :after evil
-       :ensure t
-       :config
-       (global-evil-surround-mode t))
+         (use-package evil-magit
+           :after evil
+           :ensure t
+           :config
+           (global-evil-surround-mode t))
 
-     (use-package evil-org
-       :after evil
-       :ensure t
-       :after org
-       :config
-       (add-hook 'org-mode-hook 'evil-org-mode)
-       (add-hook 'evil-org-mode-hook
-                 (lambda ()
-                   (evil-org-set-key-theme)))
-       (require 'evil-org-agenda)
-       (evil-org-agenda-set-keys))
+         (use-package evil-org
+           :after evil
+           :ensure t
+           :after org
+           :config
+           (add-hook 'org-mode-hook 'evil-org-mode)
+           (add-hook 'evil-org-mode-hook
+                     (lambda ()
+                       (evil-org-set-key-theme)))
+           (require 'evil-org-agenda)
+           (evil-org-agenda-set-keys))
 
-     (use-package evil-collection
-       :after evil
-       :ensure t
-       :config
-       (evil-collection-init))
+         (use-package evil-collection
+           :after evil
+           :ensure t
+           :config
+           (evil-collection-init))
    #+end_src
 
 ** company-mode

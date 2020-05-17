@@ -62,29 +62,23 @@
   (setq evil-want-C-u-delete t)
   (setq evil-want-keybinding nil)
   (setq evil-want-fine-undo t)
-  (setq evil-default-state 'normal)
+  (setq evil-disable-insert-state-bindings t)
+  (setq evil-want-C-u-delete t)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-cross-lines t)
   :config
   (evil-mode 1)
-  (evil-set-initial-state 'info-mode 'emacs)
   (evil-set-initial-state 'shell-mode 'insert)
   (evil-set-initial-state 'eshell-mode 'insert)
   (evil-set-initial-state 'term-mode 'insert)
   ;; set magit commit messages to open in insert state https://emacs.stackexchange.com/questions/14008/default-magit-commit-state-in-evil
   (add-hook 'with-editor-mode-hook 'evil-insert-state)
-  ;; set C-y to paste text in insert mode -- uses evil-paste-before + right-char instead of yank to make pasting in the terminal work
-  (define-key evil-insert-state-map (kbd "C-y") (lambda ()
-                                                  (interactive)
-                                                  (evil-paste-before 1)
-                                                  (right-char 1)))
-  ;; set C-d to delete text in insert mode, like emacs + readline
-  (define-key evil-insert-state-map (kbd "C-d") 'delete-char)
   ;; remap all evil movement functions to use visual lines instead of actual lines
   (define-key evil-normal-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
   (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
   (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
   ;; Make horizontal movement cross lines
-  (setq-default evil-cross-lines t)
   ;; set RETURN to open links in org-mode
   (add-hook 'org-mode-hook (lambda ()
                              (define-key evil-normal-state-map (kbd "RET") 'org-open-at-point)))
@@ -122,9 +116,8 @@
           (if (string= (symbol-value 'major-mode) "web-mode")
               (web-mode-reload)
             (font-lock-fontify-buffer)))
-    "t" (lambda ()
-          (interactive)
-          (eshell))
+    "e" 'eshell
+    "t" 'ansi-term
     "g" 'magit-status
     "u" 'undo-tree-visualize
     ;; make SPC-SPC enlarge the current window in both dimensions
