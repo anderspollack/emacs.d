@@ -369,7 +369,8 @@
        (powerline-center-evil-theme))
    #+end_src
 
-* Global keybindings
+* Keybindings
+  make M-j/k increase/decrease the size of the current window
   #+begin_src emacs-lisp
     (global-set-key (kbd "M-J")
                     (lambda ()
@@ -384,6 +385,15 @@
                       (evil-window-decrease-height 1)
                       (evil-window-decrease-width 3)
                       ))
+  #+end_src
+
+  set ESC to quit in minibuffer
+  #+begin_src emacs-lisp
+    (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
   #+end_src
 
 * Miscellaneous Behavior
