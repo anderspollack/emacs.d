@@ -26,7 +26,7 @@
       (append (list '(width  . 140)
                     '(height . 56)
                     '(vertical-scroll-bars . nil)
-                    '(internal-border-width . 21))))
+                    '(internal-border-width . 17))))
 (set-frame-parameter
  (selected-frame) 'internal-border-width 17)
 
@@ -44,6 +44,8 @@
           (lambda ()
             (variable-pitch-mode 1)))
 
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+
 (use-package magit
   :ensure t
   :config
@@ -56,16 +58,13 @@
   (setq evil-ex-complete-emacs-commands nil)
   (setq evil-vsplit-window-right t)
   (setq evil-split-window-below t)
-  ;; (setq evil-shift-round nil)
   (setq evil-want-C-d-scroll t)
   (setq evil-want-C-u-scroll t)
   (setq evil-want-C-u-delete t)
   (setq evil-want-keybinding nil)
   (setq evil-want-fine-undo t)
-  (setq evil-disable-insert-state-bindings t)
   (setq evil-want-C-u-delete t)
   (setq evil-want-C-u-scroll t)
-  (setq evil-cross-lines t)
   :config
   (evil-mode 1)
   (evil-set-initial-state 'shell-mode 'insert)
@@ -73,12 +72,20 @@
   (evil-set-initial-state 'term-mode 'insert)
   ;; set magit commit messages to open in insert state https://emacs.stackexchange.com/questions/14008/default-magit-commit-state-in-evil
   (add-hook 'with-editor-mode-hook 'evil-insert-state)
+  ;; set C-y to paste text in insert mode -- uses evil-paste-before + right-char instead of yank to make pasting in the terminal work
+  (define-key evil-insert-state-map (kbd "C-y") (lambda ()
+                                                  (interactive)
+                                                  (evil-paste-before 1)
+                                                  (right-char 1)))
+  ;; set C-d to delete text in insert mode, like emacs + readline
+  (define-key evil-insert-state-map (kbd "C-d") 'delete-char)
   ;; remap all evil movement functions to use visual lines instead of actual lines
   (define-key evil-normal-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
   (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
   (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
   ;; Make horizontal movement cross lines
+  (setq-default evil-cross-lines t)
   ;; set RETURN to open links in org-mode
   (add-hook 'org-mode-hook (lambda ()
                              (define-key evil-normal-state-map (kbd "RET") 'org-open-at-point)))
@@ -120,8 +127,10 @@
     "t" 'ansi-term
     "g" 'magit-status
     "u" 'undo-tree-visualize
-    ;; make SPC-SPC enlarge the current window in both dimensions
-    "SPC" 'maximize-window
+    ;; make SPC-SPC enlarge the current window in both dimensions. NOTE: annoying on a butterfly keyboard macbook, great otherwise
+    ;; "SPC" 'maximize-window
+    ;; make SPC-SPC just C-g
+    "SPC" 'keyboard-quit
     "%" 'query-replace
     "!" 'shell-command
     "x" 'execute-extended-command
@@ -190,11 +199,13 @@
   (setq web-mode-content-types-alist
         '(
           ("json" . "\\.json\\'")
+          ("jsx" . "\\.jsx\\'")
           ("jsx" . "/Users/Anders/Sites/portfolio/src/.*\\.js\\'")
           ("jsx" . "/Users/Anders/Sites/talk-about/src/.*\\.js\\'")
           ("jsx" . "/Users/Anders/Sites/music-directory/client/src/.*\\.tsx\\'")
           ("css" . "/Users/Anders/Sites/super-deluxe-2018/.*\\.scss.liquid\\'")
           ("liquid" . "/Users/Anders/Sites/donpollack/donpollack/.*\\.liquid\\'")
+          ("jsx" . "/Users/Anders/Code/coding-circle/charades/client/src/.*\\.jsx\\'")
           ))
 
   ;; set indentation level to 2/4 for html/markup
@@ -203,6 +214,9 @@
   (setq web-mode-code-indent-offset 2)
   (setq web-mode-style-padding 0)
   (setq web-mode-script-padding 0)
+
+  ;; enable jsdoc-style comments
+  (setq web-mode-enable-comment-annotation t)
 
   ;; disable electric pair mode in web mode for liquid files
   (add-hook 'web-mode-hook
@@ -275,14 +289,14 @@
                 (lambda ()
                   (interactive)
                   (evil-window-increase-height 1)
-                  (evil-window-increase-width 1)
+                  (evil-window-increase-width 3)
                   ))
 
 (global-set-key (kbd "M-K")
                 (lambda ()
                   (interactive)
                   (evil-window-decrease-height 1)
-                  (evil-window-decrease-width 1)
+                  (evil-window-decrease-width 3)
                   ))
 
 (add-hook 'dired-mode-hook
