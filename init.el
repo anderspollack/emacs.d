@@ -3,7 +3,7 @@
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-(package-initialize)
+;; (package-initialize)
 
 ;; check if use-package is installed; if it isn't, use package.el to install it
 (unless (package-installed-p 'use-package)

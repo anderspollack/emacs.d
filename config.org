@@ -1,6 +1,6 @@
 * Overview
   this is an attempt to use literate programming style to organize and annotate my emacs config. Configuration code is stored in org-mode source blocks. To quickly insert a source block, type "<s" then tab. Type C-c C-c to execute a block. To edit a source block, type C-c '. Type C-c ' again to finish editing.
- 
+  
 * Server
   enable emacs server
   #+begin_src emacs-lisp
@@ -19,6 +19,18 @@
     (add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
   #+end_src
 
+* Mac Keyboard Modifiers
+  Set command as Meta, use right option as alt
+  #+begin_src emacs-lisp
+    (when (eq system-type 'darwin)
+      ;; use all the special keys on the mac keyboard
+      (setq mac-option-modifier nil
+            ns-function-modifier 'super
+            mac-right-command-modifie 'hyper
+            mac-right-option-modifier 'alt
+            mac-command-modifier 'meta))
+  #+end_src
+  
 * Terminal accessibility
 ** Terminal mouse scrolling
    enable mouse scrolling in terminal emacs
@@ -36,7 +48,7 @@
                (lambda ()
                  (define-key term-raw-map (kbd "C-y") 'term-paste)))
    #+end_src
-
+   
 * Visual settings
 ** Default frame
    set initial frame placement, and default frame padding / dimensions
@@ -49,9 +61,8 @@
            (append (list '(width  . 140)
                          '(height . 56)
                          '(vertical-scroll-bars . nil)
-                         '(internal-border-width . 17))))
-     (set-frame-parameter
-      (selected-frame) 'internal-border-width 17)
+                         '(vertical-scroll-bars . nil)
+                         )))
    #+end_src 
 
 ** Title Bar
@@ -361,6 +372,11 @@
        )
    #+end_src
 
+** solarized theme
+   #+begin_src emacs-lisp
+     (setq x-underline-at-descent-line t)
+   #+end_src
+   
 ** powerline
    #+begin_src emacs-lisp
      (use-package powerline

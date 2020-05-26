@@ -9,6 +9,14 @@
 (add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
 (add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
 
+(when (eq system-type 'darwin)
+  ;; use all the special keys on the mac keyboard
+  (setq mac-option-modifier nil
+        ns-function-modifier 'super
+        mac-right-command-modifie 'hyper
+        mac-right-option-modifier 'alt
+        mac-command-modifier 'meta))
+
 (if (not (window-system))
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
 (if (not (window-system))
@@ -26,9 +34,8 @@
       (append (list '(width  . 140)
                     '(height . 56)
                     '(vertical-scroll-bars . nil)
-                    '(internal-border-width . 17))))
-(set-frame-parameter
- (selected-frame) 'internal-border-width 17)
+                    '(vertical-scroll-bars . nil)
+                    )))
 
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
@@ -280,6 +287,8 @@
   ;; (setq tidal-interpreter "/usr/local/bin/ghci")
   )
 
+(setq x-underline-at-descent-line t)
+
 (use-package powerline
   :ensure t
   :config
@@ -298,6 +307,12 @@
                   (evil-window-decrease-height 1)
                   (evil-window-decrease-width 3)
                   ))
+
+(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 
 (add-hook 'dired-mode-hook
           (lambda ()
