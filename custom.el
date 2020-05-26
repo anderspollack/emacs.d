@@ -71,4 +71,5 @@
  '(fixed-pitch ((t (:family "SF Mono"))))
  '(fixed-pitch-serif ((t (:family "SF Mono"))))
  '(org-block ((t (:family "SF Mono"))))
- '(org-meta-line ((t (:foreground "#93a1a1" :slant italic :family "SF Mono")))))
+ '(org-meta-line ((t (:foreground "#93a1a1" :slant italic :family "SF Mono"))))
+ '(variable-pitch ((t (:family "Libre Baskerville")))))

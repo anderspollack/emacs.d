@@ -34,8 +34,11 @@
       (append (list '(width  . 140)
                     '(height . 56)
                     '(vertical-scroll-bars . nil)
-                    '(vertical-scroll-bars . nil)
+                    '(internal-border-width . 5)
+                    '(ns-transparent-titlebar . t)
                     )))
+(set-frame-parameter
+ (selected-frame) 'internal-border-width 5)
 
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
