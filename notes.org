@@ -60,6 +60,10 @@
 
     All settings will been used in new frame or after restart Emacs
 
+** Menu Bar
+   to get a TUI menu bar:
+   M-x tmm-menubar
+
 ** Bookmarks
    set a bookmark
    C-x r m
@@ -290,6 +294,8 @@
 ** LSP
    install javascript/typscript language server:
    #+begin_src shell
+     npm i -g javascript-typescript-langserver; npm i -g typescript
+     # or
      npm i -g typescript-language-server; npm i -g typescript
    #+end_src
    
@@ -298,7 +304,7 @@
      npm i -g vue-language-server
    #+end_src
    
-   install vue language server:
+   install json language server:
    #+begin_src shell
      npm i -g vscode-json-language-server
    #+end_src

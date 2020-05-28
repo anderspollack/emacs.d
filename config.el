@@ -26,17 +26,25 @@
           (lambda ()
             (define-key term-raw-map (kbd "C-y") 'term-paste)))
 
+(use-package solarized-theme
+  :ensure t
+  :config
+  (setq x-underline-at-descent-line t))
+
 (setq initial-frame-alist
-      (append (list '(top . 50)
-                    '(left . 50))))
+      (append (list '(width . 140)
+                    '(height . 56)
+                    '(top . 0)
+                    '(left . 0))))
 
 (setq default-frame-alist
-      (append (list '(width  . 140)
+      (append (list '(width  . 80)
                     '(height . 56)
+                    '(top . 50)
+                    '(left . 30)
                     '(vertical-scroll-bars . nil)
                     '(internal-border-width . 5)
-                    '(ns-transparent-titlebar . t)
-                    )))
+                    '(ns-transparent-titlebar . t))))
 (set-frame-parameter
  (selected-frame) 'internal-border-width 5)
 
@@ -56,10 +64,13 @@
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
+(setq js-indent-level 2)
+
 (use-package magit
   :ensure t
   :config
-  (global-set-key (kbd "C-x g") 'magit-status))
+  (global-set-key (kbd "C-x g") 'magit-status)
+  (define-key transient-map [escape] 'transient-quit-one))
 
 (use-package evil
   :ensure t
@@ -69,12 +80,9 @@
   (setq evil-vsplit-window-right t)
   (setq evil-split-window-below t)
   (setq evil-want-C-d-scroll t)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-u-delete t)
   (setq evil-want-keybinding nil)
   (setq evil-want-fine-undo t)
   (setq evil-want-C-u-delete t)
-  (setq evil-want-C-u-scroll t)
   :config
   (evil-mode 1)
   (evil-set-initial-state 'shell-mode 'insert)
@@ -91,8 +99,8 @@
   (define-key evil-insert-state-map (kbd "C-d") 'delete-char)
   ;; remap all evil movement functions to use visual lines instead of actual lines
   (define-key evil-normal-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
-  (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
-  (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+  ;; (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
+  ;; (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
   ;; Make horizontal movement cross lines
   (setq-default evil-cross-lines t)
@@ -119,12 +127,13 @@
           (interactive)
           (delete-window))
     "=" 'balance-windows
-    "o" 'other-window
+    "o" 'other-frame
     "h" 'windmove-left
     "j" 'windmove-down
     "k" 'windmove-up
     "l" 'windmove-right
-    "m" 'toggle-frame-fullscreen
+    "m" 'maximize-window
+    "M" 'toggle-frame-fullscreen
     "n" 'make-frame
     "w" 'delete-frame
     "r" (lambda ()
@@ -139,8 +148,6 @@
     "u" 'undo-tree-visualize
     ;; make SPC-SPC enlarge the current window in both dimensions. NOTE: annoying on a butterfly keyboard macbook, great otherwise
     ;; "SPC" 'maximize-window
-    ;; make SPC-SPC just C-g
-    "SPC" 'keyboard-quit
     "%" 'query-replace
     "!" 'shell-command
     "x" 'execute-extended-command
@@ -191,32 +198,20 @@
 (use-package web-mode
   :ensure t
   :config
-  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.php?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.tag?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.liquid?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.json?\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.vue?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tag\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.liquid\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.json\\'" . web-mode))
   (setq web-mode-engines-alist
-        '(
-          ("riot" . "\\.tag\\'")
-          ("liquid" . "\\.liquid\\'")
-          ))
+        '(("riot" . "\\.tag\\'")
+          ("liquid" . "\\.liquid\\'")))
 
   (setq web-mode-content-types-alist
-        '(
-          ("json" . "\\.json\\'")
-          ("jsx" . "\\.jsx\\'")
-          ("jsx" . "/Users/Anders/Sites/portfolio/src/.*\\.js\\'")
-          ("jsx" . "/Users/Anders/Sites/talk-about/src/.*\\.js\\'")
-          ("jsx" . "/Users/Anders/Sites/music-directory/client/src/.*\\.tsx\\'")
-          ("css" . "/Users/Anders/Sites/super-deluxe-2018/.*\\.scss.liquid\\'")
-          ("liquid" . "/Users/Anders/Sites/donpollack/donpollack/.*\\.liquid\\'")
-          ("jsx" . "/Users/Anders/Code/coding-circle/charades/client/src/.*\\.jsx\\'")
-          ))
+          '(("css" . "\\.scss.liquid\\'")
+          ("liquid" . "\\.liquid\\'")))
 
   ;; set indentation level to 2/4 for html/markup
   (setq web-mode-markup-indent-offset 2)
@@ -243,7 +238,9 @@
   (add-hook 'css-mode-hook  'emmet-mode)
   (add-hook 'markdown-mode-hook  'emmet-mode)
   ;; enable emmet mode whenever web-mode is active
-  (add-hook 'web-mode-hook 'emmet-mode))
+  (add-hook 'web-mode-hook 'emmet-mode)
+  ;; enable emmet mode whenever javascript-mode is active
+  (add-hook 'js-mode-hook 'emmet-mode))
 
 (use-package lsp-mode
   :ensure t
@@ -253,6 +250,7 @@
   :hook
   ;; deferred startup for lsp until a web-mode buffer is opened
   (web-mode . lsp-deferred)
+  (js-mode . lsp-deferred)
   ;; enable which-key integration
   (lsp-mode . lsp-enable-which-key-integration)
   :commands
@@ -290,8 +288,6 @@
   ;; (setq tidal-interpreter "/usr/local/bin/ghci")
   )
 
-(setq x-underline-at-descent-line t)
-
 (use-package powerline
   :ensure t
   :config
@@ -316,6 +312,12 @@
 (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+
+(global-set-key (kbd "M-`") 'other-frame)
+
+(global-set-key (kbd "M-c") 'kill-ring-save)
+(global-set-key (kbd "M-v") 'yank)
+(global-set-key (kbd "M-z") 'undo-tree-undo)
 
 (add-hook 'dired-mode-hook
           (lambda ()

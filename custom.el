@@ -21,7 +21,6 @@
          t
        (electric-pair-default-inhibit c))))
  '(electric-pair-mode t)
- '(evil-want-C-u-delete t)
  '(fringe-mode 10 nil (fringe))
  '(global-auto-revert-mode t)
  '(global-company-mode t)
@@ -40,9 +39,90 @@
  '(lsp-ui-peek-always-show t)
  '(lsp-ui-peek-enable t)
  '(lsp-ui-sideline-enable nil)
+ '(mode-line-format
+   '("%e"
+     (:eval
+      (let*
+          ((active
+            (powerline-selected-window-active))
+           (mode-line-buffer-id
+            (if active 'mode-line-buffer-id 'mode-line-buffer-id-inactive))
+           (mode-line
+            (if active 'mode-line 'mode-line-inactive))
+           (face0
+            (if active 'powerline-active0 'powerline-inactive0))
+           (face1
+            (if active 'powerline-active1 'powerline-inactive1))
+           (face2
+            (if active 'powerline-active2 'powerline-inactive2))
+           (separator-left
+            (intern
+             (format "powerline-%s-%s"
+                     (powerline-current-separator)
+                     (car powerline-default-separator-dir))))
+           (separator-right
+            (intern
+             (format "powerline-%s-%s"
+                     (powerline-current-separator)
+                     (cdr powerline-default-separator-dir))))
+           (lhs
+            (list
+             (powerline-raw "%*" face0 'l)
+             (when powerline-display-buffer-size
+               (powerline-buffer-size face0 'l))
+             (powerline-buffer-id
+              `(mode-line-buffer-id ,face0)
+              'l)
+             (powerline-raw " " face0)
+             (funcall separator-left face0 face1)
+             (powerline-narrow face1 'l)
+             (powerline-vc face1)))
+           (rhs
+            (list
+             (powerline-raw global-mode-string face1 'r)
+             (powerline-raw "%4l" face1 'r)
+             (powerline-raw ":" face1)
+             (powerline-raw "%3c" face1 'r)
+             (funcall separator-right face1 face0)
+             (powerline-raw " " face0)
+             (powerline-raw "%6p" face0 'r)
+             (when powerline-display-hud
+               (powerline-hud face2 face1))))
+           (center
+            (append
+             (list
+              (powerline-raw " " face1)
+              (funcall separator-left face1 face2)
+              (when
+                  (and
+                   (boundp 'erc-track-minor-mode)
+                   erc-track-minor-mode)
+                (powerline-raw erc-modified-channels-object face2 'l))
+              (powerline-major-mode face2 'l)
+              (powerline-process face2)
+              (powerline-raw " " face2))
+             (if
+                 (split-string
+                  (format-mode-line minor-mode-alist))
+                 (append
+                  (if evil-mode
+                      (list
+                       (funcall separator-right face2 face1)
+                       (powerline-raw evil-mode-line-tag face1 'l)
+                       (powerline-raw " " face1))))))))
+        (concat
+         (powerline-render lhs)
+         (powerline-fill-center face1
+                                (/
+                                 (powerline-width center)
+                                 2.0))
+         (powerline-render center)
+         (powerline-fill face1
+                         (powerline-width rhs))
+         (powerline-render rhs))))))
  '(next-screen-context-lines 5)
  '(package-selected-packages
-   '(flycheck company-elisp haskell evil-magit evil-collection org evil-org lua-mode which-key lsp-ui company-lsp company yasnippet lsp-mode xclip yaml-mode magit evil-leader evil-surround evil-visual-mark-mode emmet-mode web-mode haskell-mode))
+   '(solarized-theme flycheck company-elisp haskell evil-magit evil-collection org evil-org lua-mode which-key lsp-ui company-lsp company yasnippet lsp-mode xclip yaml-mode magit evil-leader evil-surround evil-visual-mark-mode emmet-mode web-mode haskell-mode))
  '(powerline-default-separator 'utf-8)
  '(prettier-js-command "prettier --ignore-path ~/.prettierignore")
  '(ring-bell-function 'ignore)
@@ -70,6 +150,11 @@
  '(company-echo ((t nil)) t)
  '(fixed-pitch ((t (:family "SF Mono"))))
  '(fixed-pitch-serif ((t (:family "SF Mono"))))
+ '(markdown-inline-code-face ((t (:foreground "#93a1a1" :family "SF Mono"))))
+ '(markdown-pre-face ((t (:foreground "#93a1a1" :family "SF Mono"))))
+ '(mode-line ((((class color) (min-colors 89)) (:inverse-video unspecified :overline "#eee8d5" :underline "#eee8d5" :foreground "#657b83" :background "#eee8d5" :box (:line-width 1 :color "#eee8d5" :style unspecified)))))
+ '(mode-line-inactive ((((class color) (min-colors 89)) (:inverse-video unspecified :overline "#eee8d5" :underline "#eee8d5" :foreground "#93a1a1" :background "#fdf6e3" :box (:line-width 1 :color "#fdf6e3" :style unspecified)))))
  '(org-block ((t (:family "SF Mono"))))
  '(org-meta-line ((t (:foreground "#93a1a1" :slant italic :family "SF Mono"))))
+ '(powerline-inactive1 ((t (:background "#eee8d5" :foreground "#93a1a1" :box (:line-width 1 :color "#eee8d5") :underline "#eee8d5"))))
  '(variable-pitch ((t (:family "Libre Baskerville")))))
