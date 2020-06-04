@@ -77,19 +77,18 @@
   :init
   (setq evil-search-module 'evil-search)
   (setq evil-ex-complete-emacs-commands nil)
-  (setq evil-vsplit-window-right t)
-  (setq evil-split-window-below t)
   (setq evil-want-C-d-scroll t)
   (setq evil-want-keybinding nil)
   (setq evil-want-fine-undo t)
   (setq evil-want-C-u-delete t)
   :config
   (evil-mode 1)
-  (evil-set-initial-state 'shell-mode 'insert)
-  (evil-set-initial-state 'eshell-mode 'insert)
-  (evil-set-initial-state 'term-mode 'insert)
+  (setq evil-default-state 'emacs)
+  ;; (evil-set-initial-state 'shell-mode 'insert)
+  ;; (evil-set-initial-state 'eshell-mode 'insert)
+  ;; (evil-set-initial-state 'term-mode 'insert)
   ;; set magit commit messages to open in insert state https://emacs.stackexchange.com/questions/14008/default-magit-commit-state-in-evil
-  (add-hook 'with-editor-mode-hook 'evil-insert-state)
+  ;; (add-hook 'with-editor-mode-hook 'evil-insert-state)
   ;; set C-y to paste text in insert mode -- uses evil-paste-before + right-char instead of yank to make pasting in the terminal work
   (define-key evil-insert-state-map (kbd "C-y") (lambda ()
                                                   (interactive)
@@ -162,35 +161,35 @@
   (evil-leader/set-key-for-mode 'info-mode "SPC" 'Info-scroll-up)
   )
 
-(use-package evil-surround
-  :after evil
-  :ensure t
-  :config
-  (global-evil-surround-mode t))
+;; (use-package evil-surround
+;;   :after evil
+;;   :ensure t
+;;   :config
+;;   (global-evil-surround-mode t))
 
-(use-package evil-magit
-  :after evil
-  :ensure t
-  :config
-  (global-evil-surround-mode t))
+;; (use-package evil-magit
+;;   :after evil
+;;   :ensure t
+;;   :config
+;;   (global-evil-surround-mode t))
 
-(use-package evil-org
-  :after evil
-  :ensure t
-  :after org
-  :config
-  (add-hook 'org-mode-hook 'evil-org-mode)
-  (add-hook 'evil-org-mode-hook
-            (lambda ()
-              (evil-org-set-key-theme)))
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
+;; (use-package evil-org
+;;   :after evil
+;;   :ensure t
+;;   :after org
+;;   :config
+;;   (add-hook 'org-mode-hook 'evil-org-mode)
+;;   (add-hook 'evil-org-mode-hook
+;;             (lambda ()
+;;               (evil-org-set-key-theme)))
+;;   (require 'evil-org-agenda)
+;;   (evil-org-agenda-set-keys))
 
-(use-package evil-collection
-  :after evil
-  :ensure t
-  :config
-  (evil-collection-init))
+;; (use-package evil-collection
+;;   :after evil
+;;   :ensure t
+;;   :config
+;;   (evil-collection-init))
 
 (use-package company
   :ensure t)
@@ -293,31 +292,31 @@
   :config
   (powerline-center-evil-theme))
 
-(global-set-key (kbd "M-J")
-                (lambda ()
-                  (interactive)
-                  (evil-window-increase-height 1)
-                  (evil-window-increase-width 3)
-                  ))
+;; (global-set-key (kbd "M-J")
+;;                 (lambda ()
+;;                   (interactive)
+;;                   (evil-window-increase-height 1)
+;;                   (evil-window-increase-width 3)
+;;                   ))
 
-(global-set-key (kbd "M-K")
-                (lambda ()
-                  (interactive)
-                  (evil-window-decrease-height 1)
-                  (evil-window-decrease-width 3)
-                  ))
+;; (global-set-key (kbd "M-K")
+;;                 (lambda ()
+;;                   (interactive)
+;;                   (evil-window-decrease-height 1)
+;;                   (evil-window-decrease-width 3)
+;;                   ))
 
-(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+;; (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+;; (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+;; (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+;; (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+;; (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 
-(global-set-key (kbd "M-`") 'other-frame)
+;; (global-set-key (kbd "M-`") 'other-frame)
 
-(global-set-key (kbd "M-c") 'kill-ring-save)
-(global-set-key (kbd "M-v") 'yank)
-(global-set-key (kbd "M-z") 'undo-tree-undo)
+;; (global-set-key (kbd "M-c") 'kill-ring-save)
+;; (global-set-key (kbd "M-v") 'yank)
+;; (global-set-key (kbd "M-z") 'undo-tree-undo)
 
 (add-hook 'dired-mode-hook
           (lambda ()
