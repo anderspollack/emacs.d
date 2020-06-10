@@ -32,8 +32,8 @@
   (setq x-underline-at-descent-line t))
 
 (setq initial-frame-alist
-      (append (list '(width . 140)
-                    '(height . 56)
+      (append (list '(width . 206)
+                    '(height . 66)
                     '(top . 0)
                     '(left . 0))))
 
@@ -84,9 +84,9 @@
   :config
   (evil-mode 1)
   (setq evil-default-state 'emacs)
-  ;; (evil-set-initial-state 'shell-mode 'insert)
-  ;; (evil-set-initial-state 'eshell-mode 'insert)
-  ;; (evil-set-initial-state 'term-mode 'insert)
+  (evil-set-initial-state 'shell-mode 'emacs)
+  (evil-set-initial-state 'eshell-mode 'emacs)
+  (evil-set-initial-state 'term-mode 'emacs)
   ;; set magit commit messages to open in insert state https://emacs.stackexchange.com/questions/14008/default-magit-commit-state-in-evil
   ;; (add-hook 'with-editor-mode-hook 'evil-insert-state)
   ;; set C-y to paste text in insert mode -- uses evil-paste-before + right-char instead of yank to make pasting in the terminal work
@@ -98,8 +98,6 @@
   (define-key evil-insert-state-map (kbd "C-d") 'delete-char)
   ;; remap all evil movement functions to use visual lines instead of actual lines
   (define-key evil-normal-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
-  ;; (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
-  ;; (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
   ;; Make horizontal movement cross lines
   (setq-default evil-cross-lines t)
@@ -108,58 +106,58 @@
                              (define-key evil-normal-state-map (kbd "RET") 'org-open-at-point)))
   )
 
-(use-package evil-leader
-  :after evil
-  :ensure t
-  :config
-  (global-evil-leader-mode t)
-  (evil-leader/set-leader "<SPC>")
-  (evil-leader/set-key
-    "f" 'find-file
-    "b" 'switch-to-buffer
-    "d" 'dired
-    "s" 'save-buffer
-    "1" 'delete-other-windows
-    "2" 'evil-window-split
-    "3" 'evil-window-vsplit
-    "0" (lambda ()
-          (interactive)
-          (delete-window))
-    "=" 'balance-windows
-    "o" 'other-frame
-    "h" 'windmove-left
-    "j" 'windmove-down
-    "k" 'windmove-up
-    "l" 'windmove-right
-    "m" 'maximize-window
-    "M" 'toggle-frame-fullscreen
-    "n" 'make-frame
-    "w" 'delete-frame
-    "r" (lambda ()
-          "if the current buffer is web-mode, run web-mode-reload, otherwise run font-lock-fontify-buffer"
-          (interactive)
-          (if (string= (symbol-value 'major-mode) "web-mode")
-              (web-mode-reload)
-            (font-lock-fontify-buffer)))
-    "e" 'eshell
-    "t" 'ansi-term
-    "g" 'magit-status
-    "u" 'undo-tree-visualize
-    ;; make SPC-SPC enlarge the current window in both dimensions. NOTE: annoying on a butterfly keyboard macbook, great otherwise
-    ;; "SPC" 'maximize-window
-    "%" 'query-replace
-    "!" 'shell-command
-    "x" 'execute-extended-command
-    "<left>" 'winner-undo
-    "<right>" 'winner-redo
-    )
-  ;; set SPC-' to toggle editing of org-src blocks
-  (evil-leader/set-key "'" 'org-edit-src-exit)
-  (evil-leader/set-key-for-mode 'org-mode "'" 'org-edit-special)
+;; (use-package evil-leader
+;;   :after evil
+;;   :ensure t
+;;   :config
+;;   (global-evil-leader-mode t)
+;;   (evil-leader/set-leader "<SPC>")
+;;   (evil-leader/set-key
+;;     "f" 'find-file
+;;     "b" 'switch-to-buffer
+;;     "d" 'dired
+;;     "s" 'save-buffer
+;;     "1" 'delete-other-windows
+;;     "2" 'evil-window-split
+;;     "3" 'evil-window-vsplit
+;;     "0" (lambda ()
+;;           (interactive)
+;;           (delete-window))
+;;     "=" 'balance-windows
+;;     "o" 'other-frame
+;;     "h" 'windmove-left
+;;     "j" 'windmove-down
+;;     "k" 'windmove-up
+;;     "l" 'windmove-right
+;;     "m" 'maximize-window
+;;     "M" 'toggle-frame-fullscreen
+;;     "n" 'make-frame
+;;     "w" 'delete-frame
+;;     "r" (lambda ()
+;;           "if the current buffer is web-mode, run web-mode-reload, otherwise run font-lock-fontify-buffer"
+;;           (interactive)
+;;           (if (string= (symbol-value 'major-mode) "web-mode")
+;;               (web-mode-reload)
+;;             (font-lock-fontify-buffer)))
+;;     "e" 'eshell
+;;     "t" 'ansi-term
+;;     "g" 'magit-status
+;;     "u" 'undo-tree-visualize
+;;     ;; make SPC-SPC enlarge the current window in both dimensions. NOTE: annoying on a butterfly keyboard macbook, great otherwise
+;;     ;; "SPC" 'maximize-window
+;;     "%" 'query-replace
+;;     "!" 'shell-command
+;;     "x" 'execute-extended-command
+;;     "<left>" 'winner-undo
+;;     "<right>" 'winner-redo
+;;     )
+;;   ;; set SPC-' to toggle editing of org-src blocks
+;;   (evil-leader/set-key "'" 'org-edit-src-exit)
+;;   (evil-leader/set-key-for-mode 'org-mode "'" 'org-edit-special)
 
-  ;; set SPC-SPC to move forward in info mode
-  (evil-leader/set-key-for-mode 'info-mode "SPC" 'Info-scroll-up)
-  )
+;;   ;; set SPC-SPC to move forward in info mode
+;;   (evil-leader/set-key-for-mode 'info-mode "SPC" 'Info-scroll-up)
+;;   )
 
 ;; (use-package evil-surround
 ;;   :after evil
@@ -266,6 +264,7 @@
 (use-package prettier-js
   :ensure t
   :config
+  (add-hook 'js-mode-hook 'prettier-js-mode)
   (add-hook 'web-mode-hook 'prettier-js-mode))
 
 (use-package which-key
@@ -292,6 +291,34 @@
   :config
   (powerline-center-evil-theme))
 
+(use-package ace-window
+  :ensure t
+  :config
+  (global-set-key (kbd "M-o") 'ace-window))
+
+(use-package avy
+  :ensure t
+  :config
+  (global-set-key (kbd "C-;") 'avy-goto-char)
+  (global-set-key (kbd "C-'") 'avy-goto-char-2))
+
+(use-package treemacs
+  :ensure t
+  :config
+  (global-set-key (kbd "C-=") 'treemacs))
+
+(use-package keyfreq
+  :ensure t
+  :config
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1)
+  (setq keyfreq-excluded-commands
+      '(self-insert-command
+        forward-char
+        backward-char
+        previous-line
+        next-line)))
+
 ;; (global-set-key (kbd "M-J")
 ;;                 (lambda ()
 ;;                   (interactive)
@@ -312,7 +339,9 @@
 ;; (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
 ;; (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 
-;; (global-set-key (kbd "M-`") 'other-frame)
+(global-set-key (kbd "M-`") 'other-frame)
+
+(global-set-key (kbd "M-z") 'zap-up-to-char)
 
 ;; (global-set-key (kbd "M-c") 'kill-ring-save)
 ;; (global-set-key (kbd "M-v") 'yank)
